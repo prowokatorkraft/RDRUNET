@@ -45,9 +45,12 @@
     <Compile Include="AutorsElement\AbstractAutorsElement.cs" />
     <Compile Include="AutorsElement\Autor.cs" />
     <Compile Include="AutorsElement\Book\AbstractBook.cs" />
+    <Compile Include="AutorsElement\Book\Book.cs" />
     <Compile Include="AutorsElement\Book\BookPublishingHouse.cs" />
     <Compile Include="AutorsElement\Patent\AbstractPatent.cs" />
+    <Compile Include="AutorsElement\Patent\Patent.cs" />
     <Compile Include="Newspaper\AbstractNewspaper.cs" />
+    <Compile Include="Newspaper\Newspaper.cs" />
     <Compile Include="Newspaper\NewspaperPublishingHouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublishingHouse.cs" />

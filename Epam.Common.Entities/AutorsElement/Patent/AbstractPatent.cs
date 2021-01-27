@@ -1,30 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Epam.Common.Entities.AutorsElement.Patent
 {
     public abstract class AbstractPatent : AbstractAutorsElement
     {
-        public string City { get; set; }
+        public abstract string City { get; set; }
 
-        public int RegistrationNumber { get; set; }
+        public abstract int RegistrationNumber { get; set; }
 
-        public DateTime ApplicationDate { get; set; }
+        public abstract DateTime ApplicationDate { get; set; }
 
-        public DateTime DateOfPublication { get; set; }
+        public abstract DateTime DateOfPublication { get; set; }
 
-        protected AbstractPatent(string name, int numberOfPages, Autor[] autors, string city, 
+        protected AbstractPatent(string name, int numberOfPages, string city, 
             int registrationNumber, DateTime applicationDate, DateTime dateOfPublication)
-            : this(name, numberOfPages, autors, city, registrationNumber, dateOfPublication)
+            : this(name, numberOfPages, city, registrationNumber, dateOfPublication)
         {
             ApplicationDate = applicationDate;
         }
-        protected AbstractPatent(string name, int numberOfPages, Autor[] autors, string city,
+        protected AbstractPatent(string name, int numberOfPages, string city,
             int registrationNumber, DateTime dateOfPublication)
-            : base(name, numberOfPages, autors)
+            : base(name, numberOfPages)
         {
             City = city;
             RegistrationNumber = registrationNumber;
