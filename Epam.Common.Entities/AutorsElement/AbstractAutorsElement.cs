@@ -8,7 +8,7 @@ namespace Epam.Common.Entities.AutorsElement
 {
     public abstract class AbstractAutorsElement : AbstractElement 
     {
-        public Autor Autor { get; private set; }
+        public Autor Autor { get; set; }
 
         public AbstractAutorsElement(string name, int numberOfPages, Autor autor) : base(name, numberOfPages)
         {

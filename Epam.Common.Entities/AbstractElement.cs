@@ -8,7 +8,7 @@ namespace Epam.Common.Entities
 {
     public abstract class AbstractElement
     {
-        public abstract string Name { get; protected set; }
+        public abstract string Name { get; set; }
         //{
         //    get => Name;
 
@@ -20,7 +20,7 @@ namespace Epam.Common.Entities
         //    }
         //}
 
-        public abstract int NumberOfPages { get; protected set; }
+        public abstract int NumberOfPages { get; set; }
         //{
         //    get => NumberOfPages;
 
@@ -32,7 +32,7 @@ namespace Epam.Common.Entities
         //    }
         //}
 
-        public abstract string Annotation { get; protected set; }
+        public abstract string Annotation { get; set; }
         //{ 
         //    get => Annotation;
 
@@ -44,13 +44,13 @@ namespace Epam.Common.Entities
         //    }
         //}
 
-        protected AbstractElement(string name, int numberOfPages, string annotation)
+        public AbstractElement(string name, int numberOfPages, string annotation)
         {
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
         }
-        protected AbstractElement(string name, int numberOfPages)
+        public AbstractElement(string name, int numberOfPages)
         {
             Name = name;
             NumberOfPages = numberOfPages;
