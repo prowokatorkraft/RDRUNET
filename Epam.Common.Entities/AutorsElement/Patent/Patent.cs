@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Epam.Common.Entities.AutorsElement.Patent
 {
@@ -16,7 +13,7 @@ namespace Epam.Common.Entities.AutorsElement.Patent
 
         public override Autor[] Autors { get; set; }
 
-        public override string City { get; set; }
+        public override string Country { get; set; }
 
         public override int RegistrationNumber { get; set; }
 
@@ -28,6 +25,21 @@ namespace Epam.Common.Entities.AutorsElement.Patent
             : base(name, numberOfPages, city, registrationNumber, dateOfPublication)
         {
             
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Patent patent &&
+                   Country == patent.Country &&
+                   RegistrationNumber == patent.RegistrationNumber;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1173245029;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Country);
+            hashCode = hashCode * -1521134295 + RegistrationNumber.GetHashCode();
+            return hashCode;
         }
     }
 }

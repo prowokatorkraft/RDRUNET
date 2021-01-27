@@ -4,7 +4,7 @@ namespace Epam.Common.Entities.AutorsElement.Patent
 {
     public abstract class AbstractPatent : AbstractAutorsElement
     {
-        public abstract string City { get; set; }
+        public abstract string Country { get; set; }
 
         public abstract int RegistrationNumber { get; set; }
 
@@ -22,7 +22,7 @@ namespace Epam.Common.Entities.AutorsElement.Patent
             int registrationNumber, DateTime dateOfPublication)
             : base(name, numberOfPages)
         {
-            City = city;
+            Country = city;
             RegistrationNumber = registrationNumber;
             DateOfPublication = dateOfPublication;
         }
