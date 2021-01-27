@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Epam.Common.Entities.AutorsElement
+﻿namespace Epam.Common.Entities.AutorsElement
 {
     public abstract class AbstractAutorsElement : AbstractElement 
     {
-        public Autor Autor { get; set; }
+        public abstract Autor[] Autors { get; set; }
 
-        public AbstractAutorsElement(string name, int numberOfPages, Autor autor) : base(name, numberOfPages)
+        protected AbstractAutorsElement(string name, int numberOfPages, Autor[] autors) : base(name, numberOfPages)
         {
-            Autor = autor;
+            Autors = autors;
         }
-        public AbstractAutorsElement(string name, string annotation, int numberOfPages, Autor autor) : base(name, numberOfPages, annotation)
+        protected AbstractAutorsElement(string name, int numberOfPages) : base(name, numberOfPages)
         {
-            Autor = autor;
+            
         }
     }
 }

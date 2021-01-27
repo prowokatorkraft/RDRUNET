@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Epam.Common.Entities
+﻿namespace Epam.Common.Entities
 {
     public abstract class AbstractElement
     {
@@ -44,13 +38,12 @@ namespace Epam.Common.Entities
         //    }
         //}
 
-        public AbstractElement(string name, int numberOfPages, string annotation)
+        protected AbstractElement(string name, int numberOfPages, string annotation) 
+            : this(name, numberOfPages)
         {
-            Name = name;
-            NumberOfPages = numberOfPages;
             Annotation = annotation;
         }
-        public AbstractElement(string name, int numberOfPages)
+        protected AbstractElement(string name, int numberOfPages)
         {
             Name = name;
             NumberOfPages = numberOfPages;
