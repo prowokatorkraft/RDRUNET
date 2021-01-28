@@ -2,12 +2,20 @@
 {
     public abstract class AbstractBook : AbstractAutorsElement
     {
-        public abstract BookPublishingHouse PublishingHouse { get; set; }
+        public abstract string PublishingHouse { get; set; }
+        
+        public abstract string PublishingCity { get; set; }
+        
+        public abstract int PublishingYear { get; set; }
 
-        protected AbstractBook(string name, int numberOfPages, BookPublishingHouse publishingHouse) 
+        public abstract string Isbn { get; set; }
+
+        protected AbstractBook(string name, int numberOfPages, string publishingHouse, string publishingCity, int publishingYear) 
             : base(name, numberOfPages)
         {
             PublishingHouse = publishingHouse;
+            PublishingCity = publishingCity;
+            PublishingYear = publishingYear;
         }
     }
 }
