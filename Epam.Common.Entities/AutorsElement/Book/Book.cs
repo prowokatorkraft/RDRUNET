@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Epam.Common.Entities.AutorsElement.Book
+namespace Epam.Library.Common.Entities.AutorsElement.Book
 {
     public class Book : AbstractBook
     {

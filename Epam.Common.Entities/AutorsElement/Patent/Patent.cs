@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Epam.Common.Entities.AutorsElement.Patent
+namespace Epam.Library.Common.Entities.AutorsElement.Patent
 {
     public class Patent : AbstractPatent
     {

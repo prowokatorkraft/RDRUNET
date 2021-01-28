@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Epam.Common.Entities.Newspaper
+namespace Epam.Library.Common.Entities.Newspaper
 {
     public abstract class AbstractNewspaper : AbstractElement
     {

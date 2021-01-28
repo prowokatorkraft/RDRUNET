@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Epam.Common.Entities.Newspaper
+namespace Epam.Library.Common.Entities.Newspaper
 {
     public class Newspaper : AbstractNewspaper
     {

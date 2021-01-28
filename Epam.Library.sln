@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Pl.ConsoleApplication", "Epam.Pl.ConsoleApplication\Epam.Library.Pl.ConsoleApplication.csproj", "{FC214DB6-A8FB-4F31-93F9-6627B5BD7451}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PL", "PL", "{13F0FA62-A488-4C7D-BA02-73A6ED9B93B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{CC62704A-BA33-43F2-BC9E-38F9EB697B6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Common.Entities", "Epam.Common.Entities\Epam.Library.Common.Entities.csproj", "{2B32BF58-B84A-4E36-A720-9123E81D3B13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BLL", "BLL", "{3E5175F5-333E-4B1D-864F-F73DD548F509}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{53F09DE8-5FA7-4BB0-8BAB-1A31E7C7254F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Bll.Contracts", "Epam.Library.Bll.Contracts\Epam.Library.Bll.Contracts.csproj", "{C0E5C2AC-94CD-43EE-8F7C-6A194DC444FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Dal.Contracts", "Epam.Library.Dal.Contracts\Epam.Library.Dal.Contracts.csproj", "{20B2F9DB-EC00-4046-90C7-674952191B23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC214DB6-A8FB-4F31-93F9-6627B5BD7451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC214DB6-A8FB-4F31-93F9-6627B5BD7451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC214DB6-A8FB-4F31-93F9-6627B5BD7451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC214DB6-A8FB-4F31-93F9-6627B5BD7451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B32BF58-B84A-4E36-A720-9123E81D3B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B32BF58-B84A-4E36-A720-9123E81D3B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B32BF58-B84A-4E36-A720-9123E81D3B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B32BF58-B84A-4E36-A720-9123E81D3B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0E5C2AC-94CD-43EE-8F7C-6A194DC444FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0E5C2AC-94CD-43EE-8F7C-6A194DC444FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0E5C2AC-94CD-43EE-8F7C-6A194DC444FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0E5C2AC-94CD-43EE-8F7C-6A194DC444FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20B2F9DB-EC00-4046-90C7-674952191B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20B2F9DB-EC00-4046-90C7-674952191B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20B2F9DB-EC00-4046-90C7-674952191B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20B2F9DB-EC00-4046-90C7-674952191B23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FC214DB6-A8FB-4F31-93F9-6627B5BD7451} = {13F0FA62-A488-4C7D-BA02-73A6ED9B93B3}
+		{2B32BF58-B84A-4E36-A720-9123E81D3B13} = {CC62704A-BA33-43F2-BC9E-38F9EB697B6C}
+		{C0E5C2AC-94CD-43EE-8F7C-6A194DC444FF} = {3E5175F5-333E-4B1D-864F-F73DD548F509}
+		{20B2F9DB-EC00-4046-90C7-674952191B23} = {53F09DE8-5FA7-4BB0-8BAB-1A31E7C7254F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97F975EB-63A0-4C5D-B89F-4626C9954327}
+	EndGlobalSection
+EndGlobal
