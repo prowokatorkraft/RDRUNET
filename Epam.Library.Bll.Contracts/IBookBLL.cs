@@ -6,7 +6,7 @@ using Epam.Library.Common.Entities.AutorsElement.Book;
 
 namespace Epam.Library.Bll.Contracts
 {
-    public interface IBookBLL
+    public interface IBookBll
     {
         int AddBook(AbstractBook book);
 

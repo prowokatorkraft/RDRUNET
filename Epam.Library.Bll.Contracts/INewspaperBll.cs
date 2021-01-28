@@ -5,7 +5,7 @@ using Epam.Library.Common.Entities.Newspaper;
 
 namespace Epam.Library.Bll.Contracts
 {
-    public interface INewspaper
+    public interface INewspaperBll
     {
         int AddNewspaper(AbstractNewspaper newspaper);
 

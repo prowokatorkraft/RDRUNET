@@ -4,7 +4,7 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AutorsElement;
 using Epam.Library.Common.Entities.AutorsElement.Patent;
 
-namespace Epam.Library.DaL.Contracts
+namespace Epam.Library.Dal.Contracts
 {
     public interface IPatentDao
     {
