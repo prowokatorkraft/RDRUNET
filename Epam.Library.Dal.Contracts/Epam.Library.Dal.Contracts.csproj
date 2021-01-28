@@ -41,7 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBookDao.cs" />
+    <Compile Include="ICatalogueDao.cs" />
+    <Compile Include="INewspaperDao.cs" />
+    <Compile Include="IPatentDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Epam.Common.Entities\Epam.Library.Common.Entities.csproj">
+      <Project>{2b32bf58-b84a-4e36-a720-9123e81d3b13}</Project>
+      <Name>Epam.Library.Common.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

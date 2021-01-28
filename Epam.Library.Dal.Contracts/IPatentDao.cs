@@ -4,9 +4,9 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AutorsElement;
 using Epam.Library.Common.Entities.AutorsElement.Patent;
 
-namespace Epam.Library.Bll.Contracts
+namespace Epam.Library.DaL.Contracts
 {
-    public interface IPatentBll
+    public interface IPatentDao
     {
         int AddPatent(AbstractPatent patent);
 

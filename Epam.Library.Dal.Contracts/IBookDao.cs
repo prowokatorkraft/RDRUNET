@@ -4,9 +4,9 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AutorsElement;
 using Epam.Library.Common.Entities.AutorsElement.Book;
 
-namespace Epam.Library.Bll.Contracts
+namespace Epam.Library.Dal.Contracts
 {
-    public interface IBookBLL
+    public interface IBookDao
     {
         int AddBook(AbstractBook book);
 

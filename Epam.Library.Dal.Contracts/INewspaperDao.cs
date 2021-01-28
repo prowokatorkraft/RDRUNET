@@ -3,9 +3,9 @@ using System.Linq;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
 
-namespace Epam.Library.Bll.Contracts
+namespace Epam.Library.Dal.Contracts
 {
-    public interface INewspaper
+    public interface INewspaperDao
     {
         int AddNewspaper(AbstractNewspaper newspaper);
 

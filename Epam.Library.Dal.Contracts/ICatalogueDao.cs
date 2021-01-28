@@ -2,9 +2,9 @@
 using Epam.Library.Common.Entities.AutorsElement;
 using System.Collections.Generic;
 
-namespace Epam.Library.Bll.Contracts
+namespace Epam.Library.Dal.Contracts
 {
-    public interface ICatalogueBll
+    public interface ICatalogueDao
     {
         IEnumerable<AbstractElement> GetAllElements();
 
