@@ -7,16 +7,12 @@ namespace Epam.Library.Dal.Contracts
 {
     public interface INewspaperDao
     {
-        int AddNewspaper(AbstractNewspaper newspaper);
+        void AddNewspaper(AbstractNewspaper newspaper);
 
-        int RemoveNewspaper(AbstractNewspaper newspaper);
+        void RemoveNewspaper(AbstractNewspaper newspaper);
 
-        IEnumerable<AbstractNewspaper> GetAllNewspapers();
-
-        IEnumerable<AbstractNewspaper> GetAllNewspapers(SortOptions options);
+        IEnumerable<AbstractNewspaper> SearchNewspapers(SortOptions sortOptions, BookSearchOptions searchOptions, string search);
 
         ILookup<int, AbstractNewspaper> GetAllNewspaperGroupsByPublishYear();
-
-        IEnumerable<AbstractNewspaper> GetNewspapersByName(string name);
     }
 }

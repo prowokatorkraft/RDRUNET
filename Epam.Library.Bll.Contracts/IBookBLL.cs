@@ -1,27 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Epam.Library.Common.Entities;
+﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AutorsElement;
 using Epam.Library.Common.Entities.AutorsElement.Book;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Epam.Library.Bll.Contracts
 {
     public interface IBookBll
     {
-        int AddBook(AbstractBook book);
+        void AddBook(AbstractBook book);
 
-        int RemoveBook(AbstractBook book);
+        void RemoveBook(AbstractBook book);
 
-        IEnumerable<AbstractBook> GetAllBooks();
-
-        IEnumerable<AbstractBook> GetAllBooks(SortOptions options);
+        IEnumerable<AbstractBook> GetAllBooks(SortOptions options, BookSearchOptions searchOptions, string search);
 
         ILookup<int, AbstractBook> GetAllBookGroupsByPublishYear();
-
-        IEnumerable<AbstractBook> GetBooksByName(string name);
-
-        IEnumerable<AbstractBook> GetBooksByPublishingHouse(string publishingHouse);
-
-        IEnumerable<AbstractBook> GetBooksByAutors(Autor[] autors);
     }
 }

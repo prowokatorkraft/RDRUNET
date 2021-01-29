@@ -8,20 +8,12 @@ namespace Epam.Library.Dal.Contracts
 {
     public interface IBookDao
     {
-        int AddBook(AbstractBook book);
+        void AddBook(AbstractBook book);
 
-        int RemoveBook(AbstractBook book);
+        void RemoveBook(AbstractBook book);
 
-        IEnumerable<AbstractBook> GetAllBooks();
-
-        IEnumerable<AbstractBook> GetAllBooks(SortOptions options);
+        IEnumerable<AbstractBook> GetAllBooks(SortOptions options, BookSearchOptions searchOptions, string search);
 
         ILookup<int, AbstractBook> GetAllBookGroupsByPublishYear();
-
-        IEnumerable<AbstractBook> GetBooksByName(string name);
-
-        IEnumerable<AbstractBook> GetBooksByPublishingHouse(string publishingHouse);
-
-        IEnumerable<AbstractBook> GetBooksByAutors(Autor[] autors);
     }
 }

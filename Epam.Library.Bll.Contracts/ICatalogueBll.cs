@@ -6,12 +6,6 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface ICatalogueBll
     {
-        IEnumerable<AbstractElement> GetAllElements();
-
-        IEnumerable<AbstractElement> GetAllElements(SortOptions options);
-
-        IEnumerable<AbstractElement> GetElementsByName(string name);
-
-        IEnumerable<AbstractAutorsElement> GetElementsByAutors(Autor[] autors);
+        IEnumerable<LibraryAbstractElement> GetAllElements(SortOptions options, CatalogueSearchOptions searchOptions, string search);
     }
 }

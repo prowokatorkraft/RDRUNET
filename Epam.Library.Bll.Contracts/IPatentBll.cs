@@ -1,25 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Epam.Library.Common.Entities;
+﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AutorsElement;
 using Epam.Library.Common.Entities.AutorsElement.Patent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Epam.Library.Bll.Contracts
 {
     public interface IPatentBll
     {
-        int AddPatent(AbstractPatent patent);
+        void AddPatent(AbstractPatent patent);
 
-        int RemovePatent(AbstractPatent patent);
+        void RemovePatent(AbstractPatent patent);
 
-        IEnumerable<AbstractPatent> GetAllPatents();
-
-        IEnumerable<AbstractPatent> GetAllPatents(SortOptions options);
+        IEnumerable<AbstractPatent> SearchPatents(SortOptions options, PatentSearchOptions searchOptions, string search);
 
         ILookup<int, AbstractPatent> GetAllPatentGroupsByPublishYear();
-
-        IEnumerable<AbstractPatent> GetPatentsByName(string name);
-
-        IEnumerable<AbstractPatent> GetPatentsByAutors(Autor[] autors);
     }
 }
