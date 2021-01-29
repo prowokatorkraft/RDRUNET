@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractElement.cs" />
+    <Compile Include="LibraryAbstractElement.cs" />
     <Compile Include="AutorsElement\AbstractAutorsElement.cs" />
-    <Compile Include="AutorsElement\Autor.cs" />
+    <Compile Include="AutorsElement\Author.cs" />
     <Compile Include="AutorsElement\Book\AbstractBook.cs" />
     <Compile Include="AutorsElement\Book\Book.cs" />
     <Compile Include="AutorsElement\Patent\AbstractPatent.cs" />

@@ -11,7 +11,7 @@ namespace Epam.Library.Common.Entities.AutorsElement.Patent
 
         public override string Annotation { get; set; }
 
-        public override Autor[] Autors { get; set; }
+        public override Author[] Authors { get; set; }
 
         public override string Country { get; set; }
 
@@ -21,10 +21,22 @@ namespace Epam.Library.Common.Entities.AutorsElement.Patent
 
         public override DateTime DateOfPublication { get; set; }
 
-        public Patent(string name, int numberOfPages, string city, int registrationNumber, DateTime dateOfPublication)
-            : base(name, numberOfPages, city, registrationNumber, dateOfPublication)
+        public Patent()
         {
-            
+
+        }
+
+        public Patent(string name, int numberOfPages, string annotation, Author[] authors, 
+            string country, int registrationNumber, DateTime applicationDate, DateTime dateOfPublication)
+        {
+            Name = name;
+            NumberOfPages = numberOfPages;
+            Annotation = annotation;
+            Authors = authors;
+            Country = country;
+            RegistrationNumber = registrationNumber;
+            ApplicationDate = applicationDate;
+            DateOfPublication = dateOfPublication;
         }
 
         public override bool Equals(object obj)

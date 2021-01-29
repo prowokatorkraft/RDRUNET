@@ -11,7 +11,7 @@ namespace Epam.Library.Common.Entities.Newspaper
 
         public override string Annotation { get; set; }
 
-        public override string PublishingHouse { get; set; }
+        public override string Publisher { get; set; }
 
         public override string PublishingCity { get; set; }
 
@@ -19,21 +19,34 @@ namespace Epam.Library.Common.Entities.Newspaper
 
         public override string Issn { get; set; }
 
-    public override string Number { get; set; }
-        
+        public override string Number { get; set; }
+
         public override DateTime Date { get; set; }
-        
-        public Newspaper(string name, int numberOfPages, string publishingHouse, string publishingCity, int publishingYear, DateTime date)
-            : base(name, numberOfPages, publishingHouse, publishingCity, publishingYear, date)
+
+        public Newspaper() 
         {
-            
+        
+        }
+
+        public Newspaper(string name, int numberOfPages, string annotation, string publisher, 
+            string publishingCity, int publishingYear, string issn, string number, DateTime date)
+        {
+            Name = name;
+            NumberOfPages = numberOfPages;
+            Annotation = annotation;
+            Publisher = publisher;
+            PublishingCity = publishingCity;
+            PublishingYear = publishingYear;
+            Issn = issn;
+            Number = number;
+            Date = date;
         }
 
         public override bool Equals(object obj)
         {
             return obj is Newspaper newspaper &&
                    Name == newspaper.Name &&
-                   EqualityComparer<string>.Default.Equals(PublishingHouse, newspaper.PublishingHouse) &&
+                   EqualityComparer<string>.Default.Equals(Publisher, newspaper.Publisher) &&
                    Date == newspaper.Date;
         }
 
@@ -41,7 +54,7 @@ namespace Epam.Library.Common.Entities.Newspaper
         {
             int hashCode = 923829507;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PublishingHouse);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Publisher);
             hashCode = hashCode * -1521134295 + Date.GetHashCode();
             return hashCode;
         }

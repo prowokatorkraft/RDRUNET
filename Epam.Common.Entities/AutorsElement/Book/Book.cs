@@ -10,9 +10,9 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
 
         public override string Annotation { get; set; }
 
-        public override Autor[] Autors { get; set; }
+        public override Author[] Authors { get; set; }
 
-        public override string PublishingHouse { get; set; }
+        public override string Publisher { get; set; }
 
         public override string PublishingCity { get; set; }
 
@@ -20,10 +20,22 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
 
         public override string Isbn { get; set; }
 
-        public Book(string name, int numberOfPages, string publishingHouse, string publishingCity, int publishingYear)
-            : base(name, numberOfPages, publishingHouse, publishingCity, publishingYear)
+        public Book()
         {
 
+        }
+
+        public Book(string name, int numberOfPages, string annotation, Author[] authors, 
+            string publisher, string publishingCity, int publishingYear, string isbn)
+        {
+            Name = name;
+            NumberOfPages = numberOfPages;
+            Annotation = annotation;
+            Authors = authors;
+            Publisher = publisher;
+            PublishingCity = publishingCity;
+            PublishingYear = publishingYear;
+            Isbn = isbn;
         }
 
         public override bool Equals(object obj)
@@ -39,8 +51,8 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
             {
                 isEquals = obj is Book book &&
                             Name == book.Name &&
-                            EqualityComparer<Autor[]>.Default.Equals(Autors, book.Autors) &&
-                            EqualityComparer<string>.Default.Equals(PublishingHouse, book.PublishingHouse);
+                            EqualityComparer<Author[]>.Default.Equals(Authors, book.Authors) &&
+                            EqualityComparer<string>.Default.Equals(Publisher, book.Publisher);
             }
 
             return isEquals;
@@ -57,7 +69,7 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
             else
             {
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-                hashCode = hashCode * -1521134295 + EqualityComparer<Autor[]>.Default.GetHashCode(Autors);
+                hashCode = hashCode * -1521134295 + EqualityComparer<Author[]>.Default.GetHashCode(Authors);
                 hashCode = hashCode * -1521134295 + EqualityComparer<int>.Default.GetHashCode(PublishingYear);
             }
 

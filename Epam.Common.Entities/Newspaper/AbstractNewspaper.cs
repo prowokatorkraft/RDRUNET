@@ -2,9 +2,9 @@
 
 namespace Epam.Library.Common.Entities.Newspaper
 {
-    public abstract class AbstractNewspaper : AbstractElement
+    public abstract class AbstractNewspaper : LibraryAbstractElement
     {
-        public abstract string PublishingHouse { get; set; }
+        public abstract string Publisher { get; set; }
         //{
         //    get => _publishingHouse;
 
@@ -85,15 +85,6 @@ namespace Epam.Library.Common.Entities.Newspaper
         public abstract string Number { get; set; }
 
         public abstract DateTime Date { get; set; }
-
-        protected AbstractNewspaper(string name, int numberOfPages, string publishingHouse, string publishingCity, int publishingYear, DateTime date)
-            : base(name, numberOfPages)
-        {
-            PublishingHouse = publishingHouse;
-            PublishingCity = publishingCity;
-            PublishingYear = publishingYear;
-            Date = date;
-        }
 
         //private void ToUpperFirstSimbol(params string[] str)
         //{
