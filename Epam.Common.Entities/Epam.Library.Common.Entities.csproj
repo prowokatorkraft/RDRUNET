@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\AddException.cs" />
+    <Compile Include="Exceptions\GetException.cs" />
+    <Compile Include="Exceptions\RemoveException.cs" />
     <Compile Include="LibraryAbstractElement.cs" />
     <Compile Include="AutorsElement\AbstractAutorsElement.cs" />
     <Compile Include="AutorsElement\Author.cs" />

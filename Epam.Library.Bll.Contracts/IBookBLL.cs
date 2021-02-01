@@ -12,8 +12,8 @@ namespace Epam.Library.Bll.Contracts
 
         void RemoveBook(AbstractBook book);
 
-        IEnumerable<AbstractBook> GetAllBooks(SortOptions options, BookSearchOptions searchOptions, string search);
+        IEnumerable<AbstractBook> SearchBooks(SortOptions options, BookSearchOptions searchOptions, string search);
 
-        ILookup<int, AbstractBook> GetAllBookGroupsByPublishYear();
+        IEnumerable<IGrouping<int, AbstractBook>> GetAllBookGroupsByPublishYear();
     }
 }

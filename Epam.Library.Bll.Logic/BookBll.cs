@@ -1,4 +1,5 @@
-﻿using Epam.Library.Bll.Contracts;
+﻿using Epam.Common.Entities.Exceptions;
+using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AutorsElement;
 using Epam.Library.Common.Entities.AutorsElement.Book;
@@ -19,11 +20,6 @@ namespace Epam.Library.Bll.Logic
         protected readonly Regex PublishingCityPattern = new Regex("^[A-Za-z]+(-| ?)[A-Za-z]+(-| ?)[A-Za-z]+$|^[А-ЯЁа-яё]+(-| ?)[А-ЯЁа-яё]+(-| ?)[А-ЯЁа-яё]+$", RegexOptions.Singleline);
         protected readonly Regex IsbnPattern = new Regex("^ISBN ([0-9]{1,5})-([0-9]{1,7})-([0-9]{1,7})-([0-9Xx])$", RegexOptions.Singleline);
 
-        //public BookBll()
-        //{
-        //    /// !!!???
-        //}
-
         public BookBll(IBookDao bookDao)
         {
             _bookDao = bookDao;
@@ -31,95 +27,113 @@ namespace Epam.Library.Bll.Logic
 
         public void AddBook(AbstractBook book)
         {
-            if (book is null)
-            {
-                throw new NullReferenceException("book is null!");
-            }
-
-            if (book.Name is null)
-            {
-                throw new NullReferenceException("Name is null!");
-            }
-            else if (book.Name.Length > 300)
-            {
-                book.Name = book.Name.Substring(0, 300);
-            }
-
-            if (book.NumberOfPages < 0)
-            {
-                throw new ArgumentException("The number of pages cannot be negative!");
-            }
-
-            if (book.Annotation != null && book.Annotation.Length > 2000)
-            {
-                book.Annotation = book.Annotation.Substring(0, 2000);
-            }
-
-            ValidateAndCorrectAutors(book.Authors);
-
-            if (book.Publisher is null)
-            {
-                throw new NullReferenceException("Publisher is null!");
-            }
-            else if (book.Publisher.Length > 300)
-            {
-                book.Publisher = book.Publisher.Substring(0, 300);
-            }
-
-            book.PublishingCity = ValidateAndCorrectPublishingCity(book.PublishingCity);
-
-            if (book.PublishingYear < 1400 || book.PublishingYear > DateTime.Now.Year)
-            {
-                throw new ArgumentOutOfRangeException("Incorrect PublishingYear!");
-            }
-
-            if (book.Isbn != null)
-            {
-                if (IsbnPattern.IsMatch(book.Isbn))
-                {
-                    var groups = IsbnPattern.Match(book.Isbn).Groups;
-
-                    int countDigit = 0;
-
-                    for (int i = 1; i < groups.Count; i++)
-                    {
-                        countDigit += groups[i].Length;
-                    }
-
-                    if (countDigit != 10)
-                    {
-                        throw new ArgumentOutOfRangeException("Isbn should only be 10 digits!");
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect Isbn! Exmble \"ISBN 0 - 00 - 000000 - 0\"");
-                }
-            }
-
             try
             {
+                if (book is null)
+                {
+                    throw new ArgumentNullException("book is null!");
+                }
+
+                if (book.Name is null)
+                {
+                    throw new NullReferenceException("Name is null!");
+                }
+                else if (book.Name.Length > 300)
+                {
+                    book.Name = book.Name.Substring(0, 300);
+                }
+
+                if (book.NumberOfPages < 0)
+                {
+                    throw new ArgumentException("The number of pages cannot be negative!");
+                }
+
+                if (book.Annotation != null && book.Annotation.Length > 2000)
+                {
+                    book.Annotation = book.Annotation.Substring(0, 2000);
+                }
+
+                ValidateAndCorrectAutors(book.Authors);
+
+                if (book.Publisher is null)
+                {
+                    throw new NullReferenceException("Publisher is null!");
+                }
+                else if (book.Publisher.Length > 300)
+                {
+                    book.Publisher = book.Publisher.Substring(0, 300);
+                }
+
+                book.PublishingCity = ValidateAndCorrectPublishingCity(book.PublishingCity);
+
+                if (book.PublishingYear < 1400 || book.PublishingYear > DateTime.Now.Year)
+                {
+                    throw new ArgumentOutOfRangeException("Incorrect PublishingYear!");
+                }
+
+                if (book.Isbn != null)
+                {
+                    if (IsbnPattern.IsMatch(book.Isbn))
+                    {
+                        var groups = IsbnPattern.Match(book.Isbn).Groups;
+
+                        int countDigit = 0;
+
+                        for (int i = 1; i < groups.Count; i++)
+                        {
+                            countDigit += groups[i].Length;
+                        }
+
+                        if (countDigit != 10)
+                        {
+                            throw new ArgumentOutOfRangeException("Isbn should only be 10 digits!");
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Incorrect Isbn! Exmble \"ISBN 0 - 00 - 000000 - 0\"");
+                    }
+                }
+
                 _bookDao.AddBook(book);
             }
-            catch (Exception) ///// TODO: Write exception entities
+            catch (Exception ex)
             {
-                throw new Exception(); /////
+                throw new AddException("Error adding item!", ex);
             }
         }
 
         public void RemoveBook(AbstractBook book)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (book is null)
+                {
+                    throw new ArgumentNullException("Book is null!");
+                }
+
+                _bookDao.RemoveBook(book);
+            }
+            catch (Exception ex)
+            {
+                throw new RemoveException("Error removing element!", ex);
+            }
         }
 
-        public IEnumerable<AbstractBook> GetAllBooks(SortOptions options, BookSearchOptions searchOptions, string search)
+        public IEnumerable<AbstractBook> SearchBooks(SortOptions options, BookSearchOptions searchOptions, string search)
         {
-            throw new NotImplementedException();
+            foreach (var item in _bookDao.SearchBooks(options, searchOptions, search))
+            {
+                yield return item;
+            }
         }
 
-        public ILookup<int, AbstractBook> GetAllBookGroupsByPublishYear()
+        public IEnumerable<IGrouping<int, AbstractBook>> GetAllBookGroupsByPublishYear()
         {
-            throw new NotImplementedException();
+            foreach (var item in _bookDao.GetAllBookGroupsByPublishYear())
+            {
+                yield return item;
+            }
         }
 
         private void ToUpperFirstSimbols(string[] strs)

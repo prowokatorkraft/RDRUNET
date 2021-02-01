@@ -12,7 +12,7 @@ namespace Epam.Library.Dal.Contracts
 
         void RemoveBook(AbstractBook book);
 
-        IEnumerable<AbstractBook> GetAllBooks(SortOptions options, BookSearchOptions searchOptions, string search);
+        IEnumerable<AbstractBook> SearchBooks(SortOptions options, BookSearchOptions searchOptions, string search);
 
         ILookup<int, AbstractBook> GetAllBookGroupsByPublishYear();
     }
