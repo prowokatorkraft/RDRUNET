@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Epam.Common.Entities.Exceptions
+namespace Epam.Library.Common.Entities.Exceptions
 {
     public class GetException : Exception
     {
