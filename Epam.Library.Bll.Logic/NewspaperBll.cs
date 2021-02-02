@@ -2,7 +2,7 @@
 using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AutorsElement;
-using Epam.Library.Common.Entities.AutorsElement.Book;
+using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -11,91 +11,73 @@ using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Logic
 {
-    public class BookBll : IBookBll
+    public class NewspaperBll : INewspaperBll
     {
-        protected readonly IBookDao _bookDao;
+        protected readonly INewspaperDao _newspaperDao;
 
         protected readonly Regex FirstNamePattern = new Regex("^[A-Za-z]+-?[A-Za-z]+$|^[А-Яа-я]+-?[А-Яа-я]+$", RegexOptions.Singleline);
         protected readonly Regex LastNamePattern = new Regex("^[A-Za-z]+(-| |'?)[A-Za-z]+$|^[А-ЯЁа-яё]+(-| |'?)[А-ЯЁа-яё]+$", RegexOptions.Singleline);
         protected readonly Regex PublishingCityPattern = new Regex("^[A-Za-z]+(-| ?)[A-Za-z]+(-| ?)[A-Za-z]+$|^[А-ЯЁа-яё]+(-| ?)[А-ЯЁа-яё]+(-| ?)[А-ЯЁа-яё]+$", RegexOptions.Singleline);
-        protected readonly Regex IsbnPattern = new Regex("^ISBN ([0-9]{1,5})-([0-9]{1,7})-([0-9]{1,7})-([0-9Xx])$", RegexOptions.Singleline);
+        protected readonly Regex IssnPattern = new Regex("^ISSN [0-9]{4}-[0-9]{4}$", RegexOptions.Singleline);
 
-        public BookBll(IBookDao bookDao)
+        public NewspaperBll(INewspaperDao newspaperDao)
         {
-            _bookDao = bookDao;
+            _newspaperDao = newspaperDao;
         }
 
-        public void AddBook(AbstractBook book)
+        public void AddNewspaper(AbstractNewspaper newspaper)
         {
             try
             {
-                if (book is null)
+                if (newspaper is null)
                 {
-                    throw new ArgumentNullException((nameof(book) + " is null!"));
+                    throw new ArgumentNullException((nameof(newspaper) + " is null!"));
                 }
 
-                if (book.Name is null)
+                if (newspaper.Name is null)
                 {
                     throw new NullReferenceException("Name is null!");
                 }
-                else if (book.Name.Length > 300)
+                else if (newspaper.Name.Length > 300)
                 {
-                    book.Name = book.Name.Substring(0, 300);
+                    newspaper.Name = newspaper.Name.Substring(0, 300);
                 }
 
-                if (book.NumberOfPages < 0)
+                if (newspaper.NumberOfPages < 0)
                 {
                     throw new ArgumentException("The number of pages cannot be negative!");
                 }
 
-                if (book.Annotation != null && book.Annotation.Length > 2000)
+                if (newspaper.Annotation != null && newspaper.Annotation.Length > 2000)
                 {
-                    book.Annotation = book.Annotation.Substring(0, 2000);
+                    newspaper.Annotation = newspaper.Annotation.Substring(0, 2000);
                 }
 
-                ValidateAndCorrectAutors(book.Authors);
-
-                if (book.Publisher is null)
+                if (newspaper.Publisher is null)
                 {
                     throw new NullReferenceException("Publisher is null!");
                 }
-                else if (book.Publisher.Length > 300)
+                else if (newspaper.Publisher.Length > 300)
                 {
-                    book.Publisher = book.Publisher.Substring(0, 300);
+                    newspaper.Publisher = newspaper.Publisher.Substring(0, 300);
                 }
 
-                book.PublishingCity = ValidateAndCorrectPublishingCity(book.PublishingCity);
+                newspaper.PublishingCity = ValidateAndCorrectPublishingCity(newspaper.PublishingCity);
 
-                if (book.PublishingYear < 1400 || book.PublishingYear > DateTime.Now.Year)
+                if (newspaper.PublishingYear < 1400 || newspaper.PublishingYear > DateTime.Now.Year)
                 {
                     throw new ArgumentOutOfRangeException("Incorrect PublishingYear!");
                 }
 
-                if (book.Isbn != null)
+                if (newspaper.Issn != null)
                 {
-                    if (IsbnPattern.IsMatch(book.Isbn))
+                    if (!IssnPattern.IsMatch(newspaper.Issn))
                     {
-                        var groups = IsbnPattern.Match(book.Isbn).Groups;
-
-                        int countDigit = 0;
-
-                        for (int i = 1; i < groups.Count; i++)
-                        {
-                            countDigit += groups[i].Length;
-                        }
-
-                        if (countDigit != 10)
-                        {
-                            throw new ArgumentOutOfRangeException("Isbn should only be 10 digits!");
-                        }
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Incorrect Isbn! Exmble \"ISBN 0 - 00 - 000000 - 0\"");
+                        throw new ArgumentException("Incorrect Issn! Examble \'ISSN 0000-0000\'");
                     }
                 }
 
-                _bookDao.AddBook(book);
+                _newspaperDao.AddNewspaper(newspaper);
             }
             catch (Exception ex)
             {
@@ -103,16 +85,16 @@ namespace Epam.Library.Bll.Logic
             }
         }
 
-        public void RemoveBook(AbstractBook book)
+        public void RemoveNewspaper(AbstractNewspaper newspaper)
         {
             try
             {
-                if (book is null)
+                if (newspaper is null)
                 {
-                    throw new ArgumentNullException("Book is null!");
+                    throw new ArgumentNullException("Newspaper is null!");
                 }
 
-                _bookDao.RemoveBook(book);
+                _newspaperDao.RemoveNewspaper(newspaper);
             }
             catch (Exception ex)
             {
@@ -120,17 +102,17 @@ namespace Epam.Library.Bll.Logic
             }
         }
 
-        public IEnumerable<AbstractBook> SearchBooks(SortOptions sortOptions, BookSearchOptions searchOptions, string search)
+        public IEnumerable<AbstractNewspaper> SearchNewspapers(SortOptions sortOptions, BookSearchOptions searchOptions, string search)
         {
-            foreach (var item in _bookDao.SearchBooks(sortOptions, searchOptions, search))
+            foreach (var item in _newspaperDao.SearchNewspapers(sortOptions, searchOptions, search))
             {
                 yield return item;
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractBook>> GetAllBookGroupsByPublishYear()
+        public IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllNewspaperGroupsByPublishYear()
         {
-            foreach (var item in _bookDao.GetAllBookGroupsByPublishYear())
+            foreach (var item in _newspaperDao.GetAllNewspaperGroupsByPublishYear())
             {
                 yield return item;
             }
@@ -177,92 +159,6 @@ namespace Epam.Library.Bll.Logic
             else
             {
                 throw new ArgumentOutOfRangeException("The argument does not match length 3!");
-            }
-        }
-
-        private void ValidateAndCorrectAutors(Author[] autors)
-        {
-            if (autors != null)
-            {
-                foreach (var autor in autors)
-                {
-                    if (autor != null)
-                    {
-                        if (autor.FirstName != null && FirstNamePattern.IsMatch(autor.FirstName))
-                        {
-                            string[] str = autor.FirstName.Split('-');
-
-                            ToUpperFirstSimbols(str);
-
-                            string newValue = string.Join("-", str);
-
-                            autor.FirstName = newValue.Length > 50
-                                    ? newValue.Substring(0, 50)
-                                    : newValue;
-                        }
-                        else
-                        {
-                            throw new ArgumentException("Icorrect FirstName!");
-                        }
-
-                        if (autor.LastName != null && LastNamePattern.IsMatch(autor.LastName))
-                        {
-                            string[] str = autor.LastName.Split('-', '\'', ' ');
-
-                            string newValue = "";
-
-                            if (str.Length > 1)
-                            {
-                                if (Regex.IsMatch(autor.LastName, "-"))
-                                {
-                                    ToUpperFirstSimbols(str);
-
-                                    newValue = string.Join("-", str);
-                                }
-                                else if (Regex.IsMatch(autor.LastName, "'"))
-                                {
-                                    ToUpperFirstSimbols(str);
-
-                                    newValue = string.Join("'", str);
-                                }
-                                else if (Regex.IsMatch(autor.LastName, " "))
-                                {
-                                    for (int i = 0; i < str.Length; i++)
-                                    {
-                                        if (str[i].Length > 1)
-                                        {
-                                            str[i] = i == 0
-                                                ? str[i].ToLower()
-                                                : char.ToUpper(str[i].First()) + str[i].Substring(1).ToLower();
-                                        }
-                                        else
-                                        {
-                                            str[i] = i == 0
-                                                ? str[i].ToLower()
-                                                : str[i].ToUpper();
-                                        }
-                                    }
-
-                                    newValue = string.Join(" ", str);
-                                }
-                            }
-                            else
-                            {
-                                ToUpperFirstSimbols(str);
-
-                                newValue = str.First();
-                            }
-
-                            autor.LastName = newValue.Length > 200
-                                    ? newValue.Substring(0, newValue.Length >= 200 ? 200 : newValue.Length)
-                                    : newValue;
-                        }
-                        else
-                        {
-                            throw new ArgumentException("Icorrect LastName!");
-                        }
-                    }
-                }
             }
         }
 

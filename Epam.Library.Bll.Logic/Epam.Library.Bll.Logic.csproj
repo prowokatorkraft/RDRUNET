@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BookBll.cs" />
+    <Compile Include="CatalogueBll.cs" />
+    <Compile Include="NewspaperBll.cs" />
     <Compile Include="PatentBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
