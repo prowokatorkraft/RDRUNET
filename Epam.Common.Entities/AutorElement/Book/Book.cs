@@ -4,6 +4,8 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
 {
     public class Book : AbstractBook
     {
+        public override int? Id { get; set; }
+
         public override string Name { get; set; }
 
         public override int NumberOfPages { get; set; }
@@ -25,9 +27,10 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
 
         }
 
-        public Book(string name, int numberOfPages, string annotation, int[] authorIDs, 
+        public Book(int? id, string name, int numberOfPages, string annotation, int[] authorIDs, 
             string publisher, string publishingCity, int publishingYear, string isbn)
         {
+            Id = Id;
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;

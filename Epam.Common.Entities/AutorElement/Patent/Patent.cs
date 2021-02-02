@@ -5,6 +5,8 @@ namespace Epam.Library.Common.Entities.AuthorElement.Patent
 {
     public class Patent : AbstractPatent
     {
+        public override int? Id { get; set; }
+
         public override string Name { get; set; }
 
         public override int NumberOfPages { get; set; }
@@ -26,9 +28,10 @@ namespace Epam.Library.Common.Entities.AuthorElement.Patent
 
         }
 
-        public Patent(string name, int numberOfPages, string annotation, int[] authorIDs, 
+        public Patent(int? id, string name, int numberOfPages, string annotation, int[] authorIDs, 
             string country, string registrationNumber, DateTime? applicationDate, DateTime dateOfPublication)
         {
+            Id = id;
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;

@@ -5,6 +5,8 @@ namespace Epam.Library.Common.Entities.Newspaper
 {
     public class Newspaper : AbstractNewspaper
     {
+        public override int? Id { get; set; }
+
         public override string Name { get; set; }
 
         public override int NumberOfPages { get; set; }
@@ -28,9 +30,10 @@ namespace Epam.Library.Common.Entities.Newspaper
         
         }
 
-        public Newspaper(string name, int numberOfPages, string annotation, string publisher, 
+        public Newspaper(int? id, string name, int numberOfPages, string annotation, string publisher, 
             string publishingCity, int publishingYear, string issn, string number, DateTime date)
         {
+            Id = id;
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
