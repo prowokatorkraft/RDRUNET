@@ -31,7 +31,7 @@ namespace Epam.Library.Bll.Logic
             {
                 if (book is null)
                 {
-                    throw new ArgumentNullException("book is null!");
+                    throw new ArgumentNullException((nameof(book) + " is null!"));
                 }
 
                 if (book.Name is null)

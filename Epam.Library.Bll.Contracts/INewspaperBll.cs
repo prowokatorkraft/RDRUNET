@@ -13,6 +13,6 @@ namespace Epam.Library.Bll.Contracts
 
         IEnumerable<AbstractNewspaper> SearchNewspapers(SortOptions sortOptions, BookSearchOptions searchOptions, string search);
 
-        ILookup<int, AbstractNewspaper> GetAllNewspaperGroupsByPublishYear();
+        IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllNewspaperGroupsByPublishYear();
     }
 }

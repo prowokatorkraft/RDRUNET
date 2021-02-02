@@ -14,6 +14,6 @@ namespace Epam.Library.Bll.Contracts
 
         IEnumerable<AbstractPatent> SearchPatents(SortOptions options, PatentSearchOptions searchOptions, string search);
 
-        ILookup<int, AbstractPatent> GetAllPatentGroupsByPublishYear();
+        IEnumerable<IGrouping<int, AbstractPatent>> GetAllPatentGroupsByPublishYear();
     }
 }

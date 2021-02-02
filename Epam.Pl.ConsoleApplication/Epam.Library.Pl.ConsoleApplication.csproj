@@ -49,5 +49,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Epam.Common.Entities\Epam.Library.Common.Entities.csproj">
+      <Project>{2b32bf58-b84a-4e36-a720-9123e81d3b13}</Project>
+      <Name>Epam.Library.Common.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Bll.Contracts\Epam.Library.Bll.Contracts.csproj">
+      <Project>{c0e5c2ac-94cd-43ee-8f7c-6a194dc444ff}</Project>
+      <Name>Epam.Library.Bll.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Bll.Logic\Epam.Library.Bll.Logic.csproj">
+      <Project>{3a3930e4-abe0-461d-9c8b-824f85c33dc4}</Project>
+      <Name>Epam.Library.Bll.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Common.DependencyInjection\Epam.Library.Common.DependencyInjection.csproj">
+      <Project>{9a4418bc-55a0-4ceb-b760-d37d29a46075}</Project>
+      <Name>Epam.Library.Common.DependencyInjection</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

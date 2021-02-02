@@ -15,9 +15,9 @@ namespace Epam.Library.Common.Entities.AutorsElement.Patent
 
         public override string Country { get; set; }
 
-        public override int RegistrationNumber { get; set; }
+        public override string RegistrationNumber { get; set; }
 
-        public override DateTime ApplicationDate { get; set; }
+        public override DateTime? ApplicationDate { get; set; }
 
         public override DateTime DateOfPublication { get; set; }
 
@@ -27,7 +27,7 @@ namespace Epam.Library.Common.Entities.AutorsElement.Patent
         }
 
         public Patent(string name, int numberOfPages, string annotation, Author[] authors, 
-            string country, int registrationNumber, DateTime applicationDate, DateTime dateOfPublication)
+            string country, string registrationNumber, DateTime? applicationDate, DateTime dateOfPublication)
         {
             Name = name;
             NumberOfPages = numberOfPages;
