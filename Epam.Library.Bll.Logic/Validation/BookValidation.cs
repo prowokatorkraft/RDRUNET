@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Epam.Library.Bll.Logic.Validation
+namespace Epam.Library.Bll.Validation
 {
     public class BookValidation : IValidation<AbstractBook>
     {

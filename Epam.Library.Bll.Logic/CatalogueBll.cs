@@ -5,7 +5,7 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 
-namespace Epam.Library.Bll.Logic
+namespace Epam.Library.Bll
 {
     class CatalogueBll : ICatalogueBll
     {

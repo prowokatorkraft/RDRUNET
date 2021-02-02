@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Epam.Library.Bll.Logic
+namespace Epam.Library.Bll
 {
     public class BookBll : IBookBll
     {

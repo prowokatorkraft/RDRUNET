@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Dal.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Common.DependencyInjection", "Epam.Library.Common.DependencyInjection\Epam.Library.Common.DependencyInjection.csproj", "{9A4418BC-55A0-4CEB-B760-D37D29A46075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Bll.Logic", "Epam.Library.Bll.Logic\Epam.Library.Bll.Logic.csproj", "{3A3930E4-ABE0-461D-9C8B-824F85C33DC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Bll", "Epam.Library.Bll.Logic\Epam.Library.Bll.csproj", "{3A3930E4-ABE0-461D-9C8B-824F85C33DC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
