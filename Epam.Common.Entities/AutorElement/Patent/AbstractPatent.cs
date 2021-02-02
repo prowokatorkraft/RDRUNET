@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Epam.Library.Common.Entities.AutorsElement.Patent
+namespace Epam.Library.Common.Entities.AuthorElement.Patent
 {
     public abstract class AbstractPatent : AbstractAutorsElement
     {

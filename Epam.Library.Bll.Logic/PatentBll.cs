@@ -1,7 +1,7 @@
 ﻿using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AutorsElement.Patent;
+using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;

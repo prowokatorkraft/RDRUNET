@@ -1,4 +1,4 @@
-﻿namespace Epam.Library.Common.Entities.AutorsElement
+﻿namespace Epam.Library.Common.Entities.AuthorElement
 {
     public class Author
     {

@@ -1,6 +1,6 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AutorsElement;
-using Epam.Library.Common.Entities.AutorsElement.Book;
+using Epam.Library.Common.Entities.AuthorElement;
+using Epam.Library.Common.Entities.AuthorElement.Book;
 using System.Collections.Generic;
 using System.Linq;
 

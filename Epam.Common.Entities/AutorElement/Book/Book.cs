@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Epam.Library.Common.Entities.AutorsElement.Book
+namespace Epam.Library.Common.Entities.AuthorElement.Book
 {
     public class Book : AbstractBook
     {
@@ -10,7 +10,7 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
 
         public override string Annotation { get; set; }
 
-        public override Author[] Authors { get; set; }
+        public override int[] AuthorIDs { get; set; }
 
         public override string Publisher { get; set; }
 
@@ -25,13 +25,13 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
 
         }
 
-        public Book(string name, int numberOfPages, string annotation, Author[] authors, 
+        public Book(string name, int numberOfPages, string annotation, int[] authorIDs, 
             string publisher, string publishingCity, int publishingYear, string isbn)
         {
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
-            Authors = authors;
+            AuthorIDs = authorIDs;
             Publisher = publisher;
             PublishingCity = publishingCity;
             PublishingYear = publishingYear;
@@ -51,7 +51,7 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
             {
                 isEquals = obj is Book book &&
                             Name == book.Name &&
-                            EqualityComparer<Author[]>.Default.Equals(Authors, book.Authors) &&
+                            EqualityComparer<int[]>.Default.Equals(AuthorIDs, book.AuthorIDs) && /// TODO:
                             EqualityComparer<string>.Default.Equals(Publisher, book.Publisher);
             }
 
@@ -69,7 +69,7 @@ namespace Epam.Library.Common.Entities.AutorsElement.Book
             else
             {
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-                hashCode = hashCode * -1521134295 + EqualityComparer<Author[]>.Default.GetHashCode(Authors);
+                hashCode = hashCode * -1521134295 + EqualityComparer<int[]>.Default.GetHashCode(AuthorIDs); /// TODO:
                 hashCode = hashCode * -1521134295 + EqualityComparer<int>.Default.GetHashCode(PublishingYear);
             }
 

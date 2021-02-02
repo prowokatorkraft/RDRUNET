@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Epam.Library.Common.Entities.AutorsElement.Patent
+namespace Epam.Library.Common.Entities.AuthorElement.Patent
 {
     public class Patent : AbstractPatent
     {
@@ -11,7 +11,7 @@ namespace Epam.Library.Common.Entities.AutorsElement.Patent
 
         public override string Annotation { get; set; }
 
-        public override Author[] Authors { get; set; }
+        public override int[] AuthorIDs { get; set; }
 
         public override string Country { get; set; }
 
@@ -26,13 +26,13 @@ namespace Epam.Library.Common.Entities.AutorsElement.Patent
 
         }
 
-        public Patent(string name, int numberOfPages, string annotation, Author[] authors, 
+        public Patent(string name, int numberOfPages, string annotation, int[] authorIDs, 
             string country, string registrationNumber, DateTime? applicationDate, DateTime dateOfPublication)
         {
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
-            Authors = authors;
+            AuthorIDs = authorIDs;
             Country = country;
             RegistrationNumber = registrationNumber;
             ApplicationDate = applicationDate;

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AutorsElement;
-using Epam.Library.Common.Entities.AutorsElement.Patent;
+using Epam.Library.Common.Entities.AuthorElement;
+using Epam.Library.Common.Entities.AuthorElement.Patent;
 
 namespace Epam.Library.Dal.Contracts
 {

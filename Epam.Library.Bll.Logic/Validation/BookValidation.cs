@@ -1,6 +1,6 @@
 ﻿using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.Entities.AutorsElement;
-using Epam.Library.Common.Entities.AutorsElement.Book;
+using Epam.Library.Common.Entities.AuthorElement;
+using Epam.Library.Common.Entities.AuthorElement.Book;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -43,7 +43,7 @@ namespace Epam.Library.Bll.Validation
                 element.Annotation = element.Annotation.Substring(0, 2000);
             }
 
-            ValidateAndCorrectAutors(element.Authors);
+            //ValidateAndCorrectAutors(element.AuthorIDs);
 
             if (element.Publisher is null)
             {
