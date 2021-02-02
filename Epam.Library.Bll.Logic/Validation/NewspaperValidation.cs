@@ -1,23 +1,18 @@
 ﻿using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.Entities.AutorsElement;
-using Epam.Library.Common.Entities.AutorsElement.Book;
+using Epam.Library.Common.Entities.Newspaper;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Logic.Validation
 {
-    public class BookValidation : IValidation<AbstractBook>
+    public class NewspaperValidation : IValidation<AbstractNewspaper>
     {
-        protected readonly Regex FirstNamePattern = new Regex("^[A-Za-z]+-?[A-Za-z]+$|^[А-Яа-я]+-?[А-Яа-я]+$", RegexOptions.Singleline);
-        
-        protected readonly Regex LastNamePattern = new Regex("^[A-Za-z]+(-| |'?)[A-Za-z]+$|^[А-ЯЁа-яё]+(-| |'?)[А-ЯЁа-яё]+$", RegexOptions.Singleline);
+        protected readonly Regex IssnPattern = new Regex("^ISSN [0-9]{4}-[0-9]{4}$", RegexOptions.Singleline);
         
         protected readonly Regex PublishingCityPattern = new Regex("^[A-Za-z]+(-| ?)[A-Za-z]+(-| ?)[A-Za-z]+$|^[А-ЯЁа-яё]+(-| ?)[А-ЯЁа-яё]+(-| ?)[А-ЯЁа-яё]+$", RegexOptions.Singleline);
-        
-        protected readonly Regex IsbnPattern = new Regex("^ISBN ([0-9]{1,5})-([0-9]{1,7})-([0-9]{1,7})-([0-9Xx])$", RegexOptions.Singleline);
 
-        public void Validate(AbstractBook element)
+        public void Validate(AbstractNewspaper element)
         {
             if (element is null)
             {
@@ -43,8 +38,6 @@ namespace Epam.Library.Bll.Logic.Validation
                 element.Annotation = element.Annotation.Substring(0, 2000);
             }
 
-            ValidateAndCorrectAutors(element.Authors);
-
             if (element.Publisher is null)
             {
                 throw new NullReferenceException("Publisher is null!");
@@ -61,27 +54,11 @@ namespace Epam.Library.Bll.Logic.Validation
                 throw new ArgumentOutOfRangeException("Incorrect PublishingYear!");
             }
 
-            if (element.Isbn != null)
+            if (element.Issn != null)
             {
-                if (IsbnPattern.IsMatch(element.Isbn))
+                if (!IssnPattern.IsMatch(element.Issn))
                 {
-                    var groups = IsbnPattern.Match(element.Isbn).Groups;
-
-                    int countDigit = 0;
-
-                    for (int i = 1; i < groups.Count; i++)
-                    {
-                        countDigit += groups[i].Length;
-                    }
-
-                    if (countDigit != 10)
-                    {
-                        throw new ArgumentOutOfRangeException("Isbn should only be 10 digits!");
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException("Incorrect Isbn! Exmble \"ISBN 0 - 00 - 000000 - 0\"");
+                    throw new ArgumentException("Incorrect Issn! Examble \'ISSN 0000-0000\'");
                 }
             }
         }
@@ -127,92 +104,6 @@ namespace Epam.Library.Bll.Logic.Validation
             else
             {
                 throw new ArgumentOutOfRangeException("The argument does not match length 3!");
-            }
-        }
-
-        private void ValidateAndCorrectAutors(Author[] autors)
-        {
-            if (autors != null)
-            {
-                foreach (var autor in autors)
-                {
-                    if (autor != null)
-                    {
-                        if (autor.FirstName != null && FirstNamePattern.IsMatch(autor.FirstName))
-                        {
-                            string[] str = autor.FirstName.Split('-');
-
-                            ToUpperFirstSimbols(str);
-
-                            string newValue = string.Join("-", str);
-
-                            autor.FirstName = newValue.Length > 50
-                                    ? newValue.Substring(0, 50)
-                                    : newValue;
-                        }
-                        else
-                        {
-                            throw new ArgumentException("Icorrect FirstName!");
-                        }
-
-                        if (autor.LastName != null && LastNamePattern.IsMatch(autor.LastName))
-                        {
-                            string[] str = autor.LastName.Split('-', '\'', ' ');
-
-                            string newValue = "";
-
-                            if (str.Length > 1)
-                            {
-                                if (Regex.IsMatch(autor.LastName, "-"))
-                                {
-                                    ToUpperFirstSimbols(str);
-
-                                    newValue = string.Join("-", str);
-                                }
-                                else if (Regex.IsMatch(autor.LastName, "'"))
-                                {
-                                    ToUpperFirstSimbols(str);
-
-                                    newValue = string.Join("'", str);
-                                }
-                                else if (Regex.IsMatch(autor.LastName, " "))
-                                {
-                                    for (int i = 0; i < str.Length; i++)
-                                    {
-                                        if (str[i].Length > 1)
-                                        {
-                                            str[i] = i == 0
-                                                ? str[i].ToLower()
-                                                : char.ToUpper(str[i].First()) + str[i].Substring(1).ToLower();
-                                        }
-                                        else
-                                        {
-                                            str[i] = i == 0
-                                                ? str[i].ToLower()
-                                                : str[i].ToUpper();
-                                        }
-                                    }
-
-                                    newValue = string.Join(" ", str);
-                                }
-                            }
-                            else
-                            {
-                                ToUpperFirstSimbols(str);
-
-                                newValue = str.First();
-                            }
-
-                            autor.LastName = newValue.Length > 200
-                                    ? newValue.Substring(0, newValue.Length >= 200 ? 200 : newValue.Length)
-                                    : newValue;
-                        }
-                        else
-                        {
-                            throw new ArgumentException("Icorrect LastName!");
-                        }
-                    }
-                }
             }
         }
 

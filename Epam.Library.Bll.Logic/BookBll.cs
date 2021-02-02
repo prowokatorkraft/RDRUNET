@@ -25,7 +25,7 @@ namespace Epam.Library.Bll.Logic
         {
             try
             {
-                _validation.ValidateElement(book);
+                _validation.Validate(book);
 
                 _dao.AddBook(book);
             }
