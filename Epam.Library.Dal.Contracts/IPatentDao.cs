@@ -8,12 +8,12 @@ namespace Epam.Library.Dal.Contracts
 {
     public interface IPatentDao
     {
-        void AddPatent(AbstractPatent patent);
+        void Add(AbstractPatent patent);
 
-        void RemovePatent(AbstractPatent patent);
+        bool Remove(int id);
 
-        IEnumerable<AbstractPatent> SearchPatents(SortOptions options, PatentSearchOptions searchOptions, string search);
+        IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractPatent>> GetAllPatentGroupsByPublishYear();
+        IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear();
     }
 }

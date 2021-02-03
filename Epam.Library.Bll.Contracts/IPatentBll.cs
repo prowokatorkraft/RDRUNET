@@ -1,5 +1,4 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +7,12 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface IPatentBll
     {
-        void AddPatent(AbstractPatent patent);
+        ErrorValidation[] Add(AbstractPatent patent);
 
-        void RemovePatent(AbstractPatent patent);
+        bool Remove(int id);
 
-        IEnumerable<AbstractPatent> SearchPatents(SortOptions options, PatentSearchOptions searchOptions, string search);
+        IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractPatent>> GetAllPatentGroupsByPublishYear();
+        IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear();
     }
 }

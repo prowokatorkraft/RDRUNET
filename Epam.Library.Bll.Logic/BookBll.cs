@@ -68,7 +68,7 @@ namespace Epam.Library.Bll
         {
             try
             {
-                return _dao.GetAllBookGroupsByPublishYear();
+                return _dao.GetAllGroupsByPublishYear();
             }
             catch (Exception ex)
             {

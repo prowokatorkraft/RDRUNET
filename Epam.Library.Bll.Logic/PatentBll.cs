@@ -13,21 +13,26 @@ namespace Epam.Library.Bll
     {
         protected readonly IPatentBll _dao;
 
-        protected readonly IValidation<AbstractPatent> _validation;
+        protected readonly IValidationBll<AbstractPatent> _validation;
         
-        public PatentBll(IPatentBll patentDao, IValidation<AbstractPatent> validation)
+        public PatentBll(IPatentBll patentDao, IValidationBll<AbstractPatent> validation)
         {
             _dao = patentDao;
             _validation = validation;
         }
 
-        public void AddPatent(AbstractPatent patent)
+        public ErrorValidation[] Add(AbstractPatent patent)
         {
             try
             {
-                _validation.Validate(patent);
+                var errors = _validation.Validate(patent);
 
-                _dao.AddPatent(patent);
+                if (errors.Length == 0)
+                {
+                    _dao.Add(patent);
+                }
+
+                return errors;
             }
             catch (Exception ex)
             {
@@ -35,36 +40,39 @@ namespace Epam.Library.Bll
             }
         }
 
-        public void RemovePatent(AbstractPatent patent)
+        public bool Remove(int id)
         {
             try
             {
-                if (patent is null)
-                {
-                    throw new ArgumentNullException("Patent is null!");
-                }
-
-                _dao.RemovePatent(patent);
+                return _dao.Remove(id);
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing element!", ex);
+                throw new RemoveException("Error removing item!", ex);
             }
         }
 
-        public IEnumerable<AbstractPatent> SearchPatents(SortOptions options, PatentSearchOptions searchOptions, string search)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
         {
-            foreach (var item in _dao.SearchPatents(options, searchOptions, search))
+            try
             {
-                yield return item;
+                return _dao.Search(searchRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item!", ex);
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractPatent>> GetAllPatentGroupsByPublishYear()
+        public IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear()
         {
-            foreach (var item in _dao.GetAllPatentGroupsByPublishYear())
+            try
             {
-                yield return item;
+                return _dao.GetAllGroupsByPublishYear();
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item!", ex);
             }
         }
     }
