@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAuthorDao.cs" />
     <Compile Include="IBookDao.cs" />
     <Compile Include="ICatalogueDao.cs" />
     <Compile Include="INewspaperDao.cs" />

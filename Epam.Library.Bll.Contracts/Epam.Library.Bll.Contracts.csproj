@@ -46,11 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAuthorBll.cs" />
     <Compile Include="IBookBll.cs" />
     <Compile Include="ICatalogueBll.cs" />
     <Compile Include="INewspaperBll.cs" />
     <Compile Include="IPatentBll.cs" />
-    <Compile Include="IValidation.cs" />
+    <Compile Include="IValidationBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
