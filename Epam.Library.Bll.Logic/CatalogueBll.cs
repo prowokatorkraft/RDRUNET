@@ -24,7 +24,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item!", ex);
+                throw new GetException("Error getting item.", ex);
             }
         }
     }

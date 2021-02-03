@@ -15,7 +15,7 @@ namespace Epam.Library.Bll.Logic.Validation
         {
             if (element is null)
             {
-                throw new ArgumentNullException((nameof(element) + " is null!"));
+                throw new ArgumentNullException((nameof(element) + " is null."));
             }
 
             List<ErrorValidation> errorList = new List<ErrorValidation>();
@@ -25,7 +25,7 @@ namespace Epam.Library.Bll.Logic.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.FirstName),
-                    "Incorrect entered value!",
+                    "Incorrect entered value.",
                     null
                 ));
             }
@@ -34,7 +34,7 @@ namespace Epam.Library.Bll.Logic.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.FirstName),
-                    "Value exceeds the allowed size!",
+                    "Value exceeds the allowed size.",
                     "50"
                 ));
             }
@@ -44,7 +44,7 @@ namespace Epam.Library.Bll.Logic.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.LastName),
-                    "Incorrect entered value!",
+                    "Incorrect entered value.",
                     null
                 ));
             }
@@ -53,7 +53,7 @@ namespace Epam.Library.Bll.Logic.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.LastName),
-                    "Value exceeds the allowed size!",
+                    "Value exceeds the allowed size.",
                     "200"
                 ));
             }

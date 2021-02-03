@@ -36,7 +36,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item!", ex);
+                throw new AddException("Error adding item.", ex);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item!", ex);
+                throw new RemoveException("Error removing item.", ex);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item!", ex);
+                throw new GetException("Error getting item.", ex);
             }
         }
 
@@ -72,7 +72,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item!", ex);
+                throw new GetException("Error getting item.", ex);
             }
         }
     }

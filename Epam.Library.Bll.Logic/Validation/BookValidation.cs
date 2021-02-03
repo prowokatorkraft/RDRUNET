@@ -13,7 +13,7 @@ namespace Epam.Library.Bll.Validation
         {
             if (element is null)
             {
-                throw new ArgumentNullException((nameof(element) + " is null!"));
+                throw new ArgumentNullException((nameof(element) + " is null."));
             }
 
             List<ErrorValidation> errorList = new List<ErrorValidation>();
@@ -23,7 +23,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Name),
-                    "Value is null!",
+                    "Value is null.",
                     null
                 ));
             }
@@ -32,7 +32,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Name),
-                    "Value exceeds the allowed size!",
+                    "Value exceeds the allowed size.",
                     "300"
                 ));
             }
@@ -42,7 +42,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.NumberOfPages),
-                    "The value cannot be negative!",
+                    "The value cannot be negative.",
                     null
                 ));
             }
@@ -52,7 +52,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Annotation),
-                    "Value exceeds the allowed size!",
+                    "Value exceeds the allowed size.",
                     "2000"
                 ));
             }
@@ -62,7 +62,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Name),
-                    "Value is null!",
+                    "Value is null.",
                     null
                 ));
             }
@@ -71,7 +71,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Name),
-                    "Value exceeds the allowed size!",
+                    "Value exceeds the allowed size.",
                     "300"
                 ));
             }
@@ -81,7 +81,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.PublishingCity),
-                    "Incorrect entered value!",
+                    "Incorrect entered value.",
                     null
                 ));
             }
@@ -91,8 +91,8 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.PublishingYear),
-                    "Incorrect entered value!",
-                    "The value cannot be less than 1400 and more than today!"
+                    "Incorrect entered value.",
+                    "The value cannot be less than 1400 and more than today."
                 ));
             }
 
@@ -103,8 +103,8 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Isbn),
-                    "Incorrect entered value!",
-                    "Value should only be 10 digits! Exmble \"ISBN 0 - 00 - 000000 - 0\""
+                    "Incorrect entered value.",
+                    "Value should only be 10 digits! Exmble \"ISBN 0-00-000000-0\""
                 ));
             }
 

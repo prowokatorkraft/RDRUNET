@@ -13,7 +13,7 @@ namespace Epam.Library.Bll.Validation
         {
             if (element is null)
             {
-                throw new ArgumentNullException(nameof(element) + " is null!");
+                throw new ArgumentNullException(nameof(element) + " is null.");
             }
 
             List<ErrorValidation> errorList = new List<ErrorValidation>();
@@ -23,7 +23,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Name),
-                    "Value is null!",
+                    "Value is null.",
                     null
                 ));
             }
@@ -32,7 +32,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Name),
-                    "Value exceeds the allowed size!",
+                    "Value exceeds the allowed size.",
                     "300"
                 ));
             }
@@ -42,7 +42,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.NumberOfPages),
-                    "The value cannot be negative!",
+                    "The value cannot be negative.",
                     null
                 ));
             }
@@ -52,7 +52,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Annotation),
-                    "Value exceeds the allowed size!",
+                    "Value exceeds the allowed size.",
                     "2000"
                 ));
             }
@@ -64,7 +64,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.Country),
-                    "Incorrect entered value!",
+                    "Incorrect entered value.",
                     null
                 ));
             }
@@ -74,8 +74,8 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.RegistrationNumber),
-                    "Incorrect entered value!",
-                    "The value must be no more than 9 digits"
+                    "Incorrect entered value.",
+                    "The value must be no more than 9 digits."
                 ));
             }
 
@@ -86,7 +86,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.ApplicationDate),
-                    "Incorrect entered value!",
+                    "Incorrect entered value.",
                     "Value shouldn't be less than 1474 and more than today."
                 ));
             }
@@ -98,7 +98,7 @@ namespace Epam.Library.Bll.Validation
                 errorList.Add(new ErrorValidation
                 (
                     nameof(element.DateOfPublication),
-                    "Incorrect entered value!",
+                    "Incorrect entered value.",
                     "Value shouldn't be less than 1474 or application date and more than today."
                 ));
             }
