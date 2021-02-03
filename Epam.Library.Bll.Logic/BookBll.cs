@@ -13,21 +13,26 @@ namespace Epam.Library.Bll
     {
         protected readonly IBookDao _dao;
 
-        protected readonly IValidation<AbstractBook> _validation;
+        protected readonly IValidationBll<AbstractBook> _validation;
 
-        public BookBll(IBookDao bookDao, IValidation<AbstractBook> validation)
+        public BookBll(IBookDao bookDao, IValidationBll<AbstractBook> validation)
         {
             _dao = bookDao;
             _validation = validation;
         }
 
-        public void AddBook(AbstractBook book)
+        public ErrorValidation[] Add(AbstractBook book)
         {
             try
             {
-                _validation.Validate(book);
+                var errors = _validation.Validate(book);
 
-                _dao.AddBook(book);
+                if (errors.Length == 0)
+                {
+                    _dao.Add(book);
+                }
+
+                return errors;
             }
             catch (Exception ex)
             {
@@ -35,36 +40,39 @@ namespace Epam.Library.Bll
             }
         }
 
-        public void RemoveBook(AbstractBook book)
+        public bool Remove(int id)
         {
             try
             {
-                if (book is null)
-                {
-                    throw new ArgumentNullException("Book is null!");
-                }
-
-                _dao.RemoveBook(book);
+                return _dao.Remove(id);
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing element!", ex);
+                throw new RemoveException("Error removing item!", ex);
             }
         }
 
-        public IEnumerable<AbstractBook> SearchBooks(SortOptions sortOptions, BookSearchOptions searchOptions, string search)
+        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
         {
-            foreach (var item in _dao.SearchBooks(sortOptions, searchOptions, search))
+            try
             {
-                yield return item;
+                return _dao.Search(searchRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item!", ex);
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractBook>> GetAllBookGroupsByPublishYear()
+        public IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear()
         {
-            foreach (var item in _dao.GetAllBookGroupsByPublishYear())
+            try
             {
-                yield return item;
+                return _dao.GetAllBookGroupsByPublishYear();
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item!", ex);
             }
         }
     }

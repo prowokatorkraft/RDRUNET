@@ -1,5 +1,4 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +7,12 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface IBookBll
     {
-        void AddBook(AbstractBook book);
+        ErrorValidation[] Add(AbstractBook book);
 
-        void RemoveBook(AbstractBook book);
+        bool Remove(int id);
 
-        IEnumerable<AbstractBook> SearchBooks(SortOptions options, BookSearchOptions searchOptions, string search);
+        IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractBook>> GetAllBookGroupsByPublishYear();
+        IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear();
     }
 }

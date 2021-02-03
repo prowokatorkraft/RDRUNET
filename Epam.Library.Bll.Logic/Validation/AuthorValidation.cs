@@ -4,10 +4,8 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Epam.Library.Bll.Logic.Validation
 {

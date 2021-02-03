@@ -8,11 +8,11 @@ namespace Epam.Library.Dal.Contracts
 {
     public interface IBookDao
     {
-        void AddBook(AbstractBook book);
+        void Add(AbstractBook book);
 
-        void RemoveBook(AbstractBook book);
+        bool Remove(int id);
 
-        IEnumerable<AbstractBook> SearchBooks(SortOptions options, BookSearchOptions searchOptions, string search);
+        IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
 
         IEnumerable<IGrouping<int, AbstractBook>> GetAllBookGroupsByPublishYear();
     }
