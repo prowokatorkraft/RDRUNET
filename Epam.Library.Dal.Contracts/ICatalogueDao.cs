@@ -6,6 +6,6 @@ namespace Epam.Library.Dal.Contracts
 {
     public interface ICatalogueDao
     {
-        IEnumerable<LibraryAbstractElement> SearchElements(SortOptions options, CatalogueSearchOptions searchOptions, string search);
+        IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest);
     }
 }

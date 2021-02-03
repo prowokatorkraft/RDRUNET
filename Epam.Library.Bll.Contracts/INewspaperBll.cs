@@ -7,12 +7,12 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface INewspaperBll
     {
-        void AddNewspaper(AbstractNewspaper newspaper);
+        ErrorValidation[] Add(AbstractNewspaper newspaper);
 
-        void RemoveNewspaper(AbstractNewspaper newspaper);
+        bool Remove(int id);
 
-        IEnumerable<AbstractNewspaper> SearchNewspapers(SortOptions sortOptions, BookSearchOptions searchOptions, string search);
+        IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllNewspaperGroupsByPublishYear();
+        IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear();
     }
 }

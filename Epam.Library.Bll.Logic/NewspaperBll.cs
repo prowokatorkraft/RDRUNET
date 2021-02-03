@@ -13,21 +13,26 @@ namespace Epam.Library.Bll
     {
         protected readonly INewspaperDao _dao;
 
-        protected readonly IValidation<AbstractNewspaper> _validation;
+        protected readonly IValidationBll<AbstractNewspaper> _validation;
         
-        public NewspaperBll(INewspaperDao newspaperDao, IValidation<AbstractNewspaper> validation)
+        public NewspaperBll(INewspaperDao newspaperDao, IValidationBll<AbstractNewspaper> validation)
         {
             _dao = newspaperDao;
             _validation = validation;
         }
 
-        public void AddNewspaper(AbstractNewspaper newspaper)
+        public ErrorValidation[] Add(AbstractNewspaper newspaper)
         {
             try
             {
-                _validation.Validate(newspaper);
+                var errors = _validation.Validate(newspaper);
 
-                _dao.AddNewspaper(newspaper);
+                if (errors.Length == 0)
+                {
+                    _dao.Add(newspaper);
+                }
+
+                return errors;
             }
             catch (Exception ex)
             {
@@ -35,36 +40,39 @@ namespace Epam.Library.Bll
             }
         }
 
-        public void RemoveNewspaper(AbstractNewspaper newspaper)
+        public bool Remove(int id)
         {
             try
             {
-                if (newspaper is null)
-                {
-                    throw new ArgumentNullException("Newspaper is null!");
-                }
-
-                _dao.RemoveNewspaper(newspaper);
+                return _dao.Remove(id);
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing element!", ex);
+                throw new RemoveException("Error removing item!", ex);
             }
         }
 
-        public IEnumerable<AbstractNewspaper> SearchNewspapers(SortOptions sortOptions, BookSearchOptions searchOptions, string search)
+        public IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
         {
-            foreach (var item in _dao.SearchNewspapers(sortOptions, searchOptions, search))
+            try
             {
-                yield return item;
+                return _dao.Search(searchRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item!", ex);
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllNewspaperGroupsByPublishYear()
+        public IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear()
         {
-            foreach (var item in _dao.GetAllNewspaperGroupsByPublishYear())
+            try
             {
-                yield return item;
+                return _dao.GetAllGroupsByPublishYear();
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item!", ex);
             }
         }
     }

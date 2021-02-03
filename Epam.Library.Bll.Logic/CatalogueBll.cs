@@ -9,18 +9,22 @@ namespace Epam.Library.Bll
 {
     class CatalogueBll : ICatalogueBll
     {
-        protected readonly ICatalogueDao _catalogueDao;
+        protected readonly ICatalogueDao _dao;
 
         public CatalogueBll(ICatalogueDao catalogueDao)
         {
-            _catalogueDao = catalogueDao;
+            _dao = catalogueDao;
         }
 
-        public IEnumerable<LibraryAbstractElement> SearchElements(SortOptions sortOptions, CatalogueSearchOptions searchOptions, string search)
+        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest)
         {
-            foreach (var item in _catalogueDao.SearchElements(sortOptions, searchOptions, search))
+            try
             {
-                yield return item;
+                return _dao.Search(searchRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item!", ex);
             }
         }
     }
