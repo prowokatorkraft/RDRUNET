@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FC214DB6-A8FB-4F31-93F9-6627B5BD7451}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Epam.Pl.ConsoleApplication</RootNamespace>
-    <AssemblyName>Epam.Pl.ConsoleApplication</AssemblyName>
+    <ProjectGuid>{46409C69-54E7-47D3-9DFD-86998AFFDE5E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Epam.Library.Dal.Memory</RootNamespace>
+    <AssemblyName>Epam.Library.Dal.Memory</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,36 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="AuthorDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Epam.Common.Entities\Epam.Library.Common.Entities.csproj">
       <Project>{2b32bf58-b84a-4e36-a720-9123e81d3b13}</Project>
       <Name>Epam.Library.Common.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Epam.Library.Bll.Contracts\Epam.Library.Bll.Contracts.csproj">
-      <Project>{c0e5c2ac-94cd-43ee-8f7c-6a194dc444ff}</Project>
-      <Name>Epam.Library.Bll.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Epam.Library.Bll.Logic\Epam.Library.Bll.csproj">
-      <Project>{3a3930e4-abe0-461d-9c8b-824f85c33dc4}</Project>
-      <Name>Epam.Library.Bll</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Epam.Library.Common.DependencyInjection\Epam.Library.Common.DependencyInjection.csproj">
-      <Project>{9a4418bc-55a0-4ceb-b760-d37d29a46075}</Project>
-      <Name>Epam.Library.Common.DependencyInjection</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Epam.Library.Dal.Contracts\Epam.Library.Dal.Contracts.csproj">
       <Project>{20b2f9db-ec00-4046-90c7-674952191b23}</Project>
       <Name>Epam.Library.Dal.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Epam.Library.Dal.Memory\Epam.Library.Dal.Memory.csproj">
-      <Project>{46409c69-54e7-47d3-9dfd-86998affde5e}</Project>
-      <Name>Epam.Library.Dal.Memory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

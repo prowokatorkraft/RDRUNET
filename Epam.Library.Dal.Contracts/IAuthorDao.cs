@@ -7,7 +7,7 @@ namespace Epam.Library.Dal.Contracts
 {
     public interface IAuthorDao
     {
-        void Add(Author book);
+        void Add(Author author);
 
         bool Remove(int id);
 
