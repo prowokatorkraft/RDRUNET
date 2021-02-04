@@ -11,6 +11,8 @@ namespace Epam.Library.Bll.Contracts
 
         bool Remove(int id);
 
+        AbstractNewspaper Get(int id);
+
         IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest);
 
         IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear();

@@ -40,6 +40,18 @@ namespace Epam.Library.Bll
             }
         }
 
+        public AbstractPatent Get(int id)
+        {
+            try
+            {
+                return _dao.Get(id);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+
         public bool Remove(int id)
         {
             try

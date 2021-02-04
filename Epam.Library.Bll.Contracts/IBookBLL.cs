@@ -11,6 +11,8 @@ namespace Epam.Library.Bll.Contracts
 
         bool Remove(int id);
 
+        AbstractBook Get(int id);
+
         IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
 
         IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear();

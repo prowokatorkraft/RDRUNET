@@ -75,5 +75,17 @@ namespace Epam.Library.Bll
                 throw new GetException("Error getting item.", ex);
             }
         }
+
+        public AbstractBook Get(int id)
+        {
+            try
+            {
+                return _dao.Get(id);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
     }
 }

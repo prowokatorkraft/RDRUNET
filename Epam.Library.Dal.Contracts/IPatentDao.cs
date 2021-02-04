@@ -12,6 +12,8 @@ namespace Epam.Library.Dal.Contracts
 
         bool Remove(int id);
 
+        AbstractPatent Get(int id);
+
         IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest);
 
         IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear();

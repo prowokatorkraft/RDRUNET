@@ -52,6 +52,18 @@ namespace Epam.Library.Bll
             }
         }
 
+        public AbstractNewspaper Get(int id)
+        {
+            try
+            {
+                return _dao.Get(id);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+
         public IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
         {
             try
