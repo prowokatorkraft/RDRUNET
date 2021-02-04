@@ -33,7 +33,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(book) + " is null");
                 }
 
-                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs).All(s => s))
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }

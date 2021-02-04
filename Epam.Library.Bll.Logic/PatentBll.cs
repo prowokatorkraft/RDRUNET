@@ -33,7 +33,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(patent) + " is null");
                 }
 
-                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs).All(s => s))
+                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }

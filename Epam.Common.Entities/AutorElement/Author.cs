@@ -1,6 +1,8 @@
-﻿namespace Epam.Library.Common.Entities.AuthorElement
+﻿using System;
+
+namespace Epam.Library.Common.Entities.AuthorElement
 {
-    public class Author
+    public class Author : ICloneable
     {
         public int? Id { get; set; }
 
@@ -23,6 +25,11 @@
         public override string ToString()
         {
             return FirstName + " " + LastName;
+        }
+
+        public object Clone()
+        {
+            return new Author(Id, FirstName, LastName);
         }
     }
 }

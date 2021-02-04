@@ -37,7 +37,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id)); ////
+                return _data.First(a => a.Id.Value.Equals(id)).Clone() as Author;
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public bool[] Check(int[] ids)
+        public bool Check(int[] ids)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace Epam.Library.Dal.Memory
                     list.Add(_data.Any(a => a.Id.Value.Equals(id)));
                 }
 
-                return list.ToArray();
+                return list.All(s => s);
             }
             catch (Exception ex)
             {
@@ -82,50 +82,9 @@ namespace Epam.Library.Dal.Memory
             {
                 var query = _data.AsQueryable();
 
-                switch (searchRequest.SearchOptions)
-                {
-                    case AuthorSearchOptions.FirstName | AuthorSearchOptions.LastName:
+                query = DetermineSearchQuery(searchRequest, query);
 
-                        query = query.Where(a => (a.FirstName + " " + a.LastName).ToLower()
-                            .Contains(searchRequest.SearchLine.ToLower()));
-
-                        break;
-
-                    case AuthorSearchOptions.FirstName:
-
-                        query = query.Where(a => a.FirstName.ToLower()
-                            .Contains(searchRequest.SearchLine.ToLower()));
-
-                        break;
-
-                    case AuthorSearchOptions.LastName:
-
-                        query = query.Where(a => a.LastName.ToLower()
-                            .Contains(searchRequest.SearchLine.ToLower()));
-
-                        break;
-
-                    default:
-                        break;
-                }
-
-                switch (searchRequest.SortOptions)
-                {
-                    case SortOptions.Ascending:
-
-                        query = query.OrderBy(s => s.ToString());
-
-                        break;
-
-                    case SortOptions.Descending:
-
-                        query = query.OrderByDescending(s => s.ToString());
-
-                        break;
-
-                    default:
-                        break;
-                }
+                query = DetermineSortQuery(searchRequest, query);
 
                 return query;
             }
@@ -133,6 +92,61 @@ namespace Epam.Library.Dal.Memory
             {
                 throw new GetException("Error getting data.", ex);
             }
+        }
+
+        private IQueryable<Author> DetermineSortQuery(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, IQueryable<Author> query)
+        {
+            switch (searchRequest.SortOptions)
+            {
+                case SortOptions.Ascending:
+
+                    query = query.OrderBy(s => s.FirstName).ThenBy(s => s.LastName);
+
+                    break;
+
+                case SortOptions.Descending:
+
+                    query = query.OrderByDescending(s => s.FirstName).ThenBy(s => s.LastName);
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            return query;
+        }
+
+        private IQueryable<Author> DetermineSearchQuery(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, IQueryable<Author> query)
+        {
+            switch (searchRequest.SearchOptions)
+            {
+                case AuthorSearchOptions.FirstName | AuthorSearchOptions.LastName:
+
+                    query = query.Where(a => (a.FirstName + " " + a.LastName).ToLower()
+                        .Contains(searchRequest.SearchLine.ToLower()));
+
+                    break;
+
+                case AuthorSearchOptions.FirstName:
+
+                    query = query.Where(a => a.FirstName.ToLower()
+                        .Contains(searchRequest.SearchLine.ToLower()));
+
+                    break;
+
+                case AuthorSearchOptions.LastName:
+
+                    query = query.Where(a => a.LastName.ToLower()
+                        .Contains(searchRequest.SearchLine.ToLower()));
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            return query;
         }
     }
 }

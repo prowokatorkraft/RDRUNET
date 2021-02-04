@@ -13,7 +13,7 @@ namespace Epam.Library.Bll.Contracts
 
         Author Get(int id);
 
-        bool[] Check(int[] ids);
+        bool Check(int[] ids);
 
         IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest);
     }

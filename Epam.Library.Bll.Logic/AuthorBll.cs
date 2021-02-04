@@ -52,7 +52,7 @@ namespace Epam.Library.Bll.Logic
             }
         }
 
-        public bool[] Check(int[] ids)
+        public bool Check(int[] ids)
         {
             try
             {
