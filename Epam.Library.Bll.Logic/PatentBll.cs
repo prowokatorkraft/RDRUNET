@@ -13,18 +13,31 @@ namespace Epam.Library.Bll
     {
         protected readonly IPatentBll _dao;
 
+        protected readonly IAuthorBll _author;
+
         protected readonly IValidationBll<AbstractPatent> _validation;
         
-        public PatentBll(IPatentBll patentDao, IValidationBll<AbstractPatent> validation)
+        public PatentBll(IPatentBll patentDao, IAuthorBll author, IValidationBll<AbstractPatent> validation)
         {
             _dao = patentDao;
             _validation = validation;
+            _author = author;
         }
 
         public ErrorValidation[] Add(AbstractPatent patent)
         {
             try
             {
+                if (patent is null)
+                {
+                    throw new ArgumentNullException(nameof(patent) + " is null");
+                }
+
+                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs).All(s => s))
+                {
+                    throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
+                }
+
                 var errors = _validation.Validate(patent);
 
                 if (errors.Length == 0)

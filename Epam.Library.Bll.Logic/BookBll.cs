@@ -13,11 +13,14 @@ namespace Epam.Library.Bll
     {
         protected readonly IBookDao _dao;
 
+        protected readonly IAuthorBll _author;
+
         protected readonly IValidationBll<AbstractBook> _validation;
 
-        public BookBll(IBookDao bookDao, IValidationBll<AbstractBook> validation)
+        public BookBll(IBookDao bookDao, IAuthorBll author, IValidationBll<AbstractBook> validation)
         {
             _dao = bookDao;
+            _author = author;
             _validation = validation;
         }
 
@@ -25,6 +28,16 @@ namespace Epam.Library.Bll
         {
             try
             {
+                if (book is null)
+                {
+                    throw new ArgumentNullException(nameof(book) + " is null");
+                }
+
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs).All(s => s))
+                {
+                    throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
+                }
+
                 var errors = _validation.Validate(book);
 
                 if (errors.Length == 0)

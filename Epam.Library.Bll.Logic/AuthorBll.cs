@@ -52,6 +52,18 @@ namespace Epam.Library.Bll.Logic
             }
         }
 
+        public bool[] Check(int[] ids)
+        {
+            try
+            {
+                return _dao.Check(ids);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error checking item.", ex);
+            }
+        }
+
         public bool Remove(int id)
         {
             try

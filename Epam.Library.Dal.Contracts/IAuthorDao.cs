@@ -11,6 +11,8 @@ namespace Epam.Library.Dal.Contracts
 
         bool Remove(int id);
 
+        bool[] Check(int[] ids);
+
         Author Get(int id);
 
         IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest);
