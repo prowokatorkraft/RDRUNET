@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Epam.Library.Bll.Logic.Validation
+namespace Epam.Library.Bll.Validation
 {
     public class AuthorValidation : IValidationBll<Author>
     {
-        public ErrorValidation[] Validate(Author element)
+        public IEnumerable<ErrorValidation> Validate(Author element)
         {
             if (element is null)
             {
@@ -58,7 +58,7 @@ namespace Epam.Library.Bll.Logic.Validation
                 ));
             }
 
-            return errorList.ToArray();
+            return errorList;
         }
     }
 }

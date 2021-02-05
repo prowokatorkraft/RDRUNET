@@ -13,16 +13,18 @@ namespace Epam.Library.Dal.Memory
     {
         private readonly HashSet<Author> _data;
 
-        public AuthorDao(HashSet<Author> data)
+        private int _idCount = 0;
+
+        public AuthorDao()
         {
-            this._data = data;
+            _data = new HashSet<Author>();
         }
 
         public void Add(Author author)
         {
             try
             {
-                author.Id = author.GetHashCode();
+                author.Id = _idCount++;
 
                 _data.Add(author);
             }
@@ -36,7 +38,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id)).Clone() as Author;
+                return _data.FirstOrDefault(a => a.Id.Value.Equals(id))?.Clone() as Author;
             }
             catch (Exception ex)
             {
@@ -108,7 +110,7 @@ namespace Epam.Library.Dal.Memory
 
                 case SortOptions.Descending:
 
-                    query = query.OrderByDescending(s => s.FirstName).ThenBy(s => s.LastName);
+                    query = query.OrderByDescending(s => s.FirstName).ThenByDescending(s => s.LastName);
 
                     break;
 
@@ -123,25 +125,14 @@ namespace Epam.Library.Dal.Memory
         {
             switch (searchRequest.SearchOptions)
             {
-                case AuthorSearchOptions.FirstName | AuthorSearchOptions.LastName:
-
-                    query = query.Where(a => (a.FirstName + " " + a.LastName).ToLower()
-                        .Contains(searchRequest.SearchLine.ToLower()));
-
-                    break;
-
                 case AuthorSearchOptions.FirstName:
-
                     query = query.Where(a => a.FirstName.ToLower()
                         .Contains(searchRequest.SearchLine.ToLower()));
-
                     break;
 
                 case AuthorSearchOptions.LastName:
-
                     query = query.Where(a => a.LastName.ToLower()
                         .Contains(searchRequest.SearchLine.ToLower()));
-
                     break;
 
                 default:

@@ -14,8 +14,10 @@ namespace Epam.Library.Dal.Contracts
 
         AbstractBook Get(int id);
 
+        IEnumerable<AbstractBook> GetByAuthorId(int id);
+
         IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear();
+        Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear();
     }
 }

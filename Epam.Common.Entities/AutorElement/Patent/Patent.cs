@@ -56,5 +56,10 @@ namespace Epam.Library.Common.Entities.AuthorElement.Patent
             hashCode = hashCode * -1521134295 + RegistrationNumber.GetHashCode();
             return hashCode;
         }
+
+        public override object Clone()
+        {
+            return new Patent(Id, Name, NumberOfPages, Annotation, AuthorIDs.Clone() as int[], Country, RegistrationNumber, ApplicationDate, DateOfPublication);
+        }
     }
 }

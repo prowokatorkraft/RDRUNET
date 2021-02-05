@@ -9,7 +9,7 @@ namespace Epam.Library.Bll.Validation
 {
     public class PatentValidation : IValidationBll<AbstractPatent>
     {
-        public ErrorValidation[] Validate(AbstractPatent element)
+        public IEnumerable<ErrorValidation> Validate(AbstractPatent element)
         {
             if (element is null)
             {
@@ -103,7 +103,7 @@ namespace Epam.Library.Bll.Validation
                 ));
             }
 
-            return errorList.ToArray();
+            return errorList;
         }
     }
 }

@@ -15,6 +15,6 @@ namespace Epam.Library.Dal.Contracts
 
         IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear();
+        Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear();
     }
 }

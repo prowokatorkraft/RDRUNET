@@ -7,7 +7,7 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface INewspaperBll
     {
-        ErrorValidation[] Add(AbstractNewspaper newspaper);
+        IEnumerable<ErrorValidation> Add(AbstractNewspaper newspaper);
 
         bool Remove(int id);
 
@@ -15,6 +15,6 @@ namespace Epam.Library.Bll.Contracts
 
         IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear();
+        Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear();
     }
 }

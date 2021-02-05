@@ -21,13 +21,13 @@ namespace Epam.Library.Bll
             _validation = validation;
         }
 
-        public ErrorValidation[] Add(AbstractNewspaper newspaper)
+        public IEnumerable<ErrorValidation> Add(AbstractNewspaper newspaper)
         {
             try
             {
                 var errors = _validation.Validate(newspaper);
 
-                if (errors.Length == 0)
+                if (errors.Count() == 0)
                 {
                     _dao.Add(newspaper);
                 }
@@ -76,7 +76,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear()
         {
             try
             {

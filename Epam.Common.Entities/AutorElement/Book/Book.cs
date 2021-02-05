@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Common.Entities.AuthorElement.Book
 {
-    public class Book : AbstractBook, ICloneable
+    public class Book : AbstractBook
     {
         public override int? Id { get; set; }
 
@@ -80,7 +80,7 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
             return hashCode;
         }
 
-        public object Clone()
+        public override object Clone()
         {
             return new Book(
                 Id,

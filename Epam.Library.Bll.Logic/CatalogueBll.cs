@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Bll
 {
-    class CatalogueBll : ICatalogueBll
+    public class CatalogueBll : ICatalogueBll
     {
         protected readonly ICatalogueDao _dao;
 

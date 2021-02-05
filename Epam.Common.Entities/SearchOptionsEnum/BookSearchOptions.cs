@@ -4,7 +4,6 @@
     {
         None = 0,
         Name = 1,
-        Author = 2,
-        Publisher = 4
+        Publisher = 2
     }
 }

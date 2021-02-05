@@ -11,23 +11,18 @@ namespace Epam.Library.Dal.Memory
 {
     public class PatentDao : IPatentDao
     {
-        private readonly HashSet<LibraryAbstractElement> _data;
+        private readonly ICatalogueDao _catalogue;
 
-        private readonly IAuthorDao _authorDao;
-
-        public PatentDao(HashSet<LibraryAbstractElement> data, IAuthorDao authorDao)
+        public PatentDao(ICatalogueDao catalogue)
         {
-            _data = data;
-            _authorDao = authorDao;
+            _catalogue = catalogue;
         }
 
         public void Add(AbstractPatent patent)
         {
             try
             {
-                patent.Id = patent.GetHashCode();
-
-                _data.Add(patent);
+                _catalogue.Add(patent);
             }
             catch (Exception ex)
             {
@@ -39,7 +34,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id)) as AbstractPatent
+                return _catalogue.Get(id)?.Clone() as AbstractPatent
                     ?? throw new ArgumentOutOfRangeException("Incorrect id");
             }
             catch (Exception ex)
@@ -48,11 +43,30 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear()
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id)
         {
             try
             {
-                return _data.OfType<AbstractPatent>().GroupBy(b => b.DateOfPublication.Year);
+                return _catalogue.GetByAuthorId(id).OfType<AbstractPatent>();
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
+        }
+
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear()
+        {
+            try
+            {
+                Dictionary<int, List<AbstractPatent>> groups = new Dictionary<int, List<AbstractPatent>>();
+
+                foreach (var item in Search(null).GroupBy(b => b.DateOfPublication.Year))
+                {
+                    groups.Add(item.Key, item.ToList());
+                }
+
+                return groups;
             }
             catch (Exception ex)
             {
@@ -64,7 +78,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.Remove(_data.First(a => a.Id.Value.Equals(id)));
+                return _catalogue.Remove(id);
             }
             catch (Exception ex)
             {
@@ -76,7 +90,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                var query = _data.OfType<AbstractPatent>().AsQueryable();
+                var query = _catalogue.Search(null).OfType<AbstractPatent>().AsQueryable();
 
                 if (searchRequest != null)
                 {
@@ -118,35 +132,18 @@ namespace Epam.Library.Dal.Memory
 
         private IQueryable<AbstractPatent> DetermineSearchQuery(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, IQueryable<AbstractPatent> query)
         {
-            query = query.Where(a => DetermineLineForRequest(a, searchRequest).ToLower()
+            switch (searchRequest.SearchOptions)
+            {
+                case PatentSearchOptions.Name:
+                    query = query.Where(a => a.Name.ToLower()
                         .Contains(searchRequest.SearchLine.ToLower()));
+                    break;
+
+                default:
+                    break;
+            }
 
             return query;
-        }
-
-        private string DetermineLineForRequest(AbstractPatent patent, SearchRequest<SortOptions, PatentSearchOptions> request)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            if (request.SearchOptions.HasFlag(PatentSearchOptions.Name))
-            {
-                builder.Append(patent.Name + " ");
-            }
-
-            if (request.SearchOptions.HasFlag(PatentSearchOptions.Author))
-            {
-                if (patent.AuthorIDs != null)
-                {
-                    foreach (var id in patent.AuthorIDs)
-                    {
-                        var author = _authorDao.Get(id);
-
-                        builder.Append(author.FirstName + " " + author.LastName + " "); ;
-                    }
-                }
-            }
-
-            return builder.ToString();
         }
     }
 }

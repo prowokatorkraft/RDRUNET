@@ -15,17 +15,58 @@ namespace Epam.Library.Dal.Memory
 
         private readonly IAuthorDao _authorDao;
 
-        public CatalogueDao(HashSet<LibraryAbstractElement> data, IAuthorDao authorDao)
+        private int _idCount = 0;
+
+        public CatalogueDao(IAuthorDao authorDao)
         {
-            _data = data;
+            _data = new HashSet<LibraryAbstractElement>();
             _authorDao = authorDao;
+        }
+
+        public void Add(LibraryAbstractElement element)
+        {
+            try
+            {
+                element.Id = _idCount++;
+
+                _data.Add(element);
+            }
+            catch (Exception ex)
+            {
+                throw new AddException("Error adding data.", ex);
+            }
+        }
+
+        public bool Remove(int id)
+        {
+            try
+            {
+                return _data.Remove(_data.First(a => a.Id.Value.Equals(id)));
+            }
+            catch (Exception ex)
+            {
+                throw new RemoveException("Error removing data.", ex);
+            }
+        }
+
+        public IEnumerable<AbstractAutorElement> GetByAuthorId(int id)
+        {
+            try
+            {
+                return _data.OfType<AbstractAutorElement>()
+                    .Where(e => e.AuthorIDs.Any(i => i.Equals(id)));
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
         }
 
         public LibraryAbstractElement Get(int id)
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id));
+                return _data.FirstOrDefault(a => a.Id.Value.Equals(id));
             }
             catch (Exception ex)
             {
@@ -79,37 +120,17 @@ namespace Epam.Library.Dal.Memory
 
         private IQueryable<LibraryAbstractElement> DetermineSearchQuery(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest, IQueryable<LibraryAbstractElement> query)
         {
-            query = query.Where(a => DetermineLineForRequest(a, searchRequest).ToLower()
-                        .Contains(searchRequest.SearchLine.ToLower()));
-            
+            switch (searchRequest.SearchOptions)
+            {
+                case CatalogueSearchOptions.Name:
+                    query = query.Where(e => e.Name.ToLower().Contains(searchRequest.SearchLine.ToLower()));
+                    break;
+
+                default:
+                    break;
+            }
+
             return query;
-        }
-
-        private string DetermineLineForRequest(LibraryAbstractElement element, SearchRequest<SortOptions, CatalogueSearchOptions> request)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            if (request.SearchOptions.HasFlag(CatalogueSearchOptions.Name))
-            {
-                builder.Append(element.Name + " ");
-            }
-
-            if (request.SearchOptions.HasFlag(CatalogueSearchOptions.Author))
-            {
-                var autorElement = element as AbstractAutorElement;
-
-                if (autorElement != null && autorElement.AuthorIDs != null)
-                {
-                    foreach (var id in autorElement.AuthorIDs)
-                    {
-                        var author = _authorDao.Get(id);
-
-                        builder.Append(author.FirstName + " " + author.LastName + " "); ;
-                    }
-                }
-            }
-
-            return builder.ToString();
         }
     }
 }

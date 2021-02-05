@@ -10,7 +10,7 @@ namespace Epam.Library.Bll.Validation
 {
     public class NewspaperValidation : IValidationBll<AbstractNewspaper>
     {
-        public ErrorValidation[] Validate(AbstractNewspaper element)
+        public IEnumerable<ErrorValidation> Validate(AbstractNewspaper element)
         {
             if (element is null)
             {
@@ -108,7 +108,7 @@ namespace Epam.Library.Bll.Validation
                 ));
             }
 
-            return errorList.ToArray();
+            return errorList;
         }
     }
 }

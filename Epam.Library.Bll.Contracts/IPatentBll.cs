@@ -7,7 +7,7 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface IPatentBll
     {
-        ErrorValidation[] Add(AbstractPatent patent);
+        IEnumerable<ErrorValidation> Add(AbstractPatent patent);
 
         bool Remove(int id);
 
@@ -15,6 +15,6 @@ namespace Epam.Library.Bll.Contracts
 
         IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear();
+        Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear();
     }
 }

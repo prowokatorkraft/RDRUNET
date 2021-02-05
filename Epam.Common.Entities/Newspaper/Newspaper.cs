@@ -61,5 +61,10 @@ namespace Epam.Library.Common.Entities.Newspaper
             hashCode = hashCode * -1521134295 + Date.GetHashCode();
             return hashCode;
         }
+
+        public override object Clone()
+        {
+            return new Newspaper(Id, Name, NumberOfPages, Annotation, Publisher, PublishingCity, PublishingYear, Issn, Number, Date);
+        }
     }
 }

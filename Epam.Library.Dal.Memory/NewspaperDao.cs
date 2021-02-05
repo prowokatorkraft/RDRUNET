@@ -11,20 +11,18 @@ namespace Epam.Library.Dal.Memory
 {
     public class NewspaperDao : INewspaperDao
     {
-        private readonly HashSet<LibraryAbstractElement> _data;
+        private readonly ICatalogueDao _catalogue;
 
-        public NewspaperDao(HashSet<LibraryAbstractElement> data)
+        public NewspaperDao(ICatalogueDao catalogue)
         {
-            _data = data;
+            _catalogue = catalogue;
         }
 
         public void Add(AbstractNewspaper newspaper)
         {
             try
             {
-                newspaper.Id = newspaper.GetHashCode();
-
-                _data.Add(newspaper);
+                _catalogue.Add(newspaper);
             }
             catch (Exception ex)
             {
@@ -36,7 +34,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id)) as AbstractNewspaper
+                return _catalogue.Get(id)?.Clone() as AbstractNewspaper
                     ?? throw new ArgumentOutOfRangeException("Incorrect id");
             }
             catch (Exception ex)
@@ -45,11 +43,18 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear()
         {
             try
             {
-                return _data.OfType<AbstractNewspaper>().GroupBy(b => b.PublishingYear);
+                Dictionary<int, List<AbstractNewspaper>> groups = new Dictionary<int, List<AbstractNewspaper>>();
+
+                foreach (var item in Search(null).GroupBy(b => b.PublishingYear))
+                {
+                    groups.Add(item.Key, item.ToList());
+                }
+
+                return groups;
             }
             catch (Exception ex)
             {
@@ -61,7 +66,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.Remove(_data.First(a => a.Id.Value.Equals(id)));
+                return _catalogue.Remove(id);
             }
             catch (Exception ex)
             {
@@ -73,7 +78,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                var query = _data.OfType<AbstractNewspaper>().AsQueryable();
+                var query = _catalogue.Search(null).OfType<AbstractNewspaper>().AsQueryable();
 
                 if (searchRequest != null)
                 {
@@ -115,8 +120,16 @@ namespace Epam.Library.Dal.Memory
 
         private IQueryable<AbstractNewspaper> DetermineSearchQuery(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, IQueryable<AbstractNewspaper> query)
         {
-            query = query.Where(a => DetermineLineForRequest(a, searchRequest).ToLower()
+            switch (searchRequest.SearchOptions)
+            {
+                case NewspaperSearchOptions.Name:
+                    query = query.Where(a => a.Name.ToLower()
                         .Contains(searchRequest.SearchLine.ToLower()));
+                    break;
+
+                default:
+                    break;
+            }
 
             return query;
         }

@@ -24,7 +24,7 @@ namespace Epam.Library.Bll
             _validation = validation;
         }
 
-        public ErrorValidation[] Add(AbstractBook book)
+        public IEnumerable<ErrorValidation> Add(AbstractBook book)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Epam.Library.Bll
 
                 var errors = _validation.Validate(book);
 
-                if (errors.Length == 0)
+                if (errors.Count() == 0)
                 {
                     _dao.Add(book);
                 }
@@ -77,7 +77,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear()
         {
             try
             {

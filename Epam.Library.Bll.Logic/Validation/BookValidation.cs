@@ -9,7 +9,7 @@ namespace Epam.Library.Bll.Validation
 {
     public class BookValidation : IValidationBll<AbstractBook>
     {
-        public ErrorValidation[] Validate(AbstractBook element)
+        public IEnumerable<ErrorValidation> Validate(AbstractBook element)
         {
             if (element is null)
             {
@@ -97,8 +97,8 @@ namespace Epam.Library.Bll.Validation
             }
 
             if (element.Isbn != null &&
-                !Regex.IsMatch(element.Isbn, ValidationPatterns.IsbnPattern) ||
-                element.Isbn.Length != 18)
+                (!Regex.IsMatch(element.Isbn, ValidationPatterns.IsbnPattern) ||
+                element.Isbn.Length != 18))
             {
                 errorList.Add(new ErrorValidation
                 (
@@ -108,7 +108,7 @@ namespace Epam.Library.Bll.Validation
                 ));
             }
 
-            return errorList.ToArray();
+            return errorList;
         }
     }
 }

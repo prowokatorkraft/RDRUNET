@@ -11,20 +11,20 @@ namespace Epam.Library.Bll
 {
     public class PatentBll : IPatentBll
     {
-        protected readonly IPatentBll _dao;
+        protected readonly IPatentDao _dao;
 
         protected readonly IAuthorBll _author;
 
         protected readonly IValidationBll<AbstractPatent> _validation;
         
-        public PatentBll(IPatentBll patentDao, IAuthorBll author, IValidationBll<AbstractPatent> validation)
+        public PatentBll(IPatentDao patentDao, IAuthorBll author, IValidationBll<AbstractPatent> validation)
         {
             _dao = patentDao;
             _validation = validation;
             _author = author;
         }
 
-        public ErrorValidation[] Add(AbstractPatent patent)
+        public IEnumerable<ErrorValidation> Add(AbstractPatent patent)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Epam.Library.Bll
 
                 var errors = _validation.Validate(patent);
 
-                if (errors.Length == 0)
+                if (errors.Count() == 0)
                 {
                     _dao.Add(patent);
                 }
@@ -89,7 +89,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear()
         {
             try
             {

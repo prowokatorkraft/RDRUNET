@@ -7,7 +7,7 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface IBookBll
     {
-        ErrorValidation[] Add(AbstractBook book);
+        IEnumerable<ErrorValidation> Add(AbstractBook book);
 
         bool Remove(int id);
 
@@ -15,6 +15,6 @@ namespace Epam.Library.Bll.Contracts
 
         IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
 
-        IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear();
+        Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear();
     }
 }

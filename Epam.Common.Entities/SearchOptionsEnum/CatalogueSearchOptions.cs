@@ -3,7 +3,6 @@
     public enum CatalogueSearchOptions
     {
         None = 0,
-        Name = 1,
-        Author = 2,
+        Name = 1
     }
 }

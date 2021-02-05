@@ -5,9 +5,10 @@ using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.SearchOptionsEnum;
 using Epam.Library.Dal.Contracts;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
-namespace Epam.Library.Bll.Logic
+namespace Epam.Library.Bll
 {
     public class AuthorBll : IAuthorBll
     {
@@ -21,13 +22,13 @@ namespace Epam.Library.Bll.Logic
             _validation = validation;
         }
 
-        public ErrorValidation[] Add(Author author)
+        public IEnumerable<ErrorValidation> Add(Author author)
         {
             try
             {
                 var errors = _validation.Validate(author);
 
-                if (errors.Length == 0)
+                if (errors.Count() == 0)
                 {
                     _dao.Add(author);
                 }
@@ -44,7 +45,7 @@ namespace Epam.Library.Bll.Logic
         {
             try
             {
-                return _dao.Get(id);
+                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {

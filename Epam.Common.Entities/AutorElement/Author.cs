@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Epam.Library.Common.Entities.AuthorElement
 {
@@ -30,6 +31,21 @@ namespace Epam.Library.Common.Entities.AuthorElement
         public object Clone()
         {
             return new Author(Id, FirstName, LastName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Author author &&
+                   FirstName == author.FirstName &&
+                   LastName == author.LastName;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1938039292;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FirstName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LastName);
+            return hashCode;
         }
     }
 }

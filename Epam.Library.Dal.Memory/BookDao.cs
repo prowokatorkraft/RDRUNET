@@ -11,23 +11,18 @@ namespace Epam.Library.Dal.Memory
 {
     public class BookDao : IBookDao
     {
-        private readonly HashSet<LibraryAbstractElement> _data;
+        private readonly ICatalogueDao _catalogue;
 
-        private readonly IAuthorDao _authorDao;
-
-        public BookDao(HashSet<LibraryAbstractElement> data, IAuthorDao authorDao)
+        public BookDao(ICatalogueDao catalogue)
         {
-            _data = data;
-            _authorDao = authorDao;
+            _catalogue = catalogue;
         }
 
         public void Add(AbstractBook book)
         {
             try
             {
-                book.Id = book.GetHashCode();
-
-                _data.Add(book);
+                _catalogue.Add(book);
             }
             catch (Exception ex)
             {
@@ -39,7 +34,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id)) as AbstractBook
+                return _catalogue.Get(id)?.Clone() as AbstractBook
                     ?? throw new ArgumentOutOfRangeException("Incorrect id");
             }
             catch (Exception ex)
@@ -48,11 +43,30 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear()
+        public IEnumerable<AbstractBook> GetByAuthorId(int id)
         {
             try
             {
-                return _data.OfType<AbstractBook>().GroupBy(b => b.PublishingYear);
+                return _catalogue.GetByAuthorId(id).OfType<AbstractBook>();
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
+        }
+
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear()
+        {
+            try
+            {
+                Dictionary<int, List<AbstractBook>> groups = new Dictionary<int, List<AbstractBook>>();
+
+                foreach (var item in Search(null).GroupBy(b => b.PublishingYear))
+                {
+                    groups.Add(item.Key, item.ToList());
+                }
+
+                return groups;
             }
             catch (Exception ex)
             {
@@ -64,7 +78,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                return _data.Remove(_data.First(a => a.Id.Value.Equals(id)));
+                return _catalogue.Remove(id);
             }
             catch (Exception ex)
             {
@@ -76,7 +90,7 @@ namespace Epam.Library.Dal.Memory
         {
             try
             {
-                var query = _data.OfType<AbstractBook>().AsQueryable();
+                var query = _catalogue.Search(null).OfType<AbstractBook>().AsQueryable();
 
                 if (searchRequest != null)
                 {
@@ -118,40 +132,23 @@ namespace Epam.Library.Dal.Memory
 
         private IQueryable<AbstractBook> DetermineSearchQuery(SearchRequest<SortOptions, BookSearchOptions> searchRequest, IQueryable<AbstractBook> query)
         {
-            query = query.Where(a => DetermineLineForRequest(a, searchRequest).ToLower()
+            switch (searchRequest.SearchOptions)
+            {
+                case BookSearchOptions.Name:
+                    query = query.Where(a => a.Name.ToLower()
                         .Contains(searchRequest.SearchLine.ToLower()));
+                    break;
+
+                case BookSearchOptions.Publisher:
+                    query = query.Where(a => a.Publisher.ToLower()
+                        .Contains(searchRequest.SearchLine.ToLower()));
+                    break;
+
+                default:
+                    break;
+            }
 
             return query;
-        }
-
-        private string DetermineLineForRequest(AbstractBook book, SearchRequest<SortOptions, BookSearchOptions> request)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Name))
-            {
-                builder.Append(book.Name + " ");
-            }
-
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Author))
-            {
-                if (book.AuthorIDs != null)
-                {
-                    foreach (var id in book.AuthorIDs)
-                    {
-                        var author = _authorDao.Get(id);
-
-                        builder.Append(author.FirstName + " " + author.LastName + " "); ;
-                    }
-                }
-            }
-
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Publisher))
-            {
-                builder.Append(book.Publisher + " ");
-            }
-
-            return builder.ToString();
         }
     }
 }
