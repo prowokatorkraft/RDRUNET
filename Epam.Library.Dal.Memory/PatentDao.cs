@@ -5,29 +5,29 @@ using System;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
-using Epam.Library.Common.Entities.AuthorElement.Book;
+using Epam.Library.Common.Entities.AuthorElement.Patent;
 
 namespace Epam.Library.Dal.Memory
 {
-    public class BookDao : IBookDao
+    public class PatentDao : IPatentDao
     {
         private readonly HashSet<LibraryAbstractElement> _data;
 
         private readonly IAuthorDao _authorDao;
 
-        public BookDao(HashSet<LibraryAbstractElement> data, IAuthorDao authorDao)
+        public PatentDao(HashSet<LibraryAbstractElement> data, IAuthorDao authorDao)
         {
             _data = data;
             _authorDao = authorDao;
         }
 
-        public void Add(AbstractBook book)
+        public void Add(AbstractPatent patent)
         {
             try
             {
-                book.Id = book.GetHashCode();
+                patent.Id = patent.GetHashCode();
 
-                _data.Add(book);
+                _data.Add(patent);
             }
             catch (Exception ex)
             {
@@ -35,11 +35,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractPatent Get(int id)
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id)) as AbstractBook
+                return _data.First(a => a.Id.Value.Equals(id)) as AbstractPatent
                     ?? throw new ArgumentOutOfRangeException("Incorrect id");
             }
             catch (Exception ex)
@@ -48,11 +48,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear()
+        public IEnumerable<IGrouping<int, AbstractPatent>> GetAllGroupsByPublishYear()
         {
             try
             {
-                return _data.OfType<AbstractBook>().GroupBy(b => b.PublishingYear);
+                return _data.OfType<AbstractPatent>().GroupBy(b => b.DateOfPublication.Year);
             }
             catch (Exception ex)
             {
@@ -72,11 +72,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
         {
             try
             {
-                var query = _data.OfType<AbstractBook>().AsQueryable();
+                var query = _data.OfType<AbstractPatent>().AsQueryable();
 
                 if (searchRequest != null)
                 {
@@ -93,7 +93,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        private IQueryable<AbstractBook> DetermineSortQuery(SearchRequest<SortOptions, BookSearchOptions> searchRequest, IQueryable<AbstractBook> query)
+        private IQueryable<AbstractPatent> DetermineSortQuery(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, IQueryable<AbstractPatent> query)
         {
             switch (searchRequest.SortOptions)
             {
@@ -116,7 +116,7 @@ namespace Epam.Library.Dal.Memory
             return query;
         }
 
-        private IQueryable<AbstractBook> DetermineSearchQuery(SearchRequest<SortOptions, BookSearchOptions> searchRequest, IQueryable<AbstractBook> query)
+        private IQueryable<AbstractPatent> DetermineSearchQuery(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, IQueryable<AbstractPatent> query)
         {
             query = query.Where(a => DetermineLineForRequest(a, searchRequest).ToLower()
                         .Contains(searchRequest.SearchLine.ToLower()));
@@ -124,31 +124,26 @@ namespace Epam.Library.Dal.Memory
             return query;
         }
 
-        private string DetermineLineForRequest(AbstractBook book, SearchRequest<SortOptions, BookSearchOptions> request)
+        private string DetermineLineForRequest(AbstractPatent patent, SearchRequest<SortOptions, PatentSearchOptions> request)
         {
             StringBuilder builder = new StringBuilder();
 
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Name))
+            if (request.SearchOptions.HasFlag(PatentSearchOptions.Name))
             {
-                builder.Append(book.Name + " ");
+                builder.Append(patent.Name + " ");
             }
 
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Author))
+            if (request.SearchOptions.HasFlag(PatentSearchOptions.Author))
             {
-                if (book.AuthorIDs != null)
+                if (patent.AuthorIDs != null)
                 {
-                    foreach (var id in book.AuthorIDs)
+                    foreach (var id in patent.AuthorIDs)
                     {
                         var author = _authorDao.Get(id);
 
                         builder.Append(author.FirstName + " " + author.LastName + " "); ;
                     }
                 }
-            }
-
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Publisher))
-            {
-                builder.Append(book.Publisher + " ");
             }
 
             return builder.ToString();

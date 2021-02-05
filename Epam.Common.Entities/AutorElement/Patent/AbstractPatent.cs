@@ -2,7 +2,7 @@
 
 namespace Epam.Library.Common.Entities.AuthorElement.Patent
 {
-    public abstract class AbstractPatent : AbstractAutorsElement
+    public abstract class AbstractPatent : AbstractAutorElement
     {
         public abstract string Country { get; set; }
 

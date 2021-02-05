@@ -46,7 +46,7 @@
     <Compile Include="Exceptions\GetException.cs" />
     <Compile Include="Exceptions\RemoveException.cs" />
     <Compile Include="LibraryAbstractElement.cs" />
-    <Compile Include="AutorElement\AbstractAutorsElement.cs" />
+    <Compile Include="AutorElement\AbstractAutorElement.cs" />
     <Compile Include="AutorElement\Author.cs" />
     <Compile Include="AutorElement\Book\AbstractBook.cs" />
     <Compile Include="AutorElement\Book\Book.cs" />

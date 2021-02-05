@@ -5,29 +5,26 @@ using System;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
-using Epam.Library.Common.Entities.AuthorElement.Book;
+using Epam.Library.Common.Entities.Newspaper;
 
 namespace Epam.Library.Dal.Memory
 {
-    public class BookDao : IBookDao
+    public class NewspaperDao : INewspaperDao
     {
         private readonly HashSet<LibraryAbstractElement> _data;
 
-        private readonly IAuthorDao _authorDao;
-
-        public BookDao(HashSet<LibraryAbstractElement> data, IAuthorDao authorDao)
+        public NewspaperDao(HashSet<LibraryAbstractElement> data)
         {
             _data = data;
-            _authorDao = authorDao;
         }
 
-        public void Add(AbstractBook book)
+        public void Add(AbstractNewspaper newspaper)
         {
             try
             {
-                book.Id = book.GetHashCode();
+                newspaper.Id = newspaper.GetHashCode();
 
-                _data.Add(book);
+                _data.Add(newspaper);
             }
             catch (Exception ex)
             {
@@ -35,11 +32,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractNewspaper Get(int id)
         {
             try
             {
-                return _data.First(a => a.Id.Value.Equals(id)) as AbstractBook
+                return _data.First(a => a.Id.Value.Equals(id)) as AbstractNewspaper
                     ?? throw new ArgumentOutOfRangeException("Incorrect id");
             }
             catch (Exception ex)
@@ -48,11 +45,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<IGrouping<int, AbstractBook>> GetAllGroupsByPublishYear()
+        public IEnumerable<IGrouping<int, AbstractNewspaper>> GetAllGroupsByPublishYear()
         {
             try
             {
-                return _data.OfType<AbstractBook>().GroupBy(b => b.PublishingYear);
+                return _data.OfType<AbstractNewspaper>().GroupBy(b => b.PublishingYear);
             }
             catch (Exception ex)
             {
@@ -72,11 +69,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
         {
             try
             {
-                var query = _data.OfType<AbstractBook>().AsQueryable();
+                var query = _data.OfType<AbstractNewspaper>().AsQueryable();
 
                 if (searchRequest != null)
                 {
@@ -93,7 +90,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        private IQueryable<AbstractBook> DetermineSortQuery(SearchRequest<SortOptions, BookSearchOptions> searchRequest, IQueryable<AbstractBook> query)
+        private IQueryable<AbstractNewspaper> DetermineSortQuery(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, IQueryable<AbstractNewspaper> query)
         {
             switch (searchRequest.SortOptions)
             {
@@ -116,7 +113,7 @@ namespace Epam.Library.Dal.Memory
             return query;
         }
 
-        private IQueryable<AbstractBook> DetermineSearchQuery(SearchRequest<SortOptions, BookSearchOptions> searchRequest, IQueryable<AbstractBook> query)
+        private IQueryable<AbstractNewspaper> DetermineSearchQuery(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, IQueryable<AbstractNewspaper> query)
         {
             query = query.Where(a => DetermineLineForRequest(a, searchRequest).ToLower()
                         .Contains(searchRequest.SearchLine.ToLower()));
@@ -124,33 +121,15 @@ namespace Epam.Library.Dal.Memory
             return query;
         }
 
-        private string DetermineLineForRequest(AbstractBook book, SearchRequest<SortOptions, BookSearchOptions> request)
+        private string DetermineLineForRequest(AbstractNewspaper newspaper, SearchRequest<SortOptions, NewspaperSearchOptions> request)
         {
             StringBuilder builder = new StringBuilder();
 
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Name))
+            if (request.SearchOptions.HasFlag(NewspaperSearchOptions.Name))
             {
-                builder.Append(book.Name + " ");
+                builder.Append(newspaper.Name + " ");
             }
-
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Author))
-            {
-                if (book.AuthorIDs != null)
-                {
-                    foreach (var id in book.AuthorIDs)
-                    {
-                        var author = _authorDao.Get(id);
-
-                        builder.Append(author.FirstName + " " + author.LastName + " "); ;
-                    }
-                }
-            }
-
-            if (request.SearchOptions.HasFlag(BookSearchOptions.Publisher))
-            {
-                builder.Append(book.Publisher + " ");
-            }
-
+            
             return builder.ToString();
         }
     }
