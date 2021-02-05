@@ -54,7 +54,7 @@ namespace Epam.Library.Dal.Memory
             try
             {
                 return _data.OfType<AbstractAutorElement>()
-                    .Where(e => e.AuthorIDs.Any(i => i.Equals(id)));
+                    .Where(e => e.AuthorIDs?.Any(i => i.Equals(id)) ?? false);
             }
             catch (Exception ex)
             {

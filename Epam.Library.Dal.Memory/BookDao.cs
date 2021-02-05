@@ -74,6 +74,28 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(string searchLine)
+        {
+            try
+            {
+                Dictionary<string, List<AbstractBook>> groups = new Dictionary<string, List<AbstractBook>>();
+
+                var temp = Search(new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Publisher, searchLine))
+                    .GroupBy(b => b.Publisher);
+
+                foreach (var item in temp)
+                {
+                    groups.Add(item.Key, item.ToList());
+                }
+
+                return groups;
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
+        }
+
         public bool Remove(int id)
         {
             try

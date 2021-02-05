@@ -89,6 +89,18 @@ namespace Epam.Library.Bll
             }
         }
 
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(string searchLine)
+        {
+            try
+            {
+                return _dao.GetAllGroupsByPublisher(searchLine);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+
         public AbstractBook Get(int id)
         {
             try
@@ -98,6 +110,18 @@ namespace Epam.Library.Bll
             catch (Exception ex)
             {
                 throw new GetException("Error getting item.", ex);
+            }
+        }
+
+        public IEnumerable<AbstractBook> GetByAuthorId(int id)
+        {
+            try
+            {
+                return _dao.GetByAuthorId(id);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
             }
         }
     }
