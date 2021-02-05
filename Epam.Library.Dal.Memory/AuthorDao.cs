@@ -30,7 +30,6 @@ namespace Epam.Library.Dal.Memory
             {
                 throw new AddException("Error adding data.", ex);
             }
-
         }
 
         public Author Get(int id)
@@ -82,9 +81,12 @@ namespace Epam.Library.Dal.Memory
             {
                 var query = _data.AsQueryable();
 
-                query = DetermineSearchQuery(searchRequest, query);
+                if (searchRequest != null)
+                {
+                    query = DetermineSearchQuery(searchRequest, query);
 
-                query = DetermineSortQuery(searchRequest, query);
+                    query = DetermineSortQuery(searchRequest, query);
+                }
 
                 return query;
             }
