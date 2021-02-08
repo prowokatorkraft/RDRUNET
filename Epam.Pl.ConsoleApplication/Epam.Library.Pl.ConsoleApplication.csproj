@@ -43,7 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="AuthorPresentation.cs" />
+    <Compile Include="BookPresentation.cs" />
+    <Compile Include="ConsoleApplication.cs" />
+    <Compile Include="NewspaperPresentation.cs" />
+    <Compile Include="PatentPresentation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,14 +69,6 @@
     <ProjectReference Include="..\Epam.Library.Common.DependencyInjection\Epam.Library.Common.DependencyInjection.csproj">
       <Project>{9a4418bc-55a0-4ceb-b760-d37d29a46075}</Project>
       <Name>Epam.Library.Common.DependencyInjection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Epam.Library.Dal.Contracts\Epam.Library.Dal.Contracts.csproj">
-      <Project>{20b2f9db-ec00-4046-90c7-674952191b23}</Project>
-      <Name>Epam.Library.Dal.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Epam.Library.Dal.Memory\Epam.Library.Dal.Memory.csproj">
-      <Project>{46409c69-54e7-47d3-9dfd-86998affde5e}</Project>
-      <Name>Epam.Library.Dal.Memory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
