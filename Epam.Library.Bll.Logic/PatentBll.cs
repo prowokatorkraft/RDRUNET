@@ -65,6 +65,18 @@ namespace Epam.Library.Bll
             }
         }
 
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id)
+        {
+            try
+            {
+                return _dao.GetByAuthorId(id);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
+        }
+
         public bool Remove(int id)
         {
             try

@@ -13,6 +13,8 @@ namespace Epam.Library.Bll.Contracts
 
         AbstractPatent Get(int id);
 
+        IEnumerable<AbstractPatent> GetByAuthorId(int id);
+
         IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest);
 
         Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear();
