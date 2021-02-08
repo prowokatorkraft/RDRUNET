@@ -91,9 +91,9 @@ namespace Epam.Library.Bll.Validation
                 ));
             }
 
-            if (element.DateOfPublication <= DateTime.Now &&
-                (element.ApplicationDate != null && (element.DateOfPublication >= element.ApplicationDate ||
-                 element.DateOfPublication.Year >= 1474)))
+            if ((element.ApplicationDate != null && element.DateOfPublication < element.ApplicationDate) ||
+                element.DateOfPublication > DateTime.Now ||
+                element.DateOfPublication.Year < 1474)
             {
                 errorList.Add(new ErrorValidation
                 (
