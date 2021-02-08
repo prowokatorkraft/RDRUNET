@@ -42,8 +42,8 @@ namespace Epam.Library.Common.DependencyInjection
             NewspaperValidation = new NewspaperValidation();
             PatentValidation = new PatentValidation();
 
-            AuthorBll = new AuthorBll(AuthorDao, AuthorValidation);
             CatalogueBll = new CatalogueBll(CatalogueDao);
+            AuthorBll = new AuthorBll(AuthorDao, CatalogueBll, AuthorValidation);
             BookBll = new BookBll(BookDao, AuthorBll, BookValidation);
             NewspaperBll = new NewspaperBll(NewspaperDao, NewspaperValidation);
             PatentBll = new PatentBll(PatentDao, AuthorBll, PatentValidation);

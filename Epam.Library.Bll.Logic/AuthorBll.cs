@@ -14,11 +14,14 @@ namespace Epam.Library.Bll
     {
         protected readonly IAuthorDao _dao;
 
+        protected readonly ICatalogueBll _catalogueBll;
+
         protected readonly IValidationBll<Author> _validation;
 
-        public AuthorBll(IAuthorDao dao, IValidationBll<Author> validation)
+        public AuthorBll(IAuthorDao dao, ICatalogueBll catalogueBll, IValidationBll<Author> validation)
         {
             _dao = dao;
+            _catalogueBll = catalogueBll;
             _validation = validation;
         }
 
@@ -69,6 +72,11 @@ namespace Epam.Library.Bll
         {
             try
             {
+                if (_catalogueBll.GetByAuthorId(id).Count() > 0)
+                {
+                    return false;
+                }
+
                 return _dao.Remove(id);
             }
             catch (Exception ex)
