@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FC214DB6-A8FB-4F31-93F9-6627B5BD7451}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Epam.Pl.ConsoleApplication</RootNamespace>
+    <AssemblyName>Epam.Pl.ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthorPresentation.cs" />
+    <Compile Include="BookPresentation.cs" />
+    <Compile Include="ConsoleApplication.cs" />
+    <Compile Include="NewspaperPresentation.cs" />
+    <Compile Include="PatentPresentation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Epam.Common.Entities\Epam.Library.Common.Entities.csproj">
+      <Project>{2b32bf58-b84a-4e36-a720-9123e81d3b13}</Project>
+      <Name>Epam.Library.Common.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Bll.Contracts\Epam.Library.Bll.Contracts.csproj">
+      <Project>{c0e5c2ac-94cd-43ee-8f7c-6a194dc444ff}</Project>
+      <Name>Epam.Library.Bll.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Bll.Logic\Epam.Library.Bll.csproj">
+      <Project>{3a3930e4-abe0-461d-9c8b-824f85c33dc4}</Project>
+      <Name>Epam.Library.Bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Common.DependencyInjection\Epam.Library.Common.DependencyInjection.csproj">
+      <Project>{9a4418bc-55a0-4ceb-b760-d37d29a46075}</Project>
+      <Name>Epam.Library.Common.DependencyInjection</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
