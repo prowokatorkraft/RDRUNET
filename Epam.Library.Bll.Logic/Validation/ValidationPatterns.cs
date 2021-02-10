@@ -8,7 +8,7 @@ namespace Epam.Library.Bll.Validation
 
         public const string LastNamePattern = "^([a-z]+ )?[A-Z][a-z]{0,}((-|')[A-Z][a-z]{0,})?$|^([а-яё]+ )?[А-ЯЁ][а-яё]{0,}((-|')[А-ЯЁ][а-яё]{0,})?$";
 
-        public const string PublishingCityPattern = "^[A-Z][a-z]+(((-[A-Z])|( [A-Za-z])?)[a-z]{0,}){0,}$|^[А-ЯЁ][а-яё]+(((-[А-ЯЁ])|( [А-ЯЁа-яё])?)[а-яё]{0,}){0,}$";
+        public const string PublishingCityPattern = "^[A-Z][a-z]+((-[a-z]{1,})?((-[A-Z])|( [A-Za-z]))[a-z]{0,})?$|^[А-ЯЁ][а-яё]+((-[а-яё]{1,})?((-[А-ЯЁ])|( [А-ЯЁа-яё]))[а-яё]{0,})?$";
 
         public const string IsbnPattern = "^ISBN ([0-9]{1,5})-([0-9]{1,7})-([0-9]{1,7})-([0-9Xx])$";
 

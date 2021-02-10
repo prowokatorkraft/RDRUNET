@@ -62,7 +62,7 @@ namespace Epam.Library.Bll.Validation
             {
                 errorList.Add(new ErrorValidation
                 (
-                    nameof(element.Name),
+                    nameof(element.Publisher),
                     "Value is null.",
                     null
                 ));
@@ -71,7 +71,7 @@ namespace Epam.Library.Bll.Validation
             {
                 errorList.Add(new ErrorValidation
                 (
-                    nameof(element.Name),
+                    nameof(element.Publisher),
                     "Value exceeds the allowed size.",
                     "300"
                 ));
@@ -84,6 +84,15 @@ namespace Epam.Library.Bll.Validation
                     nameof(element.PublishingCity),
                     "Incorrect entered value.",
                     null
+                ));
+            }
+            else if (element.PublishingCity.Length > 200)
+            {
+                errorList.Add(new ErrorValidation
+                (
+                    nameof(element.PublishingCity),
+                    "Value exceeds the allowed size.",
+                    "200"
                 ));
             }
 
