@@ -12,6 +12,7 @@ namespace Epam.Library.Pl.ConsoleApplication
 {
     class AuthorPresentation
     {
+        //
         private readonly IAuthorBll _authorBll;
 
         private readonly ICatalogueBll _catalogueBll;
