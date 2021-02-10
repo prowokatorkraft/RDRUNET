@@ -3,16 +3,29 @@ using System.Linq;
 using Epam.Library.Bll.Validation;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
+using Epam.Library.Test.Validation.TestCases;
 using NUnit.Framework;
 
 namespace Epam.Library.Test.Validation
 {
     [TestFixture]
-    public class BookValidationTest
+    public class BookValidationTests
     {
+        [Test]
+        public void Validate_Name_Null()
+        {
+            Book book = new Book();
+
+            book.Name = null;
+
+            var result = new BookValidation().Validate(book);
+
+            Assert.IsTrue(result.Any(a => a.Field.Equals(nameof(book.Name))));
+        }
+
         [TestCase('t', 300, ExpectedResult = false)]
         [TestCase('t', 301, ExpectedResult = true)]
-        public bool ValidateSizeInBookNameTest(char value, int count)
+        public bool Validate_Name_Size(char value, int count)
         {
             Book book = new Book();
 
@@ -24,7 +37,7 @@ namespace Epam.Library.Test.Validation
         }
 
         [Test]
-        public void ValidateBookAnnotationByNullTest()
+        public void Validate_Annotation_Null()
         {
             Book book = new Book();
 
@@ -37,7 +50,7 @@ namespace Epam.Library.Test.Validation
 
         [TestCase('t', 2000, ExpectedResult = false)]
         [TestCase('t', 2001, ExpectedResult = true)]
-        public bool ValidateSizeInBookAnnotationTest(char value, int count)
+        public bool Validate_Annotation_Size(char value, int count)
         {
             Book book = new Book();
 
@@ -49,7 +62,7 @@ namespace Epam.Library.Test.Validation
         }
 
         [Test]
-        public void ValidateBookNumberOfPagesByNegativeTest()
+        public void Validate_NumberOfPages_Negative()
         {
             Book book = new Book();
 
@@ -60,9 +73,21 @@ namespace Epam.Library.Test.Validation
             Assert.IsTrue(result.Any(a => a.Field.Equals(nameof(book.NumberOfPages))));
         }
 
+        [Test]
+        public void Validate_Publisher_Null()
+        {
+            Book book = new Book();
+
+            book.Publisher = null;
+
+            var result = new BookValidation().Validate(book);
+
+            Assert.IsTrue(result.Any(a => a.Field.Equals(nameof(book.Publisher))));
+        }
+
         [TestCase('t', 300, ExpectedResult = false)]
         [TestCase('t', 301, ExpectedResult = true)]
-        public bool ValidateSizeInBookPublisherTest(char value, int count)
+        public bool Validate_Publisher_Size(char value, int count)
         {
             Book book = new Book();
 
@@ -73,17 +98,8 @@ namespace Epam.Library.Test.Validation
             return result.Any(a => a.Field.Equals(nameof(book.Publisher)));
         }
 
-        [TestCase("Test")]
-        [TestCase("Test-Test")]
-        [TestCase("Test-test-Test")]
-        [TestCase("Test Test")]
-        [TestCase("Test test")]
-        [TestCase("Тест")]
-        [TestCase("Тест-Тест")]
-        [TestCase("Тест-тест-Тест")]
-        [TestCase("Тест Тест")]
-        [TestCase("Тест тест")]
-        public void ValidateTrueBookPublishingCityTest(string value)
+        [TestCaseSource(typeof(BookValidationTestCases), nameof(BookValidationTestCases.ValidatePublishingCityTestCases))]
+        public bool Validate_PublishingCity(string value)
         {
             Book book = new Book();
 
@@ -91,39 +107,12 @@ namespace Epam.Library.Test.Validation
 
             var result = new BookValidation().Validate(book);
 
-            Assert.IsFalse(result.Any(a => a.Field.Equals(nameof(book.PublishingCity))));
-        }
-
-        [TestCase("test")]
-        [TestCase("-test")]
-        [TestCase("test-")]
-        [TestCase("test-Test")]
-        [TestCase("Test-test")]
-        [TestCase("Test - Test")]
-        [TestCase("Test-Тест")]
-        [TestCase("Test-Test-Test")]
-        [TestCase("тест")]
-        [TestCase("-тест")]
-        [TestCase("тест-")]
-        [TestCase("тест-Тест")]
-        [TestCase("Тест-тест")]
-        [TestCase("-Тест-Тест")]
-        [TestCase("Тест-Тест-")]
-        [TestCase("Тест-Тест-Тест")]
-        public void ValidateFalseBookPublishingCityTest(string value)
-        {
-            Book book = new Book();
-
-            book.PublishingCity = value;
-
-            var result = new BookValidation().Validate(book);
-
-            Assert.IsTrue(result.Any(a => a.Field.Equals(nameof(book.PublishingCity))));
+            return result.Any(a => a.Field.Equals(nameof(book.PublishingCity)));
         }
 
         [TestCase('t', 200, ExpectedResult = false)]
         [TestCase('t', 201, ExpectedResult = true)]
-        public bool ValidateSizeInBookPublishingCityTest(char value, int count)
+        public bool Validate_PublishingCity_Size(char value, int count)
         {
             Book book = new Book();
 
@@ -134,6 +123,28 @@ namespace Epam.Library.Test.Validation
             return result.Any(a => a.Field.Equals(nameof(book.PublishingCity)));
         }
 
-        //// TODO PublishingYear and Isbn
+        [TestCaseSource(typeof(BookValidationTestCases), nameof(BookValidationTestCases.ValidatePublishingYearTestCases))]
+        public bool Validate_PublishingYear(int value)
+        {
+            Book book = new Book();
+
+            book.PublishingYear = value;
+
+            var result = new BookValidation().Validate(book);
+
+            return result.Any(a => a.Field.Equals(nameof(book.PublishingYear)));
+        }
+
+        [TestCaseSource(typeof(BookValidationTestCases), nameof(BookValidationTestCases.ValidateIsbnCases))]
+        public bool Validate_Isbn(string value)
+        {
+            Book book = new Book();
+
+            book.Isbn = value;
+
+            var result = new BookValidation().Validate(book);
+
+            return result.Any(a => a.Field.Equals(nameof(book.Isbn)));
+        }
     }
 }

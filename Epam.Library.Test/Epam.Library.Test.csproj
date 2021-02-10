@@ -48,9 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Validation\AuthorValidationTest.cs" />
+    <Compile Include="Validation\AuthorValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\BookValidationTest.cs" />
+    <Compile Include="Validation\BookValidationTests.cs" />
+    <Compile Include="Validation\TestCases\BookValidationTestCases.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

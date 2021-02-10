@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Epam.Library.Test.Validation
 {
     [TestFixture]
-    public class AuthorValidationTest
+    public class AuthorValidationTests
     {
         [TestCase("Тест")]
         [TestCase("Тест-Тест")]
