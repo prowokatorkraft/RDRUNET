@@ -51,6 +51,7 @@
     <Compile Include="Validation\AuthorValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\BookValidationTests.cs" />
+    <Compile Include="Validation\TestCases\AuthorValidationTestCases.cs" />
     <Compile Include="Validation\TestCases\BookValidationTestCases.cs" />
   </ItemGroup>
   <ItemGroup>
