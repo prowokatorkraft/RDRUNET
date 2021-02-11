@@ -13,11 +13,16 @@ namespace Epam.Library.Test.Validation
         [TestCaseSource(typeof(AuthorValidationTestCases), nameof(AuthorValidationTestCases.ValidateFirstNameTestCases))]
         public bool Validate_FirstName(string value)
         {
-            Author author = new Author();
+            // Arrange
 
+            Author author = new Author();
             author.FirstName = value;
 
+            // Act
+
             var result = new AuthorValidation().Validate(author);
+
+            // Assert
 
             return result.Any(a => a.Field.Equals(nameof(author.FirstName)));
         }
@@ -26,11 +31,16 @@ namespace Epam.Library.Test.Validation
         [TestCase('t', 51, ExpectedResult = true)]
         public bool Validate_FirstName_Size(char value, int count)
         {
-            Author author = new Author();
+            // Arrange
 
+            Author author = new Author();
             author.FirstName = char.ToUpper(value) + new string(value, count - 1);
 
+            // Act
+
             var result = new AuthorValidation().Validate(author);
+
+            // Assert
 
             return result.Any(a => a.Field.Equals(nameof(author.FirstName)));
         }
@@ -38,11 +48,16 @@ namespace Epam.Library.Test.Validation
         [TestCaseSource(typeof(AuthorValidationTestCases), nameof(AuthorValidationTestCases.ValidateLastNameTestCases))]
         public bool Validate_LastName(string value)
         {
-            Author author = new Author();
+            // Arrange
 
+            Author author = new Author();
             author.LastName = value;
 
+            // Act
+
             var result = new AuthorValidation().Validate(author);
+
+            // Assert
 
             return result.Any(a => a.Field.Equals(nameof(author.LastName)));
         }
@@ -51,11 +66,16 @@ namespace Epam.Library.Test.Validation
         [TestCase('t', 201, ExpectedResult = true)]
         public bool ValidateSizeInAuthorLastNameTest(char value, int count)
         {
-            Author author = new Author();
+            // Arrange
 
+            Author author = new Author();
             author.LastName = char.ToUpper(value) + new string(value, count - 1);
 
+            // Act
+
             var result = new AuthorValidation().Validate(author);
+
+            // Assert
 
             return result.Any(a => a.Field.Equals(nameof(author.LastName)));
         }
