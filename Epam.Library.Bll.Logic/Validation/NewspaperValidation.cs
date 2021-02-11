@@ -106,6 +106,16 @@ namespace Epam.Library.Bll.Validation
                 ));
             }
 
+            if (!element.Date.Year.Equals(element.PublishingYear))
+            {
+                errorList.Add(new ErrorValidation
+                (
+                    nameof(element.Date),
+                    "Incorrect entered value.",
+                    "The value must match PublishingYear."
+                ));
+            }
+
             if (element.Issn != null &&
                 !Regex.IsMatch(element.Issn, ValidationPatterns.IssnPattern))
             {
@@ -113,7 +123,7 @@ namespace Epam.Library.Bll.Validation
                 (
                     nameof(element.Issn),
                     "Incorrect entered value.",
-                    "Value should only be 10 digits! Exmble \"ISBN 0 - 00 - 000000 - 0\""
+                    "Value should only be 8 digits! Exmble \"ISSN 0000-0000\""
                 ));
             }
 

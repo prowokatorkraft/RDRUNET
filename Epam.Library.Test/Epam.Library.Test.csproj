@@ -51,9 +51,11 @@
     <Compile Include="Validation\AuthorValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\BookValidationTests.cs" />
+    <Compile Include="Validation\NewspaperValidationTests.cs" />
     <Compile Include="Validation\PatentValidationTests.cs" />
     <Compile Include="Validation\TestCases\AuthorValidationTestCases.cs" />
     <Compile Include="Validation\TestCases\BookValidationTestCases.cs" />
+    <Compile Include="Validation\TestCases\NewspaperValidationTestCases.cs" />
     <Compile Include="Validation\TestCases\PatentValidationTestCases.cs" />
   </ItemGroup>
   <ItemGroup>
