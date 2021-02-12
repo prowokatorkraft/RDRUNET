@@ -86,7 +86,9 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            Mock<IBookDao> bookDao = InitializeMockDaoForGet(() => new Book());
+            Mock<AbstractBook> bookValue = new Mock<AbstractBook>();
+
+            Mock<IBookDao> bookDao = InitializeMockDaoForGet(() => bookValue.Object);
 
             var bookBll = new BookBll(bookDao.Object, null, null);
 
@@ -154,11 +156,11 @@ namespace Epam.Library.Test
 
             // Act
 
-            var author = bookBll.Remove(0);
+            var book = bookBll.Remove(0);
 
             // Assert
 
-            return author;
+            return book;
         }
 
         [Test]
@@ -277,8 +279,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetAllGroupsByPublisher("")).Returns(new Dictionary<string, List<AbstractBook>>());
+            Mock<IBookDao> bookDao = InitializeMockDaoForGropusByPublisher(() => new Dictionary<string, List<AbstractBook>>());
 
             var bookBll = new BookBll(bookDao.Object, null, null);
 
@@ -296,8 +297,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetAllGroupsByPublisher("")).Returns(() => throw new Exception());
+            Mock<IBookDao> bookDao = InitializeMockDaoForGropusByPublisher(() => throw new Exception());
 
             var bookBll = new BookBll(bookDao.Object, null, null);
 
@@ -310,13 +310,19 @@ namespace Epam.Library.Test
             Assert.Throws(typeof(GetException), book);
         }
 
+        private static Mock<IBookDao> InitializeMockDaoForGropusByPublisher(Func<Dictionary<string, List<AbstractBook>>> func)
+        {
+            var bookDao = new Mock<IBookDao>();
+            bookDao.Setup(a => a.GetAllGroupsByPublisher("")).Returns(func);
+            return bookDao;
+        }
+
         [Test]
         public void GetByAuthorId()
         {
             // Arrange
 
-            var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(new List<AbstractBook>());
+            Mock<IBookDao> bookDao = InitializeMockDaoForGetByAuthorId(() => new List<AbstractBook>());
 
             var bookBll = new BookBll(bookDao.Object, null, null);
 
@@ -334,8 +340,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(() => throw new Exception());
+            Mock<IBookDao> bookDao = InitializeMockDaoForGetByAuthorId(() => throw new Exception());
 
             var bookBll = new BookBll(bookDao.Object, null, null);
 
@@ -346,6 +351,13 @@ namespace Epam.Library.Test
             // Assert
 
             Assert.Throws(typeof(GetException), book);
+        }
+
+        private static Mock<IBookDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractBook>> func)
+        {
+            var bookDao = new Mock<IBookDao>();
+            bookDao.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);
+            return bookDao;
         }
     }
 }
