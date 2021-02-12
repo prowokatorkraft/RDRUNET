@@ -21,18 +21,16 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
             bool isAddDao = false;
-            authorDao.Setup(a => a.Add(It.IsAny<Author>())).Callback(() => isAddDao = true);
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForAdd(() => isAddDao = true);
 
             var listErrors = new List<ErrorValidation>();
             if (error != null)
             {
                 listErrors.Add(error);
             }
-            var validation = new Mock<IValidationBll<Author>>();
-            validation.Setup<IEnumerable<ErrorValidation>>(a => a.Validate(It.IsAny<Author>()))
-                .Returns(listErrors);
+
+            Mock<IValidationBll<Author>> validation = InitializeMockValidationForAdd(() => listErrors);
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, validation.Object);
 
@@ -50,12 +48,9 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Add(It.IsAny<Author>())).Callback(() => throw new Exception());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForAdd(() => throw new Exception());
 
-            var validation = new Mock<IValidationBll<Author>>();
-            validation.Setup<IEnumerable<ErrorValidation>>(a => a.Validate(It.IsAny<Author>()))
-                .Returns(new List<ErrorValidation>());
+            Mock<IValidationBll<Author>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, validation.Object);
 
@@ -73,12 +68,8 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Add(It.IsAny<Author>()));
-
-            var validation = new Mock<IValidationBll<Author>>();
-            validation.Setup<IEnumerable<ErrorValidation>>(a => a.Validate(It.IsAny<Author>()))
-                .Returns(new List<ErrorValidation>());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForAdd(() => { });
+            Mock<IValidationBll<Author>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, validation.Object);
 
@@ -91,13 +82,27 @@ namespace Epam.Library.Test
             Assert.Throws(typeof(AddException), action);
         }
 
+        private static Mock<IValidationBll<Author>> InitializeMockValidationForAdd(Func<IEnumerable<ErrorValidation>> func)
+        {
+            var validation = new Mock<IValidationBll<Author>>();
+            validation.Setup<IEnumerable<ErrorValidation>>(a => a.Validate(It.IsAny<Author>()))
+                .Returns(func);
+            return validation;
+        }
+
+        private static Mock<IAuthorDao> InitializeMockDaoForAdd(Action action)
+        {
+            var authorDao = new Mock<IAuthorDao>();
+            authorDao.Setup(a => a.Add(It.IsAny<Author>())).Callback(action);
+            return authorDao;
+        }
+
         [Test]
         public void Get()
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Get(It.IsAny<int>())).Returns(new Author());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForGet(() => new Author());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, null);
 
@@ -115,8 +120,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Get(It.IsAny<int>())).Returns(() => throw new Exception());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForGet(() => throw new Exception());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, null);
 
@@ -134,8 +138,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Get(It.IsAny<int>())).Returns(() => null);
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForGet(() => null);
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, null);
 
@@ -148,14 +151,20 @@ namespace Epam.Library.Test
             Assert.Throws(typeof(GetException), author);
         }
 
+        private static Mock<IAuthorDao> InitializeMockDaoForGet(Func<Author> func)
+        {
+            var authorDao = new Mock<IAuthorDao>();
+            authorDao.Setup(a => a.Get(It.IsAny<int>())).Returns(func);
+            return authorDao;
+        }
+
         [TestCase(true, ExpectedResult = true)]
         [TestCase(false, ExpectedResult = false)]
         public bool Check(bool checkDao)
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Check(It.IsAny<int[]>())).Returns(checkDao);
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForCheck(() => checkDao);
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, null);
 
@@ -173,8 +182,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Check(It.IsAny<int[]>())).Returns(() => throw new Exception());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForCheck(() => throw new Exception());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, null);
 
@@ -187,17 +195,22 @@ namespace Epam.Library.Test
             Assert.Throws(typeof(GetException), author);
         }
 
+        private static Mock<IAuthorDao> InitializeMockDaoForCheck(Func<bool> func)
+        {
+            var authorDao = new Mock<IAuthorDao>();
+            authorDao.Setup(a => a.Check(It.IsAny<int[]>())).Returns(func);
+            return authorDao;
+        }
+
         [TestCase(true, ExpectedResult = true)]
         [TestCase(false, ExpectedResult = false)]
-        public bool Remove(bool removekDao)
+        public bool Remove(bool removeDao)
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(removekDao);
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForRemove(() => removeDao);
 
-            var catalogue = new Mock<ICatalogueBll>();
-            catalogue.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(new List<AbstractAutorElement>());
+            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAutorElement>());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, catalogue.Object, null);
 
@@ -216,13 +229,12 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(removekDao);
-
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForRemove(() => removekDao);
+            
             var authorElement = new Mock<AbstractAutorElement>();
-            var catalogue = new Mock<ICatalogueBll>();
-            catalogue.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(new List<AbstractAutorElement>() { authorElement.Object });
-
+            
+            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAutorElement>() { authorElement.Object });
+            
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, catalogue.Object, null);
 
             // Act
@@ -239,11 +251,8 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(() => throw new Exception());
-
-            var catalogue = new Mock<ICatalogueBll>();
-            catalogue.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(new List<AbstractAutorElement>());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForRemove(() => throw new Exception());
+            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAutorElement>());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, catalogue.Object, null);
 
@@ -256,13 +265,26 @@ namespace Epam.Library.Test
             Assert.Throws(typeof(RemoveException), author);
         }
 
+        private static Mock<ICatalogueBll> InitializeMockCatalogueForRemove(Func<IEnumerable<AbstractAutorElement>> func)
+        {
+            var catalogue = new Mock<ICatalogueBll>();
+            catalogue.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);
+            return catalogue;
+        }
+
+        private static Mock<IAuthorDao> InitializeMockDaoForRemove(Func<bool> func)
+        {
+            var authorDao = new Mock<IAuthorDao>();
+            authorDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(func);
+            return authorDao;
+        }
+
         [Test]
         public void Search()
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, AuthorSearchOptions>>())).Returns(new List<Author>());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForSearch(() => new List<Author>());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, null);
 
@@ -280,8 +302,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, AuthorSearchOptions>>())).Returns(() => throw new Exception());
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForSearch(() => throw new Exception());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, null);
 
@@ -292,6 +313,13 @@ namespace Epam.Library.Test
             // Assert
 
             Assert.Throws(typeof(GetException), author);
+        }
+
+        private static Mock<IAuthorDao> InitializeMockDaoForSearch(Func<IEnumerable<Author>> func)
+        {
+            var authorDao = new Mock<IAuthorDao>();
+            authorDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, AuthorSearchOptions>>())).Returns(func);
+            return authorDao;
         }
     }
 }
