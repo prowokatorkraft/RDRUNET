@@ -25,6 +25,11 @@ namespace Epam.Library.Bll
         {
             try
             {
+                if (newspaper is null)
+                {
+                    throw new ArgumentNullException(nameof(newspaper) + " is null");
+                }
+
                 var errors = _validation.Validate(newspaper);
 
                 if (errors.Count() == 0)

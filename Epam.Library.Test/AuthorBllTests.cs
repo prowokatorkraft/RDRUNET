@@ -38,7 +38,7 @@ namespace Epam.Library.Test
 
             // Act
 
-            var errors = authorBll.Add(new Author()); ///
+            var errors = authorBll.Add(new Author());
 
             // Assert
 
@@ -62,6 +62,29 @@ namespace Epam.Library.Test
             // Act
 
             TestDelegate action = () => authorBll.Add(new Author());
+
+            // Assert
+
+            Assert.Throws(typeof(AddException), action);
+        }
+
+        [Test]
+        public void Add_Exeption_Null()
+        {
+            // Arrange
+
+            var authorDao = new Mock<IAuthorDao>();
+            authorDao.Setup(a => a.Add(It.IsAny<Author>()));
+
+            var validation = new Mock<IValidationBll<Author>>();
+            validation.Setup<IEnumerable<ErrorValidation>>(a => a.Validate(It.IsAny<Author>()))
+                .Returns(new List<ErrorValidation>());
+
+            IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, validation.Object);
+
+            // Act
+
+            TestDelegate action = () => authorBll.Add(null);
 
             // Assert
 
