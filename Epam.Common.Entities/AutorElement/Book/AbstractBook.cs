@@ -1,6 +1,6 @@
 ﻿namespace Epam.Library.Common.Entities.AuthorElement.Book
 {
-    public abstract class AbstractBook : AbstractAutorElement
+    public abstract class AbstractBook : AbstractAuthorElement
     {
         public abstract string Publisher { get; set; }
         

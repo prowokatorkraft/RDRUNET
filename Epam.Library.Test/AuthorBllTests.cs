@@ -210,7 +210,7 @@ namespace Epam.Library.Test
 
             Mock<IAuthorDao> authorDao = InitializeMockDaoForRemove(() => removeDao);
 
-            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAutorElement>());
+            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAuthorElement>());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, catalogue.Object, null);
 
@@ -231,9 +231,9 @@ namespace Epam.Library.Test
 
             Mock<IAuthorDao> authorDao = InitializeMockDaoForRemove(() => removekDao);
             
-            var authorElement = new Mock<AbstractAutorElement>();
+            var authorElement = new Mock<AbstractAuthorElement>();
             
-            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAutorElement>() { authorElement.Object });
+            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAuthorElement>() { authorElement.Object });
             
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, catalogue.Object, null);
 
@@ -252,7 +252,7 @@ namespace Epam.Library.Test
             // Arrange
 
             Mock<IAuthorDao> authorDao = InitializeMockDaoForRemove(() => throw new Exception());
-            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAutorElement>());
+            Mock<ICatalogueBll> catalogue = InitializeMockCatalogueForRemove(() => new List<AbstractAuthorElement>());
 
             IAuthorBll authorBll = new AuthorBll(authorDao.Object, catalogue.Object, null);
 
@@ -265,7 +265,7 @@ namespace Epam.Library.Test
             Assert.Throws(typeof(RemoveException), author);
         }
 
-        private static Mock<ICatalogueBll> InitializeMockCatalogueForRemove(Func<IEnumerable<AbstractAutorElement>> func)
+        private static Mock<ICatalogueBll> InitializeMockCatalogueForRemove(Func<IEnumerable<AbstractAuthorElement>> func)
         {
             var catalogue = new Mock<ICatalogueBll>();
             catalogue.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);

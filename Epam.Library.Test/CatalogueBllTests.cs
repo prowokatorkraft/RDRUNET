@@ -84,7 +84,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            Mock<ICatalogueDao> catalogueDao = InitializeMockDaoForGetByAuthorId(() => new List<AbstractAutorElement>());
+            Mock<ICatalogueDao> catalogueDao = InitializeMockDaoForGetByAuthorId(() => new List<AbstractAuthorElement>());
 
             var catalogueBll = new CatalogueBll(catalogueDao.Object);
 
@@ -115,7 +115,7 @@ namespace Epam.Library.Test
             Assert.Throws(typeof(GetException), catalogue);
         }
 
-        private static Mock<ICatalogueDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractAutorElement>> func)
+        private static Mock<ICatalogueDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractAuthorElement>> func)
         {
             var catalogueDao = new Mock<ICatalogueDao>();
             catalogueDao.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);
