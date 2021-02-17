@@ -33,6 +33,12 @@ namespace IntegrationTest.TestCases
 
                 yield return new TestCaseData
                 (
+                    new Author(null, "Search", "Last-Name"),
+                    new SearchRequest<SortOptions, AuthorSearchOptions>(SortOptions.None, AuthorSearchOptions.LastName, "Last-Name")
+                ).Returns(true);
+
+                yield return new TestCaseData
+                (
                     null,
                     new SearchRequest<SortOptions, AuthorSearchOptions>(SortOptions.None, AuthorSearchOptions.FirstName, "--------")
                 ).Returns(false);

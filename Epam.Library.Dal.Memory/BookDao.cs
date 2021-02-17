@@ -80,7 +80,7 @@ namespace Epam.Library.Dal.Memory
             {
                 Dictionary<string, List<AbstractBook>> groups = new Dictionary<string, List<AbstractBook>>();
 
-                var temp = Search(new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Publisher, searchLine))
+                var temp = Search(new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Publisher, searchLine ?? ""))
                     .GroupBy(b => b.Publisher);
 
                 foreach (var item in temp)
@@ -158,12 +158,12 @@ namespace Epam.Library.Dal.Memory
             {
                 case BookSearchOptions.Name:
                     query = query.Where(a => a.Name.ToLower()
-                        .Contains(searchRequest.SearchLine.ToLower()));
+                        .Contains(searchRequest.SearchLine == null ? searchRequest.SearchLine.ToLower() : ""));
                     break;
 
                 case BookSearchOptions.Publisher:
                     query = query.Where(a => a.Publisher.ToLower()
-                        .Contains(searchRequest.SearchLine.ToLower()));
+                        .Contains(searchRequest.SearchLine == null ? searchRequest.SearchLine.ToLower() : ""));
                     break;
 
                 default:

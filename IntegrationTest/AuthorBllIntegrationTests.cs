@@ -256,7 +256,7 @@ namespace Epam.Library.IntegrationTest
             }
 
             //Act
-            bool result = _authorBll.Search(request).Any();
+            bool result = _authorBll.Search(request).Any(a => a.Equals(author));
 
             // Assert
             return result;
