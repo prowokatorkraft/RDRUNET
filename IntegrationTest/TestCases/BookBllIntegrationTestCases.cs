@@ -63,7 +63,7 @@ namespace IntegrationTest.TestCases
                 yield return new TestCaseData
                 (
                     new Author(null, "Getbyauthorid", "Two"),
-                    new Book(null, "Getbyauthorid One", 0, null, null, "Test", "Test", 2020, null)
+                    new Book(null, "Getbyauthorid Two", 0, null, null, "Test", "Test", 2020, null)
                 ).Returns(true);
             }
         }

@@ -136,7 +136,7 @@ namespace Epam.Library.Dal.Memory
             {
                 case PatentSearchOptions.Name:
                     query = query.Where(a => a.Name.ToLower()
-                        .Contains(searchRequest.SearchLine.ToLower()));
+                        .Contains(searchRequest.SearchLine.ToLower() ?? ""));
                     break;
 
                 default:
