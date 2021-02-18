@@ -5,7 +5,7 @@ using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.SearchOptionsEnum;
 using NUnit.Framework;
 
-namespace IntegrationTest.TestCases
+namespace Epam.Library.IntegrationTest.TestCases
 {
     public static class AuthorBllIntegrationTestCases
     {

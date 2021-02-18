@@ -4,13 +4,13 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Common.Entities.Exceptions;
-using IntegrationTest.TestCases;
+using Epam.Library.IntegrationTest.TestCases;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IntegrationTest
+namespace Epam.Library.IntegrationTest
 {
     public class PatentBllIntegrationTests
     {

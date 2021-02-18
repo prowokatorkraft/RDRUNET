@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 
-namespace IntegrationTest.TestCases
+namespace Epam.Library.IntegrationTest.TestCases
 {
     public static class PatentBllIntegrationTestCases
     {

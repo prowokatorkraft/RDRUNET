@@ -4,7 +4,7 @@ using Epam.Library.Common.Entities.AuthorElement.Book;
 using NUnit.Framework;
 using System.Collections;
 
-namespace IntegrationTest.TestCases
+namespace Epam.Library.IntegrationTest.TestCases
 {
     public static class BookBllIntegrationTestCases
     {
