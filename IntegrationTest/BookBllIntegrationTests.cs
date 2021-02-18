@@ -34,6 +34,10 @@ namespace Epam.Library.IntegrationTest
         [OneTimeTearDown]
         public void DiposeClass()
         {
+            var d = _bookIDs.Count;
+
+            var b = _bookBll.Search(null).Select<AbstractBook, int>(a => a.Id.Value).ToArray();
+
             _bookIDs.ForEach(a => _bookBll.Remove(a));
 
             _authorIDs.ForEach(a => _authorBll.Remove(a));
@@ -100,7 +104,7 @@ namespace Epam.Library.IntegrationTest
         public void Remove_True()
         {
             // Arrange
-            Book book = new Book(null, "Remove True", 0, null, null, "Test", "Test", 2020, null);
+            Book book = new Book(null, "Remove-True", 0, null, null, "Test", "Test", 2020, null);
 
             _bookBll.Add(book);
 
@@ -224,15 +228,15 @@ namespace Epam.Library.IntegrationTest
             // Arrange
             Book[] books = new Book[]
             {
-                new Book(null, "GpoupsByPublisher One", 0, null, null, "Test One", "Test", 2000, null),
-                new Book(null, "GpoupsByPublisher Two", 0, null, null, "Test Two", "Test", 2000, null)
+                new Book(null, "GpoupsByPublisher-One " + stringLine, 0, null, null, "Test One", "Test", 2000, null),
+                new Book(null, "GpoupsByPublisher-Two " + stringLine, 0, null, null, "Test Two", "Test", 2000, null)
             };
 
             List<int> ids = new List<int>();
 
             foreach (var item in books)
             {
-                _bookBll.Add(item);
+                var e = _bookBll.Add(item);
 
                 ids.Add(GetId(item).Value);
             }
@@ -252,8 +256,8 @@ namespace Epam.Library.IntegrationTest
             // Arrange
             Book[] books = new Book[]
             {
-                new Book(null, "GpoupsByPublishYear One", 0, null, null, "Test", "Test", 2000, null),
-                new Book(null, "GpoupsByPublishYear Two", 0, null, null, "Test", "Test", 2008, null)
+                new Book(null, "GpoupsByPublishYear-One", 0, null, null, "Test", "Test", 2000, null),
+                new Book(null, "GpoupsByPublishYear-Two", 0, null, null, "Test", "Test", 2008, null)
             };
 
             List<int> ids = new List<int>();

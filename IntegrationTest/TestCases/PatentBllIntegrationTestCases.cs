@@ -52,7 +52,7 @@ namespace Epam.Library.IntegrationTest.TestCases
                 yield return new TestCaseData
                 (
                     new Author(null, "Getbyauthorid", "Two"),
-                    new Patent(null, "Getbyauthorid Two", 0, null, null, "Test", "123356789", null, DateTime.Now)
+                    new Patent(null, "Getbyauthorid Two", 0, null, null, "Test", "123386769", null, DateTime.Now)
                 ).Returns(true);
             }
         }

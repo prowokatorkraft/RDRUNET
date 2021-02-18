@@ -44,7 +44,7 @@ namespace Epam.Library.IntegrationTest
         public void Add_True()
         {
             // Arrange
-            Patent patent = new Patent(null, "Add-True", 0, null, null, "Test", "123456789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Add-True", 0, null, null, "Test", "123456780", null, DateTime.Now);
             int preCount = GetCount();
             int id;
 
@@ -101,7 +101,7 @@ namespace Epam.Library.IntegrationTest
         public void Remove_True()
         {
             // Arrange
-            Patent patent = new Patent(null, "Remove True", 0, null, null, "Test", "123456789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Remove True", 0, null, null, "Test", "128856789", null, DateTime.Now);
 
             _patentBll.Add(patent);
 
@@ -148,7 +148,7 @@ namespace Epam.Library.IntegrationTest
         public void Get()
         {
             // Arrange
-            Patent patent = new Patent(null, "Get", 0, null, null, "Test", "123456789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Get", 0, null, null, "Test", "123226789", null, DateTime.Now);
 
             _patentBll.Add(patent);
 
