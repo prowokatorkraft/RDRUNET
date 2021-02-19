@@ -3,12 +3,13 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Validation
 {
     public class BookValidation : IValidationBll<AbstractBook>
     {
+        private List<ErrorValidation> _errorList;
+
         public IEnumerable<ErrorValidation> Validate(AbstractBook element)
         {
             if (element is null)
@@ -16,108 +17,84 @@ namespace Epam.Library.Bll.Validation
                 throw new ArgumentNullException((nameof(element) + " is null."));
             }
 
-            List<ErrorValidation> errorList = new List<ErrorValidation>();
+            _errorList = new List<ErrorValidation>();
 
-            if (element.Name is null)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Name),
-                    "Value is null.",
-                    null
-                ));
-            }
-            else if (element.Name.Length > 300)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Name),
-                    "Value exceeds the allowed size.",
-                    "300"
-                ));
-            }
+            Name(element);
 
-            if (element.NumberOfPages < 0)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.NumberOfPages),
-                    "The value cannot be negative.",
-                    null
-                ));
-            }
+            NumberOfPages(element);
 
-            if (element.Annotation != null && element.Annotation.Length > 2000)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Annotation),
-                    "Value exceeds the allowed size.",
-                    "2000"
-                ));
-            }
+            Annotation(element);
 
-            if (element.Publisher is null)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Publisher),
-                    "Value is null.",
-                    null
-                ));
-            }
-            else if (element.Publisher.Length > 300)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Publisher),
-                    "Value exceeds the allowed size.",
-                    "300"
-                ));
-            }
+            Publisher(element);
 
-            if (element.PublishingCity is null || !Regex.IsMatch(element.PublishingCity, ValidationPatterns.PublishingCityPattern))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.PublishingCity),
-                    "Incorrect entered value.",
-                    null
-                ));
-            }
-            else if (element.PublishingCity.Length > 200)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.PublishingCity),
-                    "Value exceeds the allowed size.",
-                    "200"
-                ));
-            }
+            PublishingCity(element);
 
-            if (element.PublishingYear < 1400 || element.PublishingYear > DateTime.Now.Year)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.PublishingYear),
-                    "Incorrect entered value.",
-                    "The value cannot be less than 1400 and more than today."
-                ));
-            }
+            PublishingYear(element);
 
-            if (element.Isbn != null &&
-                (!Regex.IsMatch(element.Isbn, ValidationPatterns.IsbnPattern) ||
-                element.Isbn.Length != 18))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Isbn),
-                    "Incorrect entered value.",
-                    "Value should only be 10 digits! Exmble \"ISBN 0-00-000000-0\""
-                ));
-            }
+            Isbn(element);
 
-            return errorList;
+            return _errorList;
+        }
+
+        private void Isbn(AbstractBook element)
+        {
+            if (element.Isbn != null)
+            {
+                string IsbnField = nameof(element.Isbn);
+
+                element.Isbn
+                    .CheckMatch(IsbnField, ValidationPatterns.IsbnPattern, _errorList, "Value should only be 10 digits.")
+                    .CheckLength(IsbnField, 18, 18, _errorList, "Exmble \"ISBN 0-00-000000-0\"");
+            }
+        }
+
+        private void PublishingYear(AbstractBook element)
+        {
+            element.PublishingYear
+                .CheckSizeNumber(nameof(element.PublishingYear), 1400, DateTime.Now.Year, _errorList, "The value cannot be less than 1400 and more than today.");
+        }
+
+        private void PublishingCity(AbstractBook element)
+        {
+            string publishingCityField = nameof(element.PublishingCity);
+
+            element.PublishingCity
+                .CheckNull(publishingCityField, _errorList)?
+                .CheckMatch(publishingCityField, ValidationPatterns.PublishingCityPattern, _errorList)
+                .CheckLength(publishingCityField, 0, 200, _errorList, "200");
+        }
+
+        private void Publisher(AbstractBook element)
+        {
+            string publisherField = nameof(element.Publisher);
+
+            element.Publisher
+                .CheckNull(publisherField, _errorList)?
+                .CheckLength(publisherField, 0, 300, _errorList, "300");
+        }
+
+        private void Annotation(AbstractBook element)
+        {
+            if (element.Annotation != null)
+            {
+                element.Annotation
+                    .CheckLength(nameof(element.Annotation), 0, 2000, _errorList, "2000");
+            }
+        }
+
+        private void NumberOfPages(AbstractBook element)
+        {
+            element.NumberOfPages
+                .CheckSizeNumber(nameof(element.NumberOfPages), 0, null, _errorList);
+        }
+
+        private void Name(AbstractBook element)
+        {
+            string nameField = nameof(element.Name);
+
+            element.Name
+                .CheckNull(nameField, _errorList)?
+                .CheckLength(nameField, 0, 300, _errorList, "300");
         }
     }
 }

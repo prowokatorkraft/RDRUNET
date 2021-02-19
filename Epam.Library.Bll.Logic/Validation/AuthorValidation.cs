@@ -1,16 +1,15 @@
 ﻿using Epam.Library.Bll.Contracts;
-using Epam.Library.Bll.Validation;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Validation
 {
     public class AuthorValidation : IValidationBll<Author>
     {
+        private List<ErrorValidation> _errorList;
+
         public IEnumerable<ErrorValidation> Validate(Author element)
         {
             if (element is null)
@@ -18,47 +17,33 @@ namespace Epam.Library.Bll.Validation
                 throw new ArgumentNullException((nameof(element) + " is null."));
             }
 
-            List<ErrorValidation> errorList = new List<ErrorValidation>();
+            _errorList = new List<ErrorValidation>();
 
-            if (element.FirstName is null || !Regex.IsMatch(element.FirstName, ValidationPatterns.FirstNamePattern))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.FirstName),
-                    "Incorrect entered value.",
-                    null
-                ));
-            }
-            else if (element.FirstName.Length > 50)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.FirstName),
-                    "Value exceeds the allowed size.",
-                    "50"
-                ));
-            }
+            FirstName(element);
 
-            if (element.LastName is null || !Regex.IsMatch(element.LastName, ValidationPatterns.LastNamePattern))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.LastName),
-                    "Incorrect entered value.",
-                    null
-                ));
-            }
-            else if (element.LastName.Length > 200)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.LastName),
-                    "Value exceeds the allowed size.",
-                    "200"
-                ));
-            }
+            LastName(element);
 
-            return errorList;
+            return _errorList;
+        }
+
+        private void LastName(Author element)
+        {
+            string lastNameField = nameof(element.LastName);
+
+            element.LastName
+                .CheckNull(lastNameField, _errorList)?
+                .CheckMatch(lastNameField, ValidationPatterns.LastNamePattern, _errorList)
+                .CheckLength(lastNameField, 0, 200, _errorList, "200");
+        }
+
+        private void FirstName(Author element)
+        {
+            string firstNameField = nameof(element.FirstName);
+
+            element.FirstName
+                .CheckNull(firstNameField, _errorList)?
+                .CheckMatch(firstNameField, ValidationPatterns.FirstNamePattern, _errorList)
+                .CheckLength(firstNameField, 0, 50, _errorList, "50");
         }
     }
 }
