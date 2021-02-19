@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{F4F5A632-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Test", "Epam.Library.Test\Epam.Library.Test.csproj", "{C029DF8B-E3F8-4B47-A22E-BCD473B60CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTest", "IntegrationTest\IntegrationTest.csproj", "{AD0B8DE3-3159-47F3-A84E-4618E1E2DD53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.IntegrationTest", "IntegrationTest\Epam.Library.IntegrationTest.csproj", "{AD0B8DE3-3159-47F3-A84E-4618E1E2DD53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

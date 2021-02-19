@@ -34,10 +34,6 @@ namespace Epam.Library.IntegrationTest
         [OneTimeTearDown]
         public void DiposeClass()
         {
-            var d = _bookIDs.Count;
-
-            var b = _bookBll.Search(null).Select<AbstractBook, int>(a => a.Id.Value).ToArray();
-
             _bookIDs.ForEach(a => _bookBll.Remove(a));
 
             _authorIDs.ForEach(a => _authorBll.Remove(a));
@@ -236,7 +232,7 @@ namespace Epam.Library.IntegrationTest
 
             foreach (var item in books)
             {
-                var e = _bookBll.Add(item);
+                _bookBll.Add(item);
 
                 ids.Add(GetId(item).Value);
             }
