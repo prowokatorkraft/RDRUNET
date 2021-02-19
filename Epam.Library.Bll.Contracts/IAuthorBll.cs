@@ -7,7 +7,7 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface IAuthorBll
     {
-        IEnumerable<ErrorValidation> Add(Author book);
+        IEnumerable<ErrorValidation> Add(Author author);
 
         bool Remove(int id);
 

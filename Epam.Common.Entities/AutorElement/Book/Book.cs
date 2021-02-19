@@ -55,7 +55,7 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
             {
                 isEquals = obj is Book book &&
                             Name == book.Name &&
-                            EqualityComparer<int[]>.Default.Equals(AuthorIDs, book.AuthorIDs) && /// TODO:
+                            EqualityComparer<int[]>.Default.Equals(AuthorIDs, book.AuthorIDs) &&
                             EqualityComparer<string>.Default.Equals(Publisher, book.Publisher);
             }
 
@@ -73,7 +73,7 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
             else
             {
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-                hashCode = hashCode * -1521134295 + EqualityComparer<int[]>.Default.GetHashCode(AuthorIDs); /// TODO:
+                hashCode = hashCode * -1521134295 + EqualityComparer<int[]>.Default.GetHashCode(AuthorIDs);
                 hashCode = hashCode * -1521134295 + EqualityComparer<int>.Default.GetHashCode(PublishingYear);
             }
 

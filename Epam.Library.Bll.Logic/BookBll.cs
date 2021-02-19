@@ -105,7 +105,7 @@ namespace Epam.Library.Bll
         {
             try
             {
-                return _dao.Get(id);
+                return _dao.Get(id) ?? throw new ArgumentOutOfRangeException("Incorrect id.");
             }
             catch (Exception ex)
             {

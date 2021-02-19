@@ -59,7 +59,7 @@ namespace Epam.Library.Common.Entities.AuthorElement.Patent
 
         public override object Clone()
         {
-            return new Patent(Id, Name, NumberOfPages, Annotation, AuthorIDs.Clone() as int[], Country, RegistrationNumber, ApplicationDate, DateOfPublication);
+            return new Patent(Id, Name, NumberOfPages, Annotation, AuthorIDs?.Clone() as int[], Country, RegistrationNumber, ApplicationDate, DateOfPublication);
         }
     }
 }
