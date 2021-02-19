@@ -29,6 +29,11 @@ namespace Epam.Library.Bll
         {
             try
             {
+                if (author is null)
+                {
+                    throw new ArgumentNullException(nameof(author) + " is null");
+                }
+
                 var errors = _validation.Validate(author);
 
                 if (errors.Count() == 0)

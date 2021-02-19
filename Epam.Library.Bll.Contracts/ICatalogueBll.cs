@@ -8,7 +8,7 @@ namespace Epam.Library.Bll.Contracts
     {
         LibraryAbstractElement Get(int id);
 
-        IEnumerable<AbstractAutorElement> GetByAuthorId(int id);
+        IEnumerable<AbstractAuthorElement> GetByAuthorId(int id);
 
         IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest);
     }

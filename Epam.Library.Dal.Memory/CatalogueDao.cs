@@ -49,11 +49,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractAutorElement> GetByAuthorId(int id)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id)
         {
             try
             {
-                return _data.OfType<AbstractAutorElement>()
+                return _data.OfType<AbstractAuthorElement>()
                     .Where(e => e.AuthorIDs?.Any(i => i.Equals(id)) ?? false);
             }
             catch (Exception ex)

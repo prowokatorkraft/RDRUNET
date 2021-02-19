@@ -1,7 +1,6 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Epam.Library.Bll.Contracts
 {

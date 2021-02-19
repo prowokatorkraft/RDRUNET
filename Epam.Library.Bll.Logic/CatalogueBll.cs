@@ -29,7 +29,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractAutorElement> GetByAuthorId(int id)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id)
         {
             try
             {
