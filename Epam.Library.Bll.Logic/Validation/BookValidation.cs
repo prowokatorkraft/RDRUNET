@@ -44,14 +44,14 @@ namespace Epam.Library.Bll.Validation
 
                 element.Isbn
                     .CheckMatch(IsbnField, ValidationPatterns.IsbnPattern, _errorList, "Value should only be 10 digits.")
-                    .CheckLength(IsbnField, 18, 18, _errorList, "Exmble \"ISBN 0-00-000000-0\"");
+                    .Length.CheckRange(IsbnField, 18, 18, _errorList, "Example \"ISBN 0-00-000000-0\"");
             }
         }
 
         private void PublishingYear(AbstractBook element)
         {
             element.PublishingYear
-                .CheckSizeNumber(nameof(element.PublishingYear), 1400, DateTime.Now.Year, _errorList, "The value cannot be less than 1400 and more than today.");
+                .CheckRange(nameof(element.PublishingYear), 1400, DateTime.Now.Year, _errorList, "The value cannot be less than 1400 and more than today.");
         }
 
         private void PublishingCity(AbstractBook element)
@@ -61,7 +61,7 @@ namespace Epam.Library.Bll.Validation
             element.PublishingCity
                 .CheckNull(publishingCityField, _errorList)?
                 .CheckMatch(publishingCityField, ValidationPatterns.PublishingCityPattern, _errorList)
-                .CheckLength(publishingCityField, 0, 200, _errorList, "200");
+                .Length.CheckRange(publishingCityField, 0, 200, _errorList, "200");
         }
 
         private void Publisher(AbstractBook element)
@@ -70,7 +70,7 @@ namespace Epam.Library.Bll.Validation
 
             element.Publisher
                 .CheckNull(publisherField, _errorList)?
-                .CheckLength(publisherField, 0, 300, _errorList, "300");
+                .Length.CheckRange(publisherField, 0, 300, _errorList, "300");
         }
 
         private void Annotation(AbstractBook element)
@@ -78,14 +78,14 @@ namespace Epam.Library.Bll.Validation
             if (element.Annotation != null)
             {
                 element.Annotation
-                    .CheckLength(nameof(element.Annotation), 0, 2000, _errorList, "2000");
+                    .Length.CheckRange(nameof(element.Annotation), 0, 2000, _errorList, "2000");
             }
         }
 
         private void NumberOfPages(AbstractBook element)
         {
             element.NumberOfPages
-                .CheckSizeNumber(nameof(element.NumberOfPages), 0, null, _errorList);
+                .CheckRange(nameof(element.NumberOfPages), 0, int.MaxValue, _errorList);
         }
 
         private void Name(AbstractBook element)
@@ -94,7 +94,7 @@ namespace Epam.Library.Bll.Validation
 
             element.Name
                 .CheckNull(nameField, _errorList)?
-                .CheckLength(nameField, 0, 300, _errorList, "300");
+                .Length.CheckRange(nameField, 0, 300, _errorList, "300");
         }
     }
 }

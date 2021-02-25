@@ -1,4 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -36,11 +37,11 @@ namespace Epam.Library.Bll.Validation
             return element;
         }
 
-        public static string CheckLength(this string element, string field, int min, int max, List<ErrorValidation> errorList, string recommendation = null)
+        public static T CheckRange<T>(this T element, string field, T min, T max, List<ErrorValidation> errorList, string recommendation = null)
+            where T : IComparable<T>
         {
-            int lenght = element.Length;
-
-            if (lenght < min || lenght > max)
+            if (min != null && element.CompareTo(min) < 0 ||
+                max != null && element.CompareTo(max) > 0)
             {
                 errorList.Add(new ErrorValidation
                 (
@@ -52,22 +53,5 @@ namespace Epam.Library.Bll.Validation
 
             return element;
         }
-
-        public static int CheckSizeNumber(this int element, string field, int? min, int? max, List<ErrorValidation> errorList, string recommendation = null)
-        {
-            if (min != null && element < min || max != null && element > max)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    field,
-                    "Value exceeds the allowed size.",
-                    recommendation
-                ));
-            }
-
-            return element;
-        }
-
-        
     }
 }
