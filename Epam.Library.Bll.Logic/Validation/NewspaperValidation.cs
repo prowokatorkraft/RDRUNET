@@ -3,13 +3,13 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Validation
 {
     public class NewspaperValidation : IValidationBll<AbstractNewspaper>
     {
+        List<ErrorValidation> _errorList;
+
         public IEnumerable<ErrorValidation> Validate(AbstractNewspaper element)
         {
             if (element is null)
@@ -17,117 +17,104 @@ namespace Epam.Library.Bll.Validation
                 throw new ArgumentNullException((nameof(element) + " is null!"));
             }
 
-            List<ErrorValidation> errorList = new List<ErrorValidation>();
+            _errorList = new List<ErrorValidation>();
 
-            if (element.Name is null)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Name),
-                    "Value is null.",
-                    null
-                ));
-            }
-            else if (element.Name.Length > 300)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Name),
-                    "Value exceeds the allowed size.",
-                    "300"
-                ));
-            }
+            Name(element);
 
-            if (element.NumberOfPages < 0)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.NumberOfPages),
-                    "The value cannot be negative.",
-                    null
-                ));
-            }
+            NumberOfPages(element);
 
-            if (element.Annotation != null && element.Annotation.Length > 2000)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Annotation),
-                    "Value exceeds the allowed size.",
-                    "2000"
-                ));
-            }
+            Annotation(element);
 
-            if (element.Publisher is null)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Publisher),
-                    "Value is null.",
-                    null
-                ));
-            }
-            else if (element.Publisher.Length > 300)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Publisher),
-                    "Value exceeds the allowed size.",
-                    "300"
-                ));
-            }
+            Publisher(element);
 
-            if (element.PublishingCity is null || !Regex.IsMatch(element.PublishingCity, ValidationPatterns.PublishingCityPattern))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.PublishingCity),
-                    "Incorrect entered value.",
-                    null
-                ));
-            }
-            else if (element.PublishingCity.Length > 200)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.PublishingCity),
-                    "Value exceeds the allowed size.",
-                    "200"
-                ));
-            }
+            PublishingCity(element);
 
-            if (element.PublishingYear < 1400 || element.PublishingYear > DateTime.Now.Year)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.PublishingYear),
-                    "Incorrect entered value.",
-                    "The value cannot be less than 1400 and more than today."
-                ));
-            }
+            PublishingYear(element);
 
-            if (!element.Date.Year.Equals(element.PublishingYear))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Date),
-                    "Incorrect entered value.",
-                    "The value must match PublishingYear."
-                ));
-            }
+            Date(element);
 
-            if (element.Issn != null &&
-                !Regex.IsMatch(element.Issn, ValidationPatterns.IssnPattern))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Issn),
-                    "Incorrect entered value.",
-                    "Value should only be 8 digits! Exmble \"ISSN 0000-0000\""
-                ));
-            }
+            Issn(element);
 
-            return errorList;
+            return _errorList;
+        }
+
+        private void Issn(AbstractNewspaper element)
+        {
+            if (element.Issn != null)
+            {
+                string field = nameof(element.Issn);
+
+                element.Issn
+                    .CheckMatch(field, ValidationPatterns.IssnPattern, _errorList, "Value should only be 8 digits! Exmble \"ISSN 0000-0000\"");
+            }
+        }
+
+        private void Date(AbstractNewspaper element)
+        {
+            string field = nameof(element.Date);
+
+                element.Date.Year
+                    .CheckRange(field, element.PublishingYear, element.PublishingYear, _errorList, "The value must match PublishingYear.");
+        }
+
+        private void PublishingYear(AbstractNewspaper element)
+        {
+            string field = nameof(element.PublishingYear);
+
+            element.PublishingYear
+                .CheckRange(field,
+                            ValidationLengths.MinPublishingYearLength,
+                            DateTime.Now.Year,
+                            _errorList,
+                            "The value cannot be less than " + ValidationLengths.MinPublishingYearLength + " and more than today."
+                            );
+        }
+
+        private void PublishingCity(AbstractNewspaper element)
+        {
+            string field = nameof(element.PublishingCity);
+
+            element.PublishingCity
+                .CheckNull(field, _errorList)?
+                .CheckMatch(field, ValidationPatterns.PublishingCityPattern, _errorList)
+                .Length.CheckRange(field, 0, ValidationLengths.PublishingCityLength, _errorList, ValidationLengths.PublishingCityLength + "");
+        }
+
+        private void Publisher(AbstractNewspaper element)
+        {
+            string field = nameof(element.Publisher);
+
+            element.Publisher
+                .CheckNull(field, _errorList)?
+                .Length.CheckRange(field, 0, ValidationLengths.PublisherLength, _errorList, ValidationLengths.PublisherLength + "");
+        }
+
+        private void Annotation(AbstractNewspaper element)
+        {
+            if (element.Annotation != null)
+            {
+                string field = nameof(element.Annotation);
+
+                element.Annotation
+                    .Length.CheckRange(field, 0, ValidationLengths.AnnotationLength, _errorList, ValidationLengths.AnnotationLength + "");
+            }
+        }
+
+        private void NumberOfPages(AbstractNewspaper element)
+        {
+            string field = nameof(element.NumberOfPages);
+
+            element.NumberOfPages
+                .CheckRange(field, 0, int.MaxValue, _errorList);
+        }
+
+        private void Name(AbstractNewspaper element)
+        {
+            string field = nameof(element.Name);
+
+            element.Name
+                .CheckNull(field, _errorList)?
+                .Length.CheckRange(field, 0, ValidationLengths.NameLength, _errorList, ValidationLengths.NameLength + "");
         }
     }
 }

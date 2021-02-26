@@ -51,6 +51,8 @@
     <Compile Include="Validation\BookValidation.cs" />
     <Compile Include="Validation\NewspaperValidation.cs" />
     <Compile Include="Validation\PatentValidation.cs" />
+    <Compile Include="Validation\ValidationHandlers.cs" />
+    <Compile Include="Validation\ValidationLengths.cs" />
     <Compile Include="Validation\ValidationPatterns.cs" />
   </ItemGroup>
   <ItemGroup>
