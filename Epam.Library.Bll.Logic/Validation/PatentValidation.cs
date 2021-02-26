@@ -3,12 +3,15 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Validation
 {
     public class PatentValidation : IValidationBll<AbstractPatent>
     {
+        private List<ErrorValidation> _errorList;
+
         public IEnumerable<ErrorValidation> Validate(AbstractPatent element)
         {
             if (element is null)
@@ -16,94 +19,115 @@ namespace Epam.Library.Bll.Validation
                 throw new ArgumentNullException(nameof(element) + " is null.");
             }
 
-            List<ErrorValidation> errorList = new List<ErrorValidation>();
+            _errorList = new List<ErrorValidation>();
 
-            if (element.Name is null)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Name),
-                    "Value is null.",
-                    null
-                ));
-            }
-            else if (element.Name.Length > 300)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Name),
-                    "Value exceeds the allowed size.",
-                    "300"
-                ));
-            }
+            Name(element);
 
-            if (element.NumberOfPages < 0)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.NumberOfPages),
-                    "The value cannot be negative.",
-                    null
-                ));
-            }
+            NumberOfPages(element);
 
-            if (element.Annotation != null && element.Annotation.Length > 2000)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Annotation),
-                    "Value exceeds the allowed size.",
-                    "2000"
-                ));
-            }
+            Annotation(element);
 
-            if (element.Country is null ||
-                !Regex.IsMatch(element.Country, ValidationPatterns.CountryPattern) ||
-                element.Country.Length > 200)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.Country),
-                    "Incorrect entered value.",
-                    null
-                ));
-            }
+            Country(element);
 
-            if (element.RegistrationNumber is null || !Regex.IsMatch(element.RegistrationNumber, ValidationPatterns.RegistrationNumberPattern))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.RegistrationNumber),
-                    "Incorrect entered value.",
-                    "The value must be no more than 9 digits."
-                ));
-            }
+            RegistrationNumber(element);
 
-            if (element.ApplicationDate != null &&
-                (element.ApplicationDate.Value.Year < 1474 ||
-                element.ApplicationDate.Value > DateTime.Now))
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.ApplicationDate),
-                    "Incorrect entered value.",
-                    "Value shouldn't be less than 1474 and more than today."
-                ));
-            }
+            ApplicationDate(element);
 
-            if ((element.ApplicationDate != null && element.DateOfPublication < element.ApplicationDate) ||
-                element.DateOfPublication > DateTime.Now ||
-                element.DateOfPublication.Year < 1474)
-            {
-                errorList.Add(new ErrorValidation
-                (
-                    nameof(element.DateOfPublication),
-                    "Incorrect entered value.",
-                    "Value shouldn't be less than 1474 or application date and more than today."
-                ));
-            }
+            DateOfPublication(element);
 
-            return errorList;
+            return _errorList;
+        }
+
+        private void DateOfPublication(AbstractPatent element)
+        {
+            string field = nameof(element.DateOfPublication);
+
+            if (element.ApplicationDate != null)
+            {
+                element.DateOfPublication
+                    .CheckRange(
+                                field,
+                                element.ApplicationDate.Value,
+                                DateTime.Now,
+                                _errorList,
+                                $"Value shouldn't be less than {element.ApplicationDate.Value.Date} and more than today."
+                                );
+            }
+            else
+            {
+                element.DateOfPublication
+                    .CheckRange(
+                                field,
+                                DateTime.Parse(ValidationLengths.MinDateOfPublicationRange, new CultureInfo("en-US")),
+                                DateTime.Now,
+                                _errorList,
+                                $"Value shouldn't be less than {ValidationLengths.MinDateOfPublicationRange} and more than today."
+                                );
+            }
+        }
+
+        private void ApplicationDate(AbstractPatent element)
+        {
+            if (element.ApplicationDate != null)
+            {
+                string field = nameof(element.ApplicationDate);
+
+                element.ApplicationDate.Value
+                    .CheckRange(
+                                field,
+                                DateTime.Parse(ValidationLengths.MinApplicationDateRange, new CultureInfo("en-US")),
+                                DateTime.Now, 
+                                _errorList,
+                                $"Value shouldn't be less than {ValidationLengths.MinApplicationDateRange} and more than today."
+                                );
+            }
+        }
+
+        private void RegistrationNumber(AbstractPatent element)
+        {
+            string field = nameof(element.RegistrationNumber);
+
+            element.RegistrationNumber
+                .CheckNull(field, _errorList)?
+                .CheckMatch(field, ValidationPatterns.RegistrationNumberPattern, _errorList, "The value must be no more than 9 digits.");
+        }
+
+        private void Country(AbstractPatent element)
+        {
+            string field = nameof(element.Country);
+
+            element.Country
+                .CheckNull(field, _errorList)?
+                .CheckMatch(field, ValidationPatterns.CountryPattern, _errorList)
+                .Length.CheckRange(field, 0, ValidationLengths.CountryLength, _errorList, ValidationLengths.CountryLength + "");
+        }
+
+        private void Annotation(AbstractPatent element)
+        {
+            if (element.Annotation != null)
+            {
+                string field = nameof(element.Annotation);
+
+                element.Annotation
+                    .Length.CheckRange(field, 0, ValidationLengths.AnnotationLength, _errorList, ValidationLengths.AnnotationLength + "");
+            }
+        }
+
+        private void NumberOfPages(AbstractPatent element)
+        {
+            string field = nameof(element.NumberOfPages);
+
+            element.NumberOfPages
+                .CheckRange(field, 0, int.MaxValue, _errorList);
+        }
+
+        private void Name(AbstractPatent element)
+        {
+            string field = nameof(element.Name);
+
+            element.Name
+                .CheckNull(field, _errorList)?
+                .Length.CheckRange(field, 0, ValidationLengths.NameLength, _errorList, ValidationLengths.NameLength + "");
         }
     }
 }

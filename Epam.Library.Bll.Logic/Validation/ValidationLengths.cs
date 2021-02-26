@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Epam.Library.Bll.Validation
 {
@@ -19,5 +20,11 @@ namespace Epam.Library.Bll.Validation
         public const int MinPublishingYearLength = 1400;
 
         public const int IsbnLength = 18;
+
+        public const int CountryLength = 200;
+
+        public const string MinApplicationDateRange = "01.01.1474";
+
+        public const string MinDateOfPublicationRange = MinApplicationDateRange;
     }
 }

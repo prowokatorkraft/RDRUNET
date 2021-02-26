@@ -28,22 +28,22 @@ namespace Epam.Library.Bll.Validation
 
         private void LastName(Author element)
         {
-            string lastNameField = nameof(element.LastName);
+            string field = nameof(element.LastName);
 
             element.LastName
-                .CheckNull(lastNameField, _errorList)?
-                .CheckMatch(lastNameField, ValidationPatterns.LastNamePattern, _errorList)
-                .Length.CheckRange(lastNameField, 0, ValidationLengths.LastNameLength, _errorList, ValidationLengths.LastNameLength + "");
+                .CheckNull(field, _errorList)?
+                .CheckMatch(field, ValidationPatterns.LastNamePattern, _errorList)
+                .Length.CheckRange(field, 0, ValidationLengths.LastNameLength, _errorList, ValidationLengths.LastNameLength + "");
         }
 
         private void FirstName(Author element)
         {
-            string firstNameField = nameof(element.FirstName);
+            string field = nameof(element.FirstName);
 
             element.FirstName
-                .CheckNull(firstNameField, _errorList)?
-                .CheckMatch(firstNameField, ValidationPatterns.FirstNamePattern, _errorList)
-                .Length.CheckRange(firstNameField, 0, ValidationLengths.FirstNameLength, _errorList, ValidationLengths.FirstNameLength + "");
+                .CheckNull(field, _errorList)?
+                .CheckMatch(field, ValidationPatterns.FirstNamePattern, _errorList)
+                .Length.CheckRange(field, 0, ValidationLengths.FirstNameLength, _errorList, ValidationLengths.FirstNameLength + "");
         }
     }
 }

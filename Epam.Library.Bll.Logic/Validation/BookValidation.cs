@@ -40,20 +40,20 @@ namespace Epam.Library.Bll.Validation
         {
             if (element.Isbn != null)
             {
-                string isbnField = nameof(element.Isbn);
+                string field = nameof(element.Isbn);
                 
                 element.Isbn
-                    .CheckMatch(isbnField, ValidationPatterns.IsbnPattern, _errorList, "Value should only be 10 digits.")
-                    .Length.CheckRange(isbnField, ValidationLengths.IsbnLength, ValidationLengths.IsbnLength, _errorList, "Example \"ISBN 0-00-000000-0\"");
+                    .CheckMatch(field, ValidationPatterns.IsbnPattern, _errorList, "Value should only be 10 digits.")
+                    .Length.CheckRange(field, ValidationLengths.IsbnLength, ValidationLengths.IsbnLength, _errorList, "Example \"ISBN 0-00-000000-0\"");
             }
         }
 
         private void PublishingYear(AbstractBook element)
         {
-            string publishingYearField = nameof(element.PublishingYear);
+            string field = nameof(element.PublishingYear);
 
             element.PublishingYear
-                .CheckRange(publishingYearField, 
+                .CheckRange(field, 
                             ValidationLengths.MinPublishingYearLength, 
                             DateTime.Now.Year, 
                             _errorList, 
@@ -63,49 +63,49 @@ namespace Epam.Library.Bll.Validation
 
         private void PublishingCity(AbstractBook element)
         {
-            string publishingCityField = nameof(element.PublishingCity);
+            string field = nameof(element.PublishingCity);
 
             element.PublishingCity
-                .CheckNull(publishingCityField, _errorList)?
-                .CheckMatch(publishingCityField, ValidationPatterns.PublishingCityPattern, _errorList)
-                .Length.CheckRange(publishingCityField, 0, ValidationLengths.PublishingCityLength, _errorList, ValidationLengths.PublishingCityLength + "");
+                .CheckNull(field, _errorList)?
+                .CheckMatch(field, ValidationPatterns.PublishingCityPattern, _errorList)
+                .Length.CheckRange(field, 0, ValidationLengths.PublishingCityLength, _errorList, ValidationLengths.PublishingCityLength + "");
         }
 
         private void Publisher(AbstractBook element)
         {
-            string publisherField = nameof(element.Publisher);
+            string field = nameof(element.Publisher);
 
             element.Publisher
-                .CheckNull(publisherField, _errorList)?
-                .Length.CheckRange(publisherField, 0, ValidationLengths.PublisherLength, _errorList, ValidationLengths.PublisherLength + "");
+                .CheckNull(field, _errorList)?
+                .Length.CheckRange(field, 0, ValidationLengths.PublisherLength, _errorList, ValidationLengths.PublisherLength + "");
         }
 
         private void Annotation(AbstractBook element)
         {
             if (element.Annotation != null)
             {
-                string annotationField = nameof(element.Annotation);
+                string field = nameof(element.Annotation);
 
                 element.Annotation
-                    .Length.CheckRange(annotationField, 0, ValidationLengths.AnnotationLength, _errorList, ValidationLengths.AnnotationLength + "");
+                    .Length.CheckRange(field, 0, ValidationLengths.AnnotationLength, _errorList, ValidationLengths.AnnotationLength + "");
             }
         }
 
         private void NumberOfPages(AbstractBook element)
         {
-            string numberOfPagesField = nameof(element.NumberOfPages);
+            string field = nameof(element.NumberOfPages);
 
             element.NumberOfPages
-                .CheckRange(numberOfPagesField, 0, int.MaxValue, _errorList);
+                .CheckRange(field, 0, int.MaxValue, _errorList);
         }
 
         private void Name(AbstractBook element)
         {
-            string nameField = nameof(element.Name);
+            string field = nameof(element.Name);
 
             element.Name
-                .CheckNull(nameField, _errorList)?
-                .Length.CheckRange(nameField, 0, ValidationLengths.NameLength, _errorList, ValidationLengths.NameLength + "");
+                .CheckNull(field, _errorList)?
+                .Length.CheckRange(field, 0, ValidationLengths.NameLength, _errorList, ValidationLengths.NameLength + "");
         }
     }
 }
