@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-namespace Epam.Library.Bll.Validation
+﻿namespace Epam.Library.Bll.Validation
 {
     public static class ValidationLengths
     {

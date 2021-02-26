@@ -4,7 +4,6 @@ using Epam.Library.Common.Entities.AuthorElement.Patent;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Validation
 {
