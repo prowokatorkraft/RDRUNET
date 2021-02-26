@@ -33,7 +33,7 @@ namespace Epam.Library.Bll.Validation
             element.LastName
                 .CheckNull(lastNameField, _errorList)?
                 .CheckMatch(lastNameField, ValidationPatterns.LastNamePattern, _errorList)
-                .Length.CheckRange(lastNameField, 0, 200, _errorList, "200");
+                .Length.CheckRange(lastNameField, 0, ValidationLengths.LastNameLength, _errorList, ValidationLengths.LastNameLength + "");
         }
 
         private void FirstName(Author element)
@@ -43,7 +43,7 @@ namespace Epam.Library.Bll.Validation
             element.FirstName
                 .CheckNull(firstNameField, _errorList)?
                 .CheckMatch(firstNameField, ValidationPatterns.FirstNamePattern, _errorList)
-                .Length.CheckRange(firstNameField, 0, 50, _errorList, "50");
+                .Length.CheckRange(firstNameField, 0, ValidationLengths.FirstNameLength, _errorList, ValidationLengths.FirstNameLength + "");
         }
     }
 }

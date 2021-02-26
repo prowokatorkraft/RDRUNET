@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Epam.Library.Bll.Validation
 {
-    public static class ValidationHandler
+    public static class ValidationHandlers
     {
         public static string CheckNull(this string element, string field, List<ErrorValidation> errorList)
         {

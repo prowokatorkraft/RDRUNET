@@ -16,7 +16,7 @@ namespace Epam.Library.Bll.Validation
             {
                 throw new ArgumentNullException((nameof(element) + " is null."));
             }
-
+            
             _errorList = new List<ErrorValidation>();
 
             Name(element);
@@ -40,18 +40,25 @@ namespace Epam.Library.Bll.Validation
         {
             if (element.Isbn != null)
             {
-                string IsbnField = nameof(element.Isbn);
-
+                string isbnField = nameof(element.Isbn);
+                
                 element.Isbn
-                    .CheckMatch(IsbnField, ValidationPatterns.IsbnPattern, _errorList, "Value should only be 10 digits.")
-                    .Length.CheckRange(IsbnField, 18, 18, _errorList, "Example \"ISBN 0-00-000000-0\"");
+                    .CheckMatch(isbnField, ValidationPatterns.IsbnPattern, _errorList, "Value should only be 10 digits.")
+                    .Length.CheckRange(isbnField, ValidationLengths.IsbnLength, ValidationLengths.IsbnLength, _errorList, "Example \"ISBN 0-00-000000-0\"");
             }
         }
 
         private void PublishingYear(AbstractBook element)
         {
+            string publishingYearField = nameof(element.PublishingYear);
+
             element.PublishingYear
-                .CheckRange(nameof(element.PublishingYear), 1400, DateTime.Now.Year, _errorList, "The value cannot be less than 1400 and more than today.");
+                .CheckRange(publishingYearField, 
+                            ValidationLengths.MinPublishingYearLength, 
+                            DateTime.Now.Year, 
+                            _errorList, 
+                            "The value cannot be less than " + ValidationLengths.MinPublishingYearLength + " and more than today."
+                            );
         }
 
         private void PublishingCity(AbstractBook element)
@@ -61,7 +68,7 @@ namespace Epam.Library.Bll.Validation
             element.PublishingCity
                 .CheckNull(publishingCityField, _errorList)?
                 .CheckMatch(publishingCityField, ValidationPatterns.PublishingCityPattern, _errorList)
-                .Length.CheckRange(publishingCityField, 0, 200, _errorList, "200");
+                .Length.CheckRange(publishingCityField, 0, ValidationLengths.PublishingCityLength, _errorList, ValidationLengths.PublishingCityLength + "");
         }
 
         private void Publisher(AbstractBook element)
@@ -70,22 +77,26 @@ namespace Epam.Library.Bll.Validation
 
             element.Publisher
                 .CheckNull(publisherField, _errorList)?
-                .Length.CheckRange(publisherField, 0, 300, _errorList, "300");
+                .Length.CheckRange(publisherField, 0, ValidationLengths.PublisherLength, _errorList, ValidationLengths.PublisherLength + "");
         }
 
         private void Annotation(AbstractBook element)
         {
             if (element.Annotation != null)
             {
+                string annotationField = nameof(element.Annotation);
+
                 element.Annotation
-                    .Length.CheckRange(nameof(element.Annotation), 0, 2000, _errorList, "2000");
+                    .Length.CheckRange(annotationField, 0, ValidationLengths.AnnotationLength, _errorList, ValidationLengths.AnnotationLength + "");
             }
         }
 
         private void NumberOfPages(AbstractBook element)
         {
+            string numberOfPagesField = nameof(element.NumberOfPages);
+
             element.NumberOfPages
-                .CheckRange(nameof(element.NumberOfPages), 0, int.MaxValue, _errorList);
+                .CheckRange(numberOfPagesField, 0, int.MaxValue, _errorList);
         }
 
         private void Name(AbstractBook element)
@@ -94,7 +105,7 @@ namespace Epam.Library.Bll.Validation
 
             element.Name
                 .CheckNull(nameField, _errorList)?
-                .Length.CheckRange(nameField, 0, 300, _errorList, "300");
+                .Length.CheckRange(nameField, 0, ValidationLengths.NameLength, _errorList, ValidationLengths.NameLength + "");
         }
     }
 }
