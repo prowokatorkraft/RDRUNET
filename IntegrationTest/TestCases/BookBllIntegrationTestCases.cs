@@ -14,19 +14,19 @@ namespace Epam.Library.IntegrationTest.TestCases
             {
                 yield return new TestCaseData
                 (
-                    new Book(null, "Search Null", 0, null, null, "Test", "Test", 2020, null),
+                    new Book(null, "Search Null", 0, null, false, null, "Test", "Test", 2020, null),
                     null
                 ).Returns(true);
 
                 yield return new TestCaseData
                 (
-                    new Book(null, "Test One", 0, null, null, "Test", "Test", 2020, null),
+                    new Book(null, "Test One", 0, null, false, null, "Test", "Test", 2020, null),
                     new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.None, null)
                 ).Returns(true);
 
                 yield return new TestCaseData
                 (
-                    new Book(null, "Test Name", 0, null, null, "Test", "Test", 2020, null),
+                    new Book(null, "Test Name", 0, null, false, null, "Test", "Test", 2020, null),
                     new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Name, "Test Name")
                 ).Returns(true);
 
@@ -38,7 +38,7 @@ namespace Epam.Library.IntegrationTest.TestCases
 
                 yield return new TestCaseData
                 (
-                    new Book(null, "Test Two", 0, null, null, "Test Publisher", "Test", 2020, null),
+                    new Book(null, "Test Two", 0, null, false, null, "Test Publisher", "Test", 2020, null),
                     new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Publisher, "Test Publisher")
                 ).Returns(true);
 
@@ -63,7 +63,7 @@ namespace Epam.Library.IntegrationTest.TestCases
                 yield return new TestCaseData
                 (
                     new Author(null, "Getbyauthorid", "Two"),
-                    new Book(null, "Getbyauthorid Two", 0, null, null, "Test", "Test", 2020, null)
+                    new Book(null, "Getbyauthorid Two", 0, null, false, null, "Test", "Test", 2020, null)
                 ).Returns(true);
             }
         }

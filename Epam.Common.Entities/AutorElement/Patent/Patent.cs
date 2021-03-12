@@ -13,6 +13,8 @@ namespace Epam.Library.Common.Entities.AuthorElement.Patent
 
         public override string Annotation { get; set; }
 
+        public override bool Deleted { get; set; }
+
         public override int[] AuthorIDs { get; set; }
 
         public override string Country { get; set; }
@@ -28,13 +30,14 @@ namespace Epam.Library.Common.Entities.AuthorElement.Patent
 
         }
 
-        public Patent(int? id, string name, int numberOfPages, string annotation, int[] authorIDs, 
+        public Patent(int? id, string name, int numberOfPages, string annotation, bool deleted, int[] authorIDs, 
             string country, string registrationNumber, DateTime? applicationDate, DateTime dateOfPublication)
         {
             Id = id;
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
+            Deleted = deleted;
             AuthorIDs = authorIDs;
             Country = country;
             RegistrationNumber = registrationNumber;
@@ -59,7 +62,7 @@ namespace Epam.Library.Common.Entities.AuthorElement.Patent
 
         public override object Clone()
         {
-            return new Patent(Id, Name, NumberOfPages, Annotation, AuthorIDs?.Clone() as int[], Country, RegistrationNumber, ApplicationDate, DateOfPublication);
+            return new Patent(Id, Name, NumberOfPages, Annotation, Deleted, AuthorIDs?.Clone() as int[], Country, RegistrationNumber, ApplicationDate, DateOfPublication);
         }
     }
 }

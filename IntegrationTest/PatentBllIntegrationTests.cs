@@ -44,7 +44,7 @@ namespace Epam.Library.IntegrationTest
         public void Add_True()
         {
             // Arrange
-            Patent patent = new Patent(null, "Add-True", 0, null, null, "Test", "123456780", null, DateTime.Now);
+            Patent patent = new Patent(null, "Add-True", 0, null, false, null, "Test", "123456780", null, DateTime.Now);
             int preCount = GetCount();
             int id;
 
@@ -101,7 +101,7 @@ namespace Epam.Library.IntegrationTest
         public void Remove_True()
         {
             // Arrange
-            Patent patent = new Patent(null, "Remove True", 0, null, null, "Test", "128856789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Remove True", 0, null, false, null, "Test", "128856789", null, DateTime.Now);
 
             _patentBll.Add(patent);
 
@@ -148,7 +148,7 @@ namespace Epam.Library.IntegrationTest
         public void Get()
         {
             // Arrange
-            Patent patent = new Patent(null, "Get", 0, null, null, "Test", "123226789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Get", 0, null, false, null, "Test", "123226789", null, DateTime.Now);
 
             _patentBll.Add(patent);
 
@@ -225,8 +225,8 @@ namespace Epam.Library.IntegrationTest
             // Arrange
             Patent[] patents = new Patent[]
             {
-                new Patent(null, "GpoupsByPublishYear One", 0, null, null, "Test", "823456789", null, DateTime.Now.AddYears(-5)),
-                new Patent(null, "GpoupsByPublishYear Two", 0, null, null, "Test", "923456789", null, DateTime.Now.AddYears(-2)),
+                new Patent(null, "GpoupsByPublishYear One", 0, null, false, null, "Test", "823456789", null, DateTime.Now.AddYears(-5)),
+                new Patent(null, "GpoupsByPublishYear Two", 0, null, false, null, "Test", "923456789", null, DateTime.Now.AddYears(-2)),
             };
 
             List<int> ids = new List<int>();

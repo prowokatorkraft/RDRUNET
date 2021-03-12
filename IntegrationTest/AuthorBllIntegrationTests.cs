@@ -158,7 +158,7 @@ namespace Epam.Library.IntegrationTest
 
             _authorIDs.Add(idAuthor = GetId(author).Value);
 
-            Patent patent = new Patent(null, "Remove Dependencies", 0, null, new int[] { idAuthor }, "Test", "123996789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Remove Dependencies", 0, null, false, new int[] { idAuthor }, "Test", "123996789", null, DateTime.Now);
             _patentBll.Add(patent);
 
             int idPatent;

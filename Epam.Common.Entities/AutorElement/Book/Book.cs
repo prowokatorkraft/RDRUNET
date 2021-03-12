@@ -13,6 +13,8 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
 
         public override string Annotation { get; set; }
 
+        public override bool Deleted { get; set; }
+
         public override int[] AuthorIDs { get; set; }
 
         public override string Publisher { get; set; }
@@ -28,13 +30,14 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
 
         }
 
-        public Book(int? id, string name, int numberOfPages, string annotation, int[] authorIDs, 
+        public Book(int? id, string name, int numberOfPages, string annotation, bool deleted, int[] authorIDs, 
             string publisher, string publishingCity, int publishingYear, string isbn)
         {
-            Id = Id;
+            Id = id;
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
+            Deleted = deleted;
             AuthorIDs = authorIDs;
             Publisher = publisher;
             PublishingCity = publishingCity;
@@ -87,6 +90,7 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
                 Name,
                 NumberOfPages,
                 Annotation,
+                Deleted,
                 AuthorIDs?.Clone() as int[] ?? null,
                 Publisher,
                 PublishingCity,

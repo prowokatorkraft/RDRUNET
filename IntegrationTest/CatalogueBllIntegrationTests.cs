@@ -50,7 +50,7 @@ namespace IntegrationTest
         public void Get()
         {
             // Arrange
-            Book book = new Book(null, "Get", 0, null, null, "Test", "Test", 2020, null);
+            Book book = new Book(null, "Get", 0, null, false, null, "Test", "Test", 2020, null);
             _bookBll.Add(book);
 
             int id;

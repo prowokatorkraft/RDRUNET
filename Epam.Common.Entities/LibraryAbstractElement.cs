@@ -12,6 +12,8 @@ namespace Epam.Library.Common.Entities
 
         public abstract string Annotation { get; set; }
 
+        public abstract bool Deleted { get; set; }
+
         public abstract object Clone();
     }
 }

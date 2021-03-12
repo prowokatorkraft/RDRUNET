@@ -16,19 +16,19 @@ namespace Epam.Library.IntegrationTest.TestCases
             {
                 yield return new TestCaseData
                 (
-                    new Book(null, "Search Null", 0, null, null, "Test", "Test", 2020, null),
+                    new Book(null, "Search Null", 0, null, false, null, "Test", "Test", 2020, null),
                     null
                 ).Returns(true);
 
                 yield return new TestCaseData
                 (
-                    new Book(null, "Test One", 0, null, null, "Test", "Test", 2020, null),
+                    new Book(null, "Test One", 0, null, false, null, "Test", "Test", 2020, null),
                     new SearchRequest<SortOptions, CatalogueSearchOptions>(SortOptions.None, CatalogueSearchOptions.None, null)
                 ).Returns(true);
 
                 yield return new TestCaseData
                 (
-                    new Book(null, "Test Name", 0, null, null, "Test", "Test", 2020, null),
+                    new Book(null, "Test Name", 0, null, false, null, "Test", "Test", 2020, null),
                     new SearchRequest<SortOptions, CatalogueSearchOptions>(SortOptions.None, CatalogueSearchOptions.Name, "Test Name")
                 ).Returns(true);
 
@@ -54,7 +54,7 @@ namespace Epam.Library.IntegrationTest.TestCases
                 yield return new TestCaseData
                 (
                     new Author(null, "Getbyauthorid", "Two"),
-                    new Book(null, "Getbyauthorid Two Book", 0, null, null, "Test", "Test", 2020, null),
+                    new Book(null, "Getbyauthorid Two Book", 0, null, false, null, "Test", "Test", 2020, null),
                     null
                 ).Returns(1);
 
@@ -62,14 +62,14 @@ namespace Epam.Library.IntegrationTest.TestCases
                 (
                     new Author(null, "Getbyauthorid", "Three"),
                     null,
-                    new Patent(null, "Getbyauthorid Three Patent", 0, null, null, "Test", "123356389", null, DateTime.Now)
+                    new Patent(null, "Getbyauthorid Three Patent", 0, null, false, null, "Test", "123356389", null, DateTime.Now)
                 ).Returns(1);
 
                 yield return new TestCaseData
                 (
                     new Author(null, "Getbyauthorid", "Four"),
-                    new Book(null, "Getbyauthorid Four Book", 0, null, null, "Test", "Test", 2020, null),
-                    new Patent(null, "Getbyauthorid Four Patent", 0, null, null, "Test", "123396382", null, DateTime.Now)
+                    new Book(null, "Getbyauthorid Four Book", 0, null, false, null, "Test", "Test", 2020, null),
+                    new Patent(null, "Getbyauthorid Four Patent", 0, null, false, null, "Test", "123396382", null, DateTime.Now)
                 ).Returns(2);
             }
         }

@@ -13,6 +13,8 @@ namespace Epam.Library.Common.Entities.Newspaper
 
         public override string Annotation { get; set; }
 
+        public override bool Deleted { get; set; }
+
         public override string Publisher { get; set; }
 
         public override string PublishingCity { get; set; }
@@ -30,13 +32,14 @@ namespace Epam.Library.Common.Entities.Newspaper
         
         }
 
-        public Newspaper(int? id, string name, int numberOfPages, string annotation, string publisher, 
+        public Newspaper(int? id, string name, int numberOfPages, string annotation, bool deleted, string publisher, 
             string publishingCity, int publishingYear, string issn, string number, DateTime date)
         {
             Id = id;
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
+            Deleted = deleted;
             Publisher = publisher;
             PublishingCity = publishingCity;
             PublishingYear = publishingYear;
@@ -64,7 +67,7 @@ namespace Epam.Library.Common.Entities.Newspaper
 
         public override object Clone()
         {
-            return new Newspaper(Id, Name, NumberOfPages, Annotation, Publisher, PublishingCity, PublishingYear, Issn, Number, Date);
+            return new Newspaper(Id, Name, NumberOfPages, Annotation, Deleted, Publisher, PublishingCity, PublishingYear, Issn, Number, Date);
         }
     }
 }

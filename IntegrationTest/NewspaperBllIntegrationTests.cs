@@ -37,7 +37,7 @@ namespace Epam.Library.IntegrationTest
         public void Add_True()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper(null, "Add-True", 0, null, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            Newspaper newspaper = new Newspaper(null, "Add-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
             int preCount = GetCount();
             int id;
 
@@ -94,7 +94,7 @@ namespace Epam.Library.IntegrationTest
         public void Remove_True()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper(null, "Remove True", 0, null, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            Newspaper newspaper = new Newspaper(null, "Remove True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
             _newspaperBll.Add(newspaper);
 
             int id = GetId(newspaper).Value;
@@ -140,7 +140,7 @@ namespace Epam.Library.IntegrationTest
         public void Get()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper(null, "Get", 0, null, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            Newspaper newspaper = new Newspaper(null, "Get", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
             _newspaperBll.Add(newspaper);
 
             int id;
@@ -191,8 +191,8 @@ namespace Epam.Library.IntegrationTest
             // Arrange
             Newspaper[] newspapers = new Newspaper[]
             {
-                new Newspaper(null, "GpoupsByPublishYear One", 0, null, "Test", "Test", DateTime.Now.Year - 5, null, null, DateTime.Now.AddYears(-5)),
-                new Newspaper(null, "GpoupsByPublishYear Two", 0, null, "Test", "Test", DateTime.Now.Year - 2, null, null, DateTime.Now.AddYears(-2)),
+                new Newspaper(null, "GpoupsByPublishYear One", 0, null, false, "Test", "Test", DateTime.Now.Year - 5, null, null, DateTime.Now.AddYears(-5)),
+                new Newspaper(null, "GpoupsByPublishYear Two", 0, null, false, "Test", "Test", DateTime.Now.Year - 2, null, null, DateTime.Now.AddYears(-2)),
             };
 
             List<int> ids = new List<int>();
