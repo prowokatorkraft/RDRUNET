@@ -89,11 +89,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(string searchLine)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
         {
             try
             {
-                return _dao.GetAllGroupsByPublisher(searchLine);
+                return _dao.GetAllGroupsByPublisher(searchRequest);
             }
             catch (Exception ex)
             {
@@ -113,11 +113,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page)
         {
             try
             {
-                return _dao.GetByAuthorId(id);
+                return _dao.GetByAuthorId(id, page);
             }
             catch (Exception ex)
             {

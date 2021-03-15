@@ -12,12 +12,12 @@ namespace Epam.Library.Bll.Contracts
 
         AbstractBook Get(int id);
 
-        IEnumerable<AbstractBook> GetByAuthorId(int id);
+        IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page);
 
         IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
 
         Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear();
 
-        Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(string searchLine);
+        Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
     }
 }

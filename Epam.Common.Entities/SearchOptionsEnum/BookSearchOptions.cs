@@ -2,8 +2,8 @@
 {
     public enum BookSearchOptions
     {
-        None = 0,
-        Name = 1,
-        Publisher = 2
+        None,
+        Name,
+        Publisher
     }
 }

@@ -211,7 +211,7 @@ namespace Epam.Library.IntegrationTest
             }
 
             //Act
-            var result = _bookBll.GetByAuthorId(idAuthors).Any();
+            var result = _bookBll.GetByAuthorId(idAuthors, null).Any();
 
             // Assert
             return result;
@@ -240,7 +240,7 @@ namespace Epam.Library.IntegrationTest
             _bookIDs.AddRange(ids);
 
             // Act
-            int result = _bookBll.GetAllGroupsByPublisher(stringLine).Count();
+            int result = _bookBll.GetAllGroupsByPublisher(new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Name, stringLine)).Count();
 
             // Assert
             Assert.IsTrue(result >= 2);
