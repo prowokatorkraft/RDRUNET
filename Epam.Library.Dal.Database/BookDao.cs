@@ -59,16 +59,14 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-
                     command.Parameters.AddWithValue("@Id", id);
 
                     connection.Open();
 
                     var reader = command.ExecuteReader();
-
-                    reader.Read();
-
-                    book = GetOBookByReader(reader);
+                    book = reader.Read()
+                           ? GetBookByReader(reader)
+                           : null;
                 }
 
                 return book;
@@ -100,7 +98,7 @@ namespace Epam.Library.Dal.Database
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        bookList.Add(GetOBookByReader(reader));
+                        bookList.Add(GetBookByReader(reader));
                     }
                 }
 
@@ -123,18 +121,18 @@ namespace Epam.Library.Dal.Database
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Books_GetAllByPublishingYear", connection)
+                    SqlCommand command = new SqlCommand("dbo.Books_SearchByPublishingYear", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForGrouping(page ?? new PagingInfo(), command);
+                    AddParametersForSearchByPublishingYear(null, page, command);
 
                     connection.Open();
 
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        bookList.Add(GetOBookByReader(reader));
+                        bookList.Add(GetBookByReader(reader));
                     }
                 }
 
@@ -167,7 +165,7 @@ namespace Epam.Library.Dal.Database
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        bookList.Add(GetOBookByReader(reader));
+                        bookList.Add(GetBookByReader(reader));
                     }
                 }
 
@@ -228,7 +226,7 @@ namespace Epam.Library.Dal.Database
 
                     while (reader.Read())
                     {
-                        bookList.Add(GetOBookByReader(reader));
+                        bookList.Add(GetBookByReader(reader));
                     }
                 }
 
@@ -315,6 +313,18 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
         }
+        private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, SqlCommand command)
+        {
+            command.Parameters.AddWithValue("@SearchLine", publishingYear ?? (object)DBNull.Value);
+
+            PagingInfo page = paging is null
+                        ? new PagingInfo()
+                        : paging;
+
+            command.Parameters.AddWithValue("@SortDescending", false);
+            command.Parameters.AddWithValue("@SizePage", page.SizePage);
+            command.Parameters.AddWithValue("@Page", page.PageNumber);
+        }
 
         private DataTable WrapInTable(int[] AuthorIDs)
         {
@@ -332,7 +342,7 @@ namespace Epam.Library.Dal.Database
             return authorTable;
         }
 
-        private AbstractBook GetOBookByReader(SqlDataReader reader)
+        private AbstractBook GetBookByReader(SqlDataReader reader)
         {
             AbstractBook book;
 
@@ -371,12 +381,9 @@ namespace Epam.Library.Dal.Database
         {
             foreach (var keyItem in bookList.GroupBy(e => e.Publisher))
             {
-                if (!group.Keys.Any(s => s.Equals(keyItem)))
-                {
-                    group[keyItem.Key] = new List<AbstractBook>();
-                }
-
-                group[keyItem.Key] = new List<AbstractBook>();
+                var list = group.Keys.Any(s => s.Equals(keyItem))
+                          ? group[keyItem.Key]
+                          : group[keyItem.Key] = new List<AbstractBook>();
 
                 foreach (var valueItem in keyItem)
                 {
@@ -388,16 +395,13 @@ namespace Epam.Library.Dal.Database
         {
             foreach (var keyItem in bookList.GroupBy(e => e.PublishingYear))
             {
-                if (!group.Keys.Any(s => s.Equals(keyItem)))
-                {
-                    group[keyItem.Key] = new List<AbstractBook>();
-                }
-
-                group[keyItem.Key] = new List<AbstractBook>();
+                var list = group.Keys.Any(s => s.Equals(keyItem))
+                           ? group[keyItem.Key]
+                           : group[keyItem.Key] = new List<AbstractBook>();
 
                 foreach (var valueItem in keyItem)
                 {
-                    group[keyItem.Key].Add(valueItem);
+                    list.Add(valueItem);
                 }
             }
         }
