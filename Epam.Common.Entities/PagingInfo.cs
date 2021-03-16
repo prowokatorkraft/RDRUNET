@@ -8,11 +8,9 @@ namespace Epam.Library.Common.Entities
 {
     public class PagingInfo
     {
-        public static PagingInfo Default { get; } = new PagingInfo(10000, 1);
+        public int SizePage { get; set; } = 10000;
 
-        public int SizePage { get; set; }
-
-        public int Page { get; set; }
+        public int PageNumber { get; set; } = 1;
 
         public PagingInfo()
         {
@@ -21,7 +19,7 @@ namespace Epam.Library.Common.Entities
         public PagingInfo(int sizePage, int page)
         {
             SizePage = sizePage;
-            Page = page;
+            PageNumber = page;
         }
     }
 }

@@ -270,7 +270,7 @@ namespace Epam.Library.Test
         private static Mock<IBookDao> InitializeMockDaoForGroupsByPublishYear(Func<Dictionary<int,List<AbstractBook>>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetAllGroupsByPublishYear()).Returns(func);
+            bookDao.Setup(a => a.GetAllGroupsByPublishYear(null)).Returns(func);
             return bookDao;
         }
 
