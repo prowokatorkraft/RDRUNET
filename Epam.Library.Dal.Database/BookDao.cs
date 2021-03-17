@@ -177,7 +177,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public bool Remove(int id) // Mark
+        public bool Remove(int id)
         {
             try
             {
@@ -303,19 +303,18 @@ namespace Epam.Library.Dal.Database
                 command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
             }
 
-            PagingInfo page = searchRequest is null || searchRequest.PagingInfo is null 
-                        ? new PagingInfo() 
-                        : searchRequest.PagingInfo;
+            PagingInfo page = searchRequest?.PagingInfo ?? new PagingInfo();
 
-            command.Parameters.AddWithValue("@SortDescending", searchRequest is null
-                                                                ? false
-                                                                : searchRequest.SortOptions.HasFlag(SortOptions.Descending) ? true : false);
+            command.Parameters.AddWithValue("@SortDescending", searchRequest?.SortOptions.HasFlag(SortOptions.Descending) ?? false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
         }
         private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, SqlCommand command)
         {
-            command.Parameters.AddWithValue("@SearchLine", publishingYear ?? (object)DBNull.Value);
+            if (publishingYear != null)
+            {
+                command.Parameters.AddWithValue("@SearchLine", publishingYear);
+            }
 
             PagingInfo page = paging is null
                         ? new PagingInfo()
@@ -381,7 +380,7 @@ namespace Epam.Library.Dal.Database
         {
             foreach (var keyItem in bookList.GroupBy(e => e.Publisher))
             {
-                var list = group.Keys.Any(s => s.Equals(keyItem))
+                var list = group.ContainsKey(keyItem.Key)
                           ? group[keyItem.Key]
                           : group[keyItem.Key] = new List<AbstractBook>();
 
@@ -395,7 +394,7 @@ namespace Epam.Library.Dal.Database
         {
             foreach (var keyItem in bookList.GroupBy(e => e.PublishingYear))
             {
-                var list = group.Keys.Any(s => s.Equals(keyItem))
+                var list = group.ContainsKey(keyItem.Key)
                            ? group[keyItem.Key]
                            : group[keyItem.Key] = new List<AbstractBook>();
 
@@ -409,7 +408,7 @@ namespace Epam.Library.Dal.Database
         private string GetProcedureForSearch(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
         {
             string storedProcedure;
-            
+
             switch (searchRequest?.SearchOptions)
             {
                 case BookSearchOptions.Name:
