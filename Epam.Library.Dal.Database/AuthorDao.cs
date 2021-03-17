@@ -128,6 +128,29 @@ namespace Epam.Library.Dal.Database
             }
         }
 
+        public void Update(Author autor)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand("dbo.Authors_Update", connection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    AddParametersForAdd(autor, command);
+
+                    connection.Open();
+
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new UpdateException("Error updating data.", ex);
+            }
+        }
+
         public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest)
         {
             try
@@ -167,7 +190,7 @@ namespace Epam.Library.Dal.Database
             {
                 ParameterName = "@Id",
                 DbType = DbType.Int32,
-                Direction = ParameterDirection.Output,
+                Direction = ParameterDirection.InputOutput,
                 Value = author.Id ?? (object)DBNull.Value
             };
             command.Parameters.Add(idParam);
@@ -203,7 +226,8 @@ namespace Epam.Library.Dal.Database
             {
                 Id = (int)reader["Id"],
                 FirstName = (string)reader["FirstName"],
-                LastName = (string)reader["LastName"]
+                LastName = (string)reader["LastName"],
+                Deleted = (bool)reader["Deleted"]
             };
         }
 

@@ -12,6 +12,8 @@ namespace Epam.Library.Dal.Contracts
 
         bool Remove(int id);
 
+        void Update(AbstractPatent patent);
+
         AbstractPatent Get(int id);
 
         IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null);

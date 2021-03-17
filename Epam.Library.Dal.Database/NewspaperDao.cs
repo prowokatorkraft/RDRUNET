@@ -1,9 +1,7 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Common.Entities.Exceptions;
+using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Dal.Contracts;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,26 +10,26 @@ using System.Linq;
 
 namespace Epam.Library.Dal.Database
 {
-    public class PatentDao : IPatentDao
+    public class NewspaperDao : INewspaperDao
     {
         private readonly string _connectionString;
-
-        public PatentDao(string connectionString)
+        
+        public NewspaperDao(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public void Add(AbstractPatent patent)
+        public void Add(AbstractNewspaper newspaper)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Patents_Add", connection)
+                    SqlCommand command = new SqlCommand("dbo.Newspapers_Add", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForAdd(patent, command);
+                    AddParametersForAdd(newspaper, command);
 
                     connection.Open();
 
@@ -44,15 +42,15 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public AbstractPatent Get(int id)
+        public AbstractNewspaper Get(int id)
         {
             try
             {
-                AbstractPatent patent;
+                AbstractNewspaper newspaper;
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Patents_GetById", connection)
+                    SqlCommand command = new SqlCommand("dbo.Newspapers_GetById", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
@@ -61,12 +59,12 @@ namespace Epam.Library.Dal.Database
                     connection.Open();
 
                     var reader = command.ExecuteReader();
-                    patent = reader.Read()
-                           ? GetPatentByReader(reader)
+                    newspaper = reader.Read()
+                           ? GetNewspaperByReader(reader)
                            : null;
                 }
 
-                return patent;
+                return newspaper;
             }
             catch (Exception ex)
             {
@@ -74,16 +72,16 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear(PagingInfo page = null)
         {
             try
             {
-                Dictionary<int, List<AbstractPatent>> group = new Dictionary<int, List<AbstractPatent>>();
-                List<AbstractPatent> bookList = new List<AbstractPatent>();
+                Dictionary<int, List<AbstractNewspaper>> group = new Dictionary<int, List<AbstractNewspaper>>();
+                List<AbstractNewspaper> newspaperList = new List<AbstractNewspaper>();
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Patents_SearchByPublishingYear", connection)
+                    SqlCommand command = new SqlCommand("dbo.Newspapers_SearchByPublishingYear", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
@@ -94,44 +92,13 @@ namespace Epam.Library.Dal.Database
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        bookList.Add(GetPatentByReader(reader));
+                        newspaperList.Add(GetNewspaperByReader(reader));
                     }
                 }
 
-                GroupByPublishingYear(group, bookList);
+                GroupByPublishingYear(group, newspaperList);
 
                 return group;
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting data.", ex);
-            }
-        }
-
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null)
-        {
-            try
-            {
-                List<AbstractPatent> patentList = new List<AbstractPatent>();
-
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    SqlCommand command = new SqlCommand("dbo.Patents_GetByAuthorId", connection)
-                    {
-                        CommandType = System.Data.CommandType.StoredProcedure
-                    };
-                    AddParametersForGet(id, page ?? new PagingInfo(), command);
-
-                    connection.Open();
-
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        patentList.Add(GetPatentByReader(reader));
-                    }
-                }
-
-                return patentList;
             }
             catch (Exception ex)
             {
@@ -145,11 +112,10 @@ namespace Epam.Library.Dal.Database
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Patents_Remove", connection)
+                    SqlCommand command = new SqlCommand("dbo.Newspapers_Remove", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-
                     command.Parameters.AddWithValue("@Id", id);
 
                     connection.Open();
@@ -165,17 +131,17 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public void Update(AbstractPatent patent)
+        public void Update(AbstractNewspaper newspaper)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Patents_Update", connection)
+                    SqlCommand command = new SqlCommand("dbo.Newspapers_Update", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForAdd(patent, command);
+                    AddParametersForAdd(newspaper, command);
 
                     connection.Open();
 
@@ -188,11 +154,11 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
+        public IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
         {
             try
             {
-                List<AbstractPatent> patentList = new List<AbstractPatent>();
+                List<AbstractNewspaper> newspaperList = new List<AbstractNewspaper>();
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
@@ -202,20 +168,18 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-
                     AddParametersForSearch(searchRequest, command);
 
                     connection.Open();
 
                     var reader = command.ExecuteReader();
-
                     while (reader.Read())
                     {
-                        patentList.Add(GetPatentByReader(reader));
+                        newspaperList.Add(GetNewspaperByReader(reader));
                     }
                 }
 
-                return patentList;
+                return newspaperList;
             }
             catch (Exception ex)
             {
@@ -223,34 +187,29 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        private void AddParametersForAdd(AbstractPatent patent, SqlCommand command)
+        private void AddParametersForAdd(AbstractNewspaper newspaper, SqlCommand command)
         {
-            DataTable authorTable = WrapInTable(patent.AuthorIDs);
-
             var idParam = new SqlParameter()
             {
                 ParameterName = "@Id",
                 DbType = DbType.Int32,
                 Direction = ParameterDirection.InputOutput,
-                Value = patent.Id
+                Value = newspaper.Id
             };
             command.Parameters.Add(idParam);
 
-            command.Parameters.AddWithValue("@Name", patent.Name);
-            command.Parameters.AddWithValue("@NumberOfPages", patent.NumberOfPages);
-            command.Parameters.AddWithValue("@Annotation", patent.Annotation);
-            command.Parameters.AddWithValue("@Country", patent.Country);
-            command.Parameters.AddWithValue("@RegistrationNumber", patent.RegistrationNumber);
-            command.Parameters.AddWithValue("@ApplicationDate", patent.ApplicationDate);
-            command.Parameters.AddWithValue("@DateOfPublication", patent.DateOfPublication);
-
-            var authorParam = command.Parameters.AddWithValue("@AuthorIDs", authorTable);
-            authorParam.SqlDbType = SqlDbType.Structured;
-            authorParam.TypeName = "dbo.IDList";
+            command.Parameters.AddWithValue("@Name", newspaper.Name);
+            command.Parameters.AddWithValue("@NumberOfPages", newspaper.NumberOfPages);
+            command.Parameters.AddWithValue("@Annotation", newspaper.Annotation);
+            command.Parameters.AddWithValue("@Publisher", newspaper.Publisher);
+            command.Parameters.AddWithValue("@PublishingCity", newspaper.PublishingCity);
+            command.Parameters.AddWithValue("@Number", newspaper.Number);
+            command.Parameters.AddWithValue("@Date", newspaper.Date);
+            command.Parameters.AddWithValue("@Issn", newspaper.Issn);
         }
-        private void AddParametersForSearch(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, SqlCommand command)
+        private void AddParametersForSearch(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, SqlCommand command)
         {
-            if (searchRequest != null && searchRequest.SearchOptions != PatentSearchOptions.None)
+            if (searchRequest != null && searchRequest.SearchOptions != NewspaperSearchOptions.None)
             {
                 command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
             }
@@ -276,71 +235,36 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
         }
-        private void AddParametersForGet(int id, PagingInfo page, SqlCommand command)
+
+        private AbstractNewspaper GetNewspaperByReader(SqlDataReader reader)
         {
-            command.Parameters.AddWithValue("@Id", id);
-            command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
-        }
+            AbstractNewspaper newspaper;
 
-        private DataTable WrapInTable(int[] AuthorIDs)
-        {
-            DataTable authorTable = new DataTable();
-            authorTable.Columns.Add(new DataColumn("ID", typeof(int)));
-
-            if (AuthorIDs != null)
-            {
-                foreach (var id in AuthorIDs)
-                {
-                    authorTable.Rows.Add(id);
-                }
-            }
-
-            return authorTable;
-        }
-
-        private AbstractPatent GetPatentByReader(SqlDataReader reader)
-        {
-            AbstractPatent patent;
-
-            var AuthorIdList = new List<int>();
-
-            string AuthorIdJson = reader["AuthorIDs"] as string;
-
-            if (AuthorIdJson != null)
-            {
-                var AuthorIdObject = JsonConvert.DeserializeObject<JArray>(AuthorIdJson);
-
-                foreach (var item in AuthorIdObject)
-                {
-                    AuthorIdList.Add((int)item["AuthorId"]);
-                }
-            }
-
-            patent = new Patent()
+            newspaper = new Newspaper()
             {
                 Id = (int)reader["Id"],
                 Name = (string)reader["Name"],
                 NumberOfPages = (int)reader["NumberOfPages"],
                 Annotation = reader["Annotation"] as string,
                 Deleted = (bool)reader["Deleted"],
-                AuthorIDs = AuthorIdList.ToArray(),
-                Country = (string)reader["Country"],
-                RegistrationNumber = (string)reader["RegistrationNumber"],
-                ApplicationDate = reader["ApplicationDate"] as DateTime?,
-                DateOfPublication = (DateTime)reader["DateOfPublication"]
+                Publisher = (string)reader["Publisher"],
+                PublishingCity = (string)reader["PublishingCity"],
+                PublishingYear = ((DateTime)reader["Date"]).Year,
+                Date = (DateTime)reader["Date"],
+                Number = reader["Number"] as string,
+                Issn = reader["Issn"] as string
             };
 
-            return patent;
+            return newspaper;
         }
 
-        private void GroupByPublishingYear(Dictionary<int, List<AbstractPatent>> group, List<AbstractPatent> patentList)
+        private void GroupByPublishingYear(Dictionary<int, List<AbstractNewspaper>> group, List<AbstractNewspaper> newspaperList)
         {
-            foreach (var keyItem in patentList.GroupBy(e => e.DateOfPublication.Year))
+            foreach (var keyItem in newspaperList.GroupBy(e => e.PublishingYear))
             {
                 var list = group.ContainsKey(keyItem.Key)
                            ? group[keyItem.Key]
-                           : group[keyItem.Key] = new List<AbstractPatent>();
+                           : group[keyItem.Key] = new List<AbstractNewspaper>();
 
                 foreach (var valueItem in keyItem)
                 {
@@ -349,17 +273,17 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        private string GetProcedureForSearch(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
+        private string GetProcedureForSearch(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
         {
             string storedProcedure;
 
             switch (searchRequest?.SearchOptions)
             {
-                case PatentSearchOptions.Name:
-                    storedProcedure = "dbo.Patents_SearchByName";
+                case NewspaperSearchOptions.Name:
+                    storedProcedure = "dbo.Newspapers_SearchByName";
                     break;
                 default:
-                    storedProcedure = "dbo.Patents_GetAll";
+                    storedProcedure = "dbo.Newspapers_GetAll";
                     break;
             }
 

@@ -270,7 +270,7 @@ namespace Epam.Library.Test
         private static Mock<INewspaperDao> InitializeMockDaoForGroupsByPublishYear(Func<Dictionary<int, List<AbstractNewspaper>>> func)
         {
             var newspaperDao = new Mock<INewspaperDao>();
-            newspaperDao.Setup(a => a.GetAllGroupsByPublishYear()).Returns(func);
+            newspaperDao.Setup(a => a.GetAllGroupsByPublishYear(It.IsAny<PagingInfo>())).Returns(func);
             return newspaperDao;
         }
     }

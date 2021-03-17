@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AuthorDao.cs" />
     <Compile Include="BookDao.cs" />
+    <Compile Include="NewspaperDao.cs" />
     <Compile Include="PatentDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

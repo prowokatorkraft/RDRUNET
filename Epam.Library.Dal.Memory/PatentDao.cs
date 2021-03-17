@@ -145,5 +145,10 @@ namespace Epam.Library.Dal.Memory
 
             return query;
         }
+
+        public void Update(AbstractPatent patent)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

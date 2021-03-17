@@ -11,16 +11,19 @@ namespace Epam.Library.Common.Entities.AuthorElement
 
         public string LastName { get; set; }
 
+        public bool Deleted { get; set; }
+
         public Author() 
         {
         
         }
 
-        public Author(int? id, string firstName, string lastName)
+        public Author(int? id, string firstName, string lastName, bool deleted = false)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
+            Deleted = deleted;
         }
 
         public override string ToString()
@@ -30,7 +33,7 @@ namespace Epam.Library.Common.Entities.AuthorElement
 
         public object Clone()
         {
-            return new Author(Id, FirstName, LastName);
+            return new Author(Id, FirstName, LastName, Deleted);
         }
 
         public override bool Equals(object obj)
