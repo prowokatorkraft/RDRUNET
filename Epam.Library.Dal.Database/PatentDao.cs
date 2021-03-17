@@ -1,37 +1,37 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AuthorElement.Book;
+using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Epam.Library.Dal.Database
 {
-    public class BookDao : IBookDao
+    public class PatentDao : IPatentDao
     {
         private readonly string _connectionString;
 
-        public BookDao(string connectionString)
+        public PatentDao(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public void Add(AbstractBook book)
+        public void Add(AbstractPatent patent)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Books_Add", connection)
+                    SqlCommand command = new SqlCommand("dbo.Patents_Add", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForAdd(book, command);
+                    AddParametersForAdd(patent, command);
 
                     connection.Open();
 
@@ -44,15 +44,15 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractPatent Get(int id)
         {
             try
             {
-                AbstractBook book;
+                AbstractPatent patent;
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Books_GetById", connection)
+                    SqlCommand command = new SqlCommand("dbo.Patents_GetById", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
@@ -61,12 +61,12 @@ namespace Epam.Library.Dal.Database
                     connection.Open();
 
                     var reader = command.ExecuteReader();
-                    book = reader.Read()
-                           ? GetBookByReader(reader)
+                    patent = reader.Read()
+                           ? GetPatentByReader(reader)
                            : null;
                 }
 
-                return book;
+                return patent;
             }
             catch (Exception ex)
             {
@@ -74,51 +74,16 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null)
         {
             try
             {
-                Dictionary<string, List<AbstractBook>> group = new Dictionary<string, List<AbstractBook>>();
-                List<AbstractBook> bookList = new List<AbstractBook>();
+                Dictionary<int, List<AbstractPatent>> group = new Dictionary<int, List<AbstractPatent>>();
+                List<AbstractPatent> bookList = new List<AbstractPatent>();
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Books_SearchByPublisher", connection)
-                    {
-                        CommandType = System.Data.CommandType.StoredProcedure
-                    };
-                    searchRequest.SearchOptions = BookSearchOptions.Publisher;
-                    AddParametersForSearch(searchRequest, command);
-
-                    connection.Open();
-
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        bookList.Add(GetBookByReader(reader));
-                    }
-                }
-
-                GroupByPublisher(group, bookList);
-
-                return group;
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting data.", ex);
-            }
-        }
-
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null)
-        {
-            try
-            {
-                Dictionary<int, List<AbstractBook>> group = new Dictionary<int, List<AbstractBook>>();
-                List<AbstractBook> bookList = new List<AbstractBook>();
-
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    SqlCommand command = new SqlCommand("dbo.Books_SearchByPublishingYear", connection)
+                    SqlCommand command = new SqlCommand("dbo.Patents_SearchByPublishingYear", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
@@ -129,7 +94,7 @@ namespace Epam.Library.Dal.Database
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        bookList.Add(GetBookByReader(reader));
+                        bookList.Add(GetPatentByReader(reader));
                     }
                 }
 
@@ -143,15 +108,15 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null)
         {
             try
             {
-                List<AbstractBook> bookList = new List<AbstractBook>();
+                List<AbstractPatent> patentList = new List<AbstractPatent>();
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Books_GetByAuthorId", connection)
+                    SqlCommand command = new SqlCommand("dbo.Patents_GetByAuthorId", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
@@ -162,11 +127,11 @@ namespace Epam.Library.Dal.Database
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        bookList.Add(GetBookByReader(reader));
+                        patentList.Add(GetPatentByReader(reader));
                     }
                 }
 
-                return bookList;
+                return patentList;
             }
             catch (Exception ex)
             {
@@ -180,7 +145,7 @@ namespace Epam.Library.Dal.Database
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("dbo.Books_Remove", connection)
+                    SqlCommand command = new SqlCommand("dbo.Patents_Remove", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
@@ -200,11 +165,11 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
         {
             try
             {
-                List<AbstractBook> bookList = new List<AbstractBook>();
+                List<AbstractPatent> patentList = new List<AbstractPatent>();
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
@@ -223,11 +188,11 @@ namespace Epam.Library.Dal.Database
 
                     while (reader.Read())
                     {
-                        bookList.Add(GetBookByReader(reader));
+                        patentList.Add(GetPatentByReader(reader));
                     }
                 }
 
-                return bookList;
+                return patentList;
             }
             catch (Exception ex)
             {
@@ -235,69 +200,34 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public void Update(AbstractBook book)
+        private void AddParametersForAdd(AbstractPatent patent, SqlCommand command)
         {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    SqlCommand command = new SqlCommand("dbo.Books_Update", connection)
-                    {
-                        CommandType = System.Data.CommandType.StoredProcedure
-                    };
-                    AddParametersForAdd(book, command);
-
-                    connection.Open();
-
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new UpdateException("Error updating data.", ex);
-            }
-        }
-
-        private void AddParametersForAdd(AbstractBook book, SqlCommand command)
-        {
-            DataTable authorTable = WrapInTable(book.AuthorIDs);
+            DataTable authorTable = WrapInTable(patent.AuthorIDs);
 
             var idParam = new SqlParameter()
             {
                 ParameterName = "@Id",
                 DbType = DbType.Int32,
                 Direction = ParameterDirection.InputOutput,
-                Value = book.Id ?? (object)DBNull.Value
+                Value = patent.Id
             };
             command.Parameters.Add(idParam);
 
-            command.Parameters.AddWithValue("@Name", book.Name);
-            command.Parameters.AddWithValue("@NumberOfPages", book.NumberOfPages);
-            command.Parameters.AddWithValue("@Annotation", book.Annotation ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("@Publisher", book.Publisher);
-            command.Parameters.AddWithValue("@PublishingCity", book.PublishingCity);
-            command.Parameters.AddWithValue("@PublishingYear", book.PublishingYear);
-            command.Parameters.AddWithValue("@Isbn", book.Isbn ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Name", patent.Name);
+            command.Parameters.AddWithValue("@NumberOfPages", patent.NumberOfPages);
+            command.Parameters.AddWithValue("@Annotation", patent.Annotation);
+            command.Parameters.AddWithValue("@Country", patent.Country);
+            command.Parameters.AddWithValue("@RegistrationNumber", patent.RegistrationNumber);
+            command.Parameters.AddWithValue("@ApplicationDate", patent.ApplicationDate);
+            command.Parameters.AddWithValue("@DateOfPublication", patent.DateOfPublication);
 
             var authorParam = command.Parameters.AddWithValue("@AuthorIDs", authorTable);
             authorParam.SqlDbType = SqlDbType.Structured;
             authorParam.TypeName = "dbo.IDList";
         }
-        private void AddParametersForGet(int id, PagingInfo page, SqlCommand command)
+        private void AddParametersForSearch(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, SqlCommand command)
         {
-            command.Parameters.AddWithValue("@Id", id);
-            command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
-        }
-        private void AddParametersForGrouping(PagingInfo page, SqlCommand command)
-        {
-            command.Parameters.AddWithValue("@SortDescending", false);
-            command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
-        }
-        private void AddParametersForSearch(SearchRequest<SortOptions, BookSearchOptions> searchRequest, SqlCommand command)
-        {
-            if (searchRequest != null && searchRequest.SearchOptions != BookSearchOptions.None)
+            if (searchRequest != null && searchRequest.SearchOptions != PatentSearchOptions.None)
             {
                 command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
             }
@@ -323,6 +253,12 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
         }
+        private void AddParametersForGet(int id, PagingInfo page, SqlCommand command)
+        {
+            command.Parameters.AddWithValue("@Id", id);
+            command.Parameters.AddWithValue("@SizePage", page.SizePage);
+            command.Parameters.AddWithValue("@Page", page.PageNumber);
+        }
 
         private DataTable WrapInTable(int[] AuthorIDs)
         {
@@ -340,9 +276,9 @@ namespace Epam.Library.Dal.Database
             return authorTable;
         }
 
-        private AbstractBook GetBookByReader(SqlDataReader reader)
+        private AbstractPatent GetPatentByReader(SqlDataReader reader)
         {
-            AbstractBook book;
+            AbstractPatent patent;
 
             var AuthorIdList = new List<int>();
 
@@ -358,7 +294,7 @@ namespace Epam.Library.Dal.Database
                 }
             }
 
-            book = new Book()
+            patent = new Patent()
             {
                 Id = (int)reader["Id"],
                 Name = (string)reader["Name"],
@@ -366,36 +302,22 @@ namespace Epam.Library.Dal.Database
                 Annotation = reader["Annotation"] as string,
                 Deleted = (bool)reader["Deleted"],
                 AuthorIDs = AuthorIdList.ToArray(),
-                Publisher = (string)reader["Publisher"],
-                PublishingCity = (string)reader["PublishingCity"],
-                PublishingYear = (int)reader["PublishingYear"],
-                Isbn = reader["Isbn"] as string
+                Country = (string)reader["Country"],
+                RegistrationNumber = (string)reader["RegistrationNumber"],
+                ApplicationDate = reader["ApplicationDate"] as DateTime?,
+                DateOfPublication = (DateTime)reader["DateOfPublication"]
             };
 
-            return book;
+            return patent;
         }
 
-        private void GroupByPublisher(Dictionary<string, List<AbstractBook>> group, List<AbstractBook> bookList)
+        private void GroupByPublishingYear(Dictionary<int, List<AbstractPatent>> group, List<AbstractPatent> patentList)
         {
-            foreach (var keyItem in bookList.GroupBy(e => e.Publisher))
-            {
-                var list = group.ContainsKey(keyItem.Key)
-                          ? group[keyItem.Key]
-                          : group[keyItem.Key] = new List<AbstractBook>();
-
-                foreach (var valueItem in keyItem)
-                {
-                    group[keyItem.Key].Add(valueItem);
-                }
-            }
-        }
-        private void GroupByPublishingYear(Dictionary<int, List<AbstractBook>> group, List<AbstractBook> bookList)
-        {
-            foreach (var keyItem in bookList.GroupBy(e => e.PublishingYear))
+            foreach (var keyItem in patentList.GroupBy(e => e.DateOfPublication.Year))
             {
                 var list = group.ContainsKey(keyItem.Key)
                            ? group[keyItem.Key]
-                           : group[keyItem.Key] = new List<AbstractBook>();
+                           : group[keyItem.Key] = new List<AbstractPatent>();
 
                 foreach (var valueItem in keyItem)
                 {
@@ -404,20 +326,17 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        private string GetProcedureForSearch(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        private string GetProcedureForSearch(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
         {
             string storedProcedure;
 
             switch (searchRequest?.SearchOptions)
             {
-                case BookSearchOptions.Name:
-                    storedProcedure = "dbo.Books_SearchByName";
-                    break;
-                case BookSearchOptions.Publisher:
-                    storedProcedure = "dbo.Books_SearchByPublisher";
+                case PatentSearchOptions.Name:
+                    storedProcedure = "dbo.Patents_SearchByName";
                     break;
                 default:
-                    storedProcedure = "dbo.Books_GetAll";
+                    storedProcedure = "dbo.Patents_GetAll";
                     break;
             }
 
@@ -425,4 +344,3 @@ namespace Epam.Library.Dal.Database
         }
     }
 }
-

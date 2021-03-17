@@ -270,7 +270,7 @@ namespace Epam.Library.Test
         private static Mock<IPatentDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractPatent>> func)
         {
             var patentDao = new Mock<IPatentDao>();
-            patentDao.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);
+            patentDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>())).Returns(func);
             return patentDao;
         }
 
@@ -313,7 +313,7 @@ namespace Epam.Library.Test
         private static Mock<IPatentDao> InitializeMockDaoForGroupsByPublishYear(Func<Dictionary<int, List<AbstractPatent>>> func)
         {
             var patentDao = new Mock<IPatentDao>();
-            patentDao.Setup(a => a.GetAllGroupsByPublishYear()).Returns(func);
+            patentDao.Setup(a => a.GetAllGroupsByPublishYear(It.IsAny<PagingInfo>())).Returns(func);
             return patentDao;
         }
     }
