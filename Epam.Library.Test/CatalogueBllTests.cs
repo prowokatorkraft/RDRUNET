@@ -118,7 +118,7 @@ namespace Epam.Library.Test
         private static Mock<ICatalogueDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractAuthorElement>> func)
         {
             var catalogueDao = new Mock<ICatalogueDao>();
-            catalogueDao.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);
+            catalogueDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>())).Returns(func);
             return catalogueDao;
         }
 

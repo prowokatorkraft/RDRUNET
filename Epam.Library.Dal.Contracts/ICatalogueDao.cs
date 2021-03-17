@@ -12,7 +12,7 @@ namespace Epam.Library.Dal.Contracts
 
         LibraryAbstractElement Get(int id);
 
-        IEnumerable<AbstractAuthorElement> GetByAuthorId(int id);
+        IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null);
 
         IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest);
     }
