@@ -141,8 +141,7 @@ namespace IntegrationTest
         {
             return _authorBll.Search(null)
                 .Where(a => a.Equals(author))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
     }
 }

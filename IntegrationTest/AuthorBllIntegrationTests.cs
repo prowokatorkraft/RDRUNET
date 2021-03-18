@@ -271,8 +271,7 @@ namespace Epam.Library.IntegrationTest
         {
             return _authorBll.Search(null)
                 .Where(a => a.Equals(author))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
 
         private int? GetId(AbstractAuthorElement authorElement)
@@ -280,8 +279,7 @@ namespace Epam.Library.IntegrationTest
             return _catalogueBll.Search(null)
                 .OfType<AbstractAuthorElement>()
                 .Where(a => a.Equals(authorElement))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
     }
 }

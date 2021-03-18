@@ -118,7 +118,7 @@ namespace Epam.Library.IntegrationTest
                 Assert.AreEqual(preCount - 1, postCount);
             });
         }
-
+        
         [Test]
         public void Remove_Exception_False()
         {
@@ -222,8 +222,7 @@ namespace Epam.Library.IntegrationTest
         {
             return _newspaperBll.Search(null)
                 .Where(a => a.Equals(newspaper))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
     }
 }

@@ -62,8 +62,8 @@ namespace Epam.Library.IntegrationTest.TestCases
 
                 yield return new TestCaseData
                 (
-                    new Author(null, "Getbyauthorid", "Two"),
-                    new Book(null, "Getbyauthorid Two", 0, null, false, null, "Test", "Test", 2020, null)
+                    new Author(null, "Getbyauthoridforbook", "Twoforbook"),
+                    new Book(null, "Getbyauthorid TwoForBook", 0, null, false, null, "Tester", "Test", 2020, null)
                 ).Returns(true);
             }
         }

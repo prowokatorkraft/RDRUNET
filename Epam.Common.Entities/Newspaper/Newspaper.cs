@@ -52,8 +52,8 @@ namespace Epam.Library.Common.Entities.Newspaper
         {
             return obj is Newspaper newspaper &&
                    Name == newspaper.Name &&
-                   EqualityComparer<string>.Default.Equals(Publisher, newspaper.Publisher) &&
-                   Date == newspaper.Date;
+                   Publisher == newspaper.Publisher &&
+                   Date.Date == newspaper.Date.Date;
         }
 
         public override int GetHashCode()

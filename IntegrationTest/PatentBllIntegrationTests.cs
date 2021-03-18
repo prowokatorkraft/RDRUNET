@@ -256,16 +256,14 @@ namespace Epam.Library.IntegrationTest
         {
             return _patentBll.Search(null)
                 .Where(a => a.Equals(patent))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
 
         private int? GetId(Author author)
         {
             return _authorBll.Search(null)
                 .Where(a => a.Equals(author))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
     }
 }
