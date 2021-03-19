@@ -61,6 +61,10 @@
       <Project>{20b2f9db-ec00-4046-90c7-674952191b23}</Project>
       <Name>Epam.Library.Dal.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Dal.Database\Epam.Library.Dal.Database.csproj">
+      <Project>{b7047b3b-64f6-4984-a082-d943241ae266}</Project>
+      <Name>Epam.Library.Dal.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Epam.Library.Dal.Memory\Epam.Library.Dal.Memory.csproj">
       <Project>{46409c69-54e7-47d3-9dfd-86998affde5e}</Project>
       <Name>Epam.Library.Dal.Memory</Name>

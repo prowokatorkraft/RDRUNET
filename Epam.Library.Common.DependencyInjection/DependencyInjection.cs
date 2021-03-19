@@ -4,7 +4,7 @@ using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Common.Entities.Newspaper;
-using Epam.Library.Dal.Memory;
+using Epam.Library.Dal.Database;
 using Epam.Library.Bll.Validation;
 using Epam.Library.Bll;
 
@@ -31,11 +31,13 @@ namespace Epam.Library.Common.DependencyInjection
 
         static DependencyInjection()
         {
-            AuthorDao = new AuthorDao();
-            CatalogueDao = new CatalogueDao(AuthorDao);
-            BookDao = new BookDao(CatalogueDao);
-            NewspaperDao = new NewspaperDao(CatalogueDao);
-            PatentDao = new PatentDao(CatalogueDao);
+            string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;MultipleActiveResultSets=true;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
+            AuthorDao = new AuthorDao(connectionString);
+            BookDao = new BookDao(connectionString);
+            NewspaperDao = new NewspaperDao(connectionString);
+            PatentDao = new PatentDao(connectionString);
+            CatalogueDao = new CatalogueDao(connectionString, BookDao, PatentDao, NewspaperDao);
 
             AuthorValidation = new AuthorValidation();
             BookValidation = new BookValidation();
