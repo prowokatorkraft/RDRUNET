@@ -97,6 +97,87 @@ namespace Epam.Library.IntegrationTest
         }
 
         [Test]
+        public void Update_True()
+        {
+            // Arrange
+            Book book1 = new Book(null, "Add-True", 0, null, false, null, "Test", "Test", 2020, null);
+            Book book2 = new Book(null, "Addtrue-True", 0, null, false, null, "Test", "Test", 2020, null);
+            int id;
+
+            _bookBll.Add(book1);
+            _bookIDs.Add(id = GetId(book1).Value);
+            book2.Id = id;
+
+            int preCount = GetCount();
+
+            // Act
+            var errors = _bookBll.Update(book2);
+
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(0, errors.Count());
+                Assert.AreEqual(preCount, postCount);
+                Assert.IsTrue(book2.Equals(_bookBll.Get(book2.Id.Value)));
+            });
+        }
+
+        [Test]
+        public void Update_False()
+        {
+            // Arrange
+            Book book = new Book(-100, null, 0, null, false, null, null, null, 0, null);
+            int preCount = GetCount();
+
+            // Act
+            var errors = _bookBll.Update(book);
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(errors.Count() > 0);
+                Assert.AreEqual(preCount, postCount);
+            });
+        }
+
+        [Test]
+        public void Update_Null_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _bookBll.Update(null);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
+        public void Update_IdNull_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _bookBll.Update(new Book(null,null,0,null,false,null,null,null,0,null));
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
         public void Remove_True()
         {
             // Arrange

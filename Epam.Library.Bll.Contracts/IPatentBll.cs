@@ -1,13 +1,14 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Epam.Library.Bll.Contracts
 {
     public interface IPatentBll
     {
         IEnumerable<ErrorValidation> Add(AbstractPatent patent);
+
+        IEnumerable<ErrorValidation> Update(AbstractPatent patent);
 
         bool Remove(int id);
 

@@ -9,6 +9,8 @@ namespace Epam.Library.Bll.Contracts
     {
         IEnumerable<ErrorValidation> Add(Author author);
 
+        IEnumerable<ErrorValidation> Update(Author autor);
+
         bool Remove(int id);
 
         Author Get(int id);

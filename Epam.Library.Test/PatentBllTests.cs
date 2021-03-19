@@ -81,6 +81,64 @@ namespace Epam.Library.Test
             return validation;
         }
 
+        [TestCaseSource(typeof(PatentBllTestCases), nameof(PatentBllTestCases.AddTestCases))]
+        public bool Update(ErrorValidation error)
+        {
+            // Arrange
+            bool isAddDao = false;
+            Mock<IPatentDao> patentDao = InitializeMockDaoForUpdate(() => isAddDao = true);
+            var listErrors = new List<ErrorValidation>();
+            if (error != null)
+            {
+                listErrors.Add(error);
+            }
+            Mock<IValidationBll<AbstractPatent>> validation = InitializeMockValidationForAdd(() => listErrors);
+            var patentBll = new PatentBll(patentDao.Object, null, validation.Object);
+
+            // Act
+            var errors = patentBll.Update(new Patent(0, null, 0, null, false, null, null, null, null, DateTime.Now));
+
+            // Assert
+            return isAddDao;
+        }
+
+        [Test]
+        public void Update_Exeption()
+        {
+            // Arrange
+            Mock<IPatentDao> patentDao = InitializeMockDaoForUpdate(() => throw new Exception());
+            Mock<IValidationBll<AbstractPatent>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            var patentBll = new PatentBll(patentDao.Object, null, validation.Object);
+
+            // Act
+            TestDelegate action = () => patentBll.Update(new Patent());
+
+            // Assert
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        [Test]
+        public void Update_Exeption_Null()
+        {
+            // Arrange
+            Mock<IPatentDao> patentDao = InitializeMockDaoForUpdate(() => { });
+            Mock<IValidationBll<AbstractPatent>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            var patentBll = new PatentBll(patentDao.Object, null, validation.Object);
+
+            // Act
+            TestDelegate action = () => patentBll.Update(null);
+
+            // Assert
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        private static Mock<IPatentDao> InitializeMockDaoForUpdate(Action action)
+        {
+            var patentDao = new Mock<IPatentDao>();
+            patentDao.Setup(a => a.Update(It.IsAny<AbstractPatent>())).Callback(action);
+            return patentDao;
+        }
+
         [Test]
         public void Get()
         {

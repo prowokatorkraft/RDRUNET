@@ -53,6 +53,39 @@ namespace Epam.Library.Bll
             }
         }
 
+        public IEnumerable<ErrorValidation> Update(AbstractBook book)
+        {
+            try
+            {
+                if (book is null)
+                {
+                    throw new ArgumentNullException(nameof(book) + " is null");
+                }
+                else if (book.Id is null)
+                {
+                    throw new ArgumentNullException(nameof(book.Id) + " is null");
+                }
+
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs))
+                {
+                    throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
+                }
+
+                var errors = _validation.Validate(book);
+
+                if (errors.Count() == 0)
+                {
+                    _dao.Update(book);
+                }
+
+                return errors;
+            }
+            catch (Exception ex)
+            {
+                throw new UpdateException("Error updating item.", ex);
+            }
+        }
+
         public bool Remove(int id)
         {
             try

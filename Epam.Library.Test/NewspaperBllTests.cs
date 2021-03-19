@@ -81,6 +81,64 @@ namespace Epam.Library.Test
             return validation;
         }
 
+        [TestCaseSource(typeof(NewspaperBllTestCases), nameof(NewspaperBllTestCases.AddTestCases))]
+        public bool Update(ErrorValidation error)
+        {
+            // Arrange
+            bool isAddDao = false;
+            Mock<INewspaperDao> newspaperDao = InitializeMockDaoForUpdate(() => isAddDao = true);
+            var listErrors = new List<ErrorValidation>();
+            if (error != null)
+            {
+                listErrors.Add(error);
+            }
+            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => listErrors);
+            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+
+            // Act
+            var errors = newspaperBll.Update(new Newspaper(0,null,0,null,false,null,null,0,null,null,DateTime.Now));
+
+            // Assert
+            return isAddDao;
+        }
+
+        [Test]
+        public void Update_Exeption()
+        {
+            // Arrange
+            Mock<INewspaperDao> newspaperDao = InitializeMockDaoForUpdate(() => throw new Exception());
+            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+
+            // Act
+            TestDelegate action = () => newspaperBll.Update(new Newspaper());
+
+            // Assert
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        [Test]
+        public void Update_Exeption_Null()
+        {
+            // Arrange
+            Mock<INewspaperDao> newspaperDao = InitializeMockDaoForUpdate(() => { });
+            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+
+            // Act
+            TestDelegate action = () => newspaperBll.Update(null);
+
+            // Assert
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        private static Mock<INewspaperDao> InitializeMockDaoForUpdate(Action action)
+        {
+            var newspaperDao = new Mock<INewspaperDao>();
+            newspaperDao.Setup(a => a.Update(It.IsAny<AbstractNewspaper>())).Callback(action);
+            return newspaperDao;
+        }
+
         [Test]
         public void Get()
         {

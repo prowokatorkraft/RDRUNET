@@ -91,6 +91,87 @@ namespace Epam.Library.IntegrationTest
         }
 
         [Test]
+        public void Update_True()
+        {
+            // Arrange
+            Newspaper newspaper1 = new Newspaper(null, "Add-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            Newspaper newspaper2 = new Newspaper(null, "Addtrue-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            int id;
+
+            _newspaperBll.Add(newspaper1);
+            _newspaperIDs.Add(id = GetId(newspaper1).Value);
+            newspaper2.Id = id;
+
+            int preCount = GetCount();
+
+            // Act
+            var errors = _newspaperBll.Update(newspaper2);
+
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(0, errors.Count());
+                Assert.AreEqual(preCount, postCount);
+                Assert.IsTrue(newspaper2.Equals(_newspaperBll.Get(newspaper2.Id.Value)));
+            });
+        }
+
+        [Test]
+        public void Update_False()
+        {
+            // Arrange
+            Newspaper newspaper = new Newspaper(-100, null, 0, null, false, null, null, 0, null, null, DateTime.Now);
+            int preCount = GetCount();
+
+            // Act
+            var errors = _newspaperBll.Update(newspaper);
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(errors.Count() > 0);
+                Assert.AreEqual(preCount, postCount);
+            });
+        }
+
+        [Test]
+        public void Update_Null_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _newspaperBll.Update(null);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
+        public void Update_IdNull_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _newspaperBll.Update(new Newspaper(null,null,0,null,false,null,null,0,null,null,DateTime.Now));
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
         public void Remove_True()
         {
             // Arrange

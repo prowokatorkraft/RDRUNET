@@ -11,7 +11,7 @@ namespace Epam.Library.Dal.Contracts
 
         bool Remove(int id);
 
-        void Update(Author autor);
+        void Update(Author author);
 
         bool Check(int[] ids);
 

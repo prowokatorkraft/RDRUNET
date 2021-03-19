@@ -8,6 +8,8 @@ namespace Epam.Library.Bll.Contracts
     {
         IEnumerable<ErrorValidation> Add(AbstractBook book);
 
+        IEnumerable<ErrorValidation> Update(AbstractBook book);
+
         bool Remove(int id);
 
         AbstractBook Get(int id);
