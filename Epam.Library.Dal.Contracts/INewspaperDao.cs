@@ -11,10 +11,12 @@ namespace Epam.Library.Dal.Contracts
 
         bool Remove(int id);
 
+        void Update(AbstractNewspaper newspaper);
+
         AbstractNewspaper Get(int id);
 
         IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest);
 
-        Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear();
+        Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear(PagingInfo page = null);
     }
 }

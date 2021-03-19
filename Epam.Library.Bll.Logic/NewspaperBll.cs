@@ -45,6 +45,34 @@ namespace Epam.Library.Bll
             }
         }
 
+        public IEnumerable<ErrorValidation> Update(AbstractNewspaper newspaper)
+        {
+            try
+            {
+                if (newspaper is null)
+                {
+                    throw new ArgumentNullException(nameof(newspaper) + " is null");
+                }
+                else if (newspaper.Id is null)
+                {
+                    throw new ArgumentNullException(nameof(newspaper.Id) + " is null");
+                }
+
+                var errors = _validation.Validate(newspaper);
+
+                if (errors.Count() == 0)
+                {
+                    _dao.Update(newspaper);
+                }
+
+                return errors;
+            }
+            catch (Exception ex)
+            {
+                throw new UpdateException("Error updating item.", ex);
+            }
+        }
+
         public bool Remove(int id)
         {
             try

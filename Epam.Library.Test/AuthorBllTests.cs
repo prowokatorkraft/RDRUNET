@@ -97,6 +97,79 @@ namespace Epam.Library.Test
             return authorDao;
         }
 
+        [TestCaseSource(typeof(AuthorBllTestCases), nameof(AuthorBllTestCases.AddTestCases))]
+        public bool Update(ErrorValidation error)
+        {
+            // Arrange
+
+            bool isAddDao = false;
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForUpdate(() => isAddDao = true);
+
+            var listErrors = new List<ErrorValidation>();
+            if (error != null)
+            {
+                listErrors.Add(error);
+            }
+
+            Mock<IValidationBll<Author>> validation = InitializeMockValidationForAdd(() => listErrors);
+
+            IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, validation.Object);
+
+            // Act
+
+            var errors = authorBll.Update(new Author(0,null,null));
+
+            // Assert
+
+            return isAddDao;
+        }
+
+        [Test]
+        public void Update_Exeption()
+        {
+            // Arrange
+
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForUpdate(() => throw new Exception());
+
+            Mock<IValidationBll<Author>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+
+            IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, validation.Object);
+
+            // Act
+
+            TestDelegate action = () => authorBll.Update(new Author());
+
+            // Assert
+
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        [Test]
+        public void Update_Exeption_Null()
+        {
+            // Arrange
+
+            Mock<IAuthorDao> authorDao = InitializeMockDaoForUpdate(() => { });
+            Mock<IValidationBll<Author>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+
+            IAuthorBll authorBll = new AuthorBll(authorDao.Object, null, validation.Object);
+
+            // Act
+
+            TestDelegate action = () => authorBll.Update(null);
+
+            // Assert
+
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        private static Mock<IAuthorDao> InitializeMockDaoForUpdate(Action action)
+        {
+            var authorDao = new Mock<IAuthorDao>();
+            authorDao.Setup(a => a.Update(It.IsAny<Author>())).Callback(action);
+            return authorDao;
+        }
+
         [Test]
         public void Get()
         {

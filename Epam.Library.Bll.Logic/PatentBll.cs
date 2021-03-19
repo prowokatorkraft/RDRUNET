@@ -53,6 +53,39 @@ namespace Epam.Library.Bll
             }
         }
 
+        public IEnumerable<ErrorValidation> Update(AbstractPatent patent)
+        {
+            try
+            {
+                if (patent is null)
+                {
+                    throw new ArgumentNullException(nameof(patent) + " is null");
+                }
+                else if (patent.Id is null)
+                {
+                    throw new ArgumentNullException(nameof(patent.Id) + " is null");
+                }
+
+                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs))
+                {
+                    throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
+                }
+
+                var errors = _validation.Validate(patent);
+
+                if (errors.Count() == 0)
+                {
+                    _dao.Update(patent);
+                }
+
+                return errors;
+            }
+            catch (Exception ex)
+            {
+                throw new UpdateException("Error updating item.", ex);
+            }
+        }
+
         public AbstractPatent Get(int id)
         {
             try

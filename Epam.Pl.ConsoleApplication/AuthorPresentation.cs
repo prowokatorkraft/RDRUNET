@@ -194,7 +194,7 @@ namespace Epam.Library.Pl.ConsoleApplication
         {
             Console.Clear();
 
-            foreach (var item in _bookBll.GetByAuthorId(id))
+            foreach (var item in _bookBll.GetByAuthorId(id, null))
             {
                 Console.WriteLine("\t" + item.Name);
             }

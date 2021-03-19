@@ -49,7 +49,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null)
         {
             try
             {

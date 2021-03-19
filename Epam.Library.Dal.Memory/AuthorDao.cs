@@ -141,5 +141,10 @@ namespace Epam.Library.Dal.Memory
 
             return query;
         }
+
+        public void Update(Author autor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

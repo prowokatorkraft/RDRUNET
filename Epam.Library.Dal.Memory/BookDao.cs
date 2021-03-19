@@ -43,7 +43,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null)
         {
             try
             {
@@ -74,13 +74,13 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(string searchLine)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
         {
             try
             {
                 Dictionary<string, List<AbstractBook>> groups = new Dictionary<string, List<AbstractBook>>();
 
-                var temp = Search(new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Publisher, searchLine ?? ""))
+                var temp = Search(searchRequest)
                     .GroupBy(b => b.Publisher);
 
                 foreach (var item in temp)
@@ -171,6 +171,11 @@ namespace Epam.Library.Dal.Memory
             }
 
             return query;
+        }
+
+        public void Update(AbstractBook book)
+        {
+            throw new NotImplementedException();
         }
     }
 }

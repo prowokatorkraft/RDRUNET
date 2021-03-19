@@ -53,6 +53,39 @@ namespace Epam.Library.Bll
             }
         }
 
+        public IEnumerable<ErrorValidation> Update(AbstractBook book)
+        {
+            try
+            {
+                if (book is null)
+                {
+                    throw new ArgumentNullException(nameof(book) + " is null");
+                }
+                else if (book.Id is null)
+                {
+                    throw new ArgumentNullException(nameof(book.Id) + " is null");
+                }
+
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs))
+                {
+                    throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
+                }
+
+                var errors = _validation.Validate(book);
+
+                if (errors.Count() == 0)
+                {
+                    _dao.Update(book);
+                }
+
+                return errors;
+            }
+            catch (Exception ex)
+            {
+                throw new UpdateException("Error updating item.", ex);
+            }
+        }
+
         public bool Remove(int id)
         {
             try
@@ -89,11 +122,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(string searchLine)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
         {
             try
             {
-                return _dao.GetAllGroupsByPublisher(searchLine);
+                return _dao.GetAllGroupsByPublisher(searchRequest);
             }
             catch (Exception ex)
             {
@@ -113,11 +146,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page)
         {
             try
             {
-                return _dao.GetByAuthorId(id);
+                return _dao.GetByAuthorId(id, page);
             }
             catch (Exception ex)
             {

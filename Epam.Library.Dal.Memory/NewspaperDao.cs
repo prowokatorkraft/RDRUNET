@@ -43,7 +43,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear(PagingInfo page = null)
         {
             try
             {
@@ -144,6 +144,11 @@ namespace Epam.Library.Dal.Memory
             }
             
             return builder.ToString();
+        }
+
+        public void Update(AbstractNewspaper newspaper)
+        {
+            throw new NotImplementedException();
         }
     }
 }

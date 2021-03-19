@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Epam.Library.Common.Entities.AuthorElement.Book
 {
@@ -12,6 +13,8 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
         public override int NumberOfPages { get; set; }
 
         public override string Annotation { get; set; }
+
+        public override bool Deleted { get; set; }
 
         public override int[] AuthorIDs { get; set; }
 
@@ -28,13 +31,14 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
 
         }
 
-        public Book(int? id, string name, int numberOfPages, string annotation, int[] authorIDs, 
+        public Book(int? id, string name, int numberOfPages, string annotation, bool deleted, int[] authorIDs, 
             string publisher, string publishingCity, int publishingYear, string isbn)
         {
-            Id = Id;
+            Id = id;
             Name = name;
             NumberOfPages = numberOfPages;
             Annotation = annotation;
+            Deleted = deleted;
             AuthorIDs = authorIDs;
             Publisher = publisher;
             PublishingCity = publishingCity;
@@ -55,8 +59,10 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
             {
                 isEquals = obj is Book book &&
                             Name == book.Name &&
-                            EqualityComparer<int[]>.Default.Equals(AuthorIDs, book.AuthorIDs) &&
-                            EqualityComparer<string>.Default.Equals(Publisher, book.Publisher);
+                            EqualityComparer<string>.Default.Equals(Publisher, book.Publisher) &&
+                            (((AuthorIDs is null || AuthorIDs.Length == 0) && (book.AuthorIDs is null || book.AuthorIDs.Length == 0)) ||
+                            ((AuthorIDs != null && book.AuthorIDs != null && AuthorIDs.Length == book.AuthorIDs.Length) &&
+                             AuthorIDs.All(a => book.AuthorIDs.Contains(a))));
             }
 
             return isEquals;
@@ -73,8 +79,16 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
             else
             {
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-                hashCode = hashCode * -1521134295 + EqualityComparer<int[]>.Default.GetHashCode(AuthorIDs);
+                
                 hashCode = hashCode * -1521134295 + EqualityComparer<int>.Default.GetHashCode(PublishingYear);
+
+                if (AuthorIDs != null)
+                {
+                    foreach (var item in AuthorIDs)
+                    {
+                        hashCode = hashCode * -1521134295 + EqualityComparer<int>.Default.GetHashCode(item);
+                    }
+                }
             }
 
             return hashCode;
@@ -87,6 +101,7 @@ namespace Epam.Library.Common.Entities.AuthorElement.Book
                 Name,
                 NumberOfPages,
                 Annotation,
+                Deleted,
                 AuthorIDs?.Clone() as int[] ?? null,
                 Publisher,
                 PublishingCity,

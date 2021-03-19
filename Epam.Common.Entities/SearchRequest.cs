@@ -12,15 +12,18 @@ namespace Epam.Library.Common.Entities
 
         public string SearchLine { get; set; }
 
+        public PagingInfo PagingInfo { get; set; }
+
         public SearchRequest()
         {
         }
 
-        public SearchRequest(Sort sortOptions, Search searchOptions, string searchLine)
+        public SearchRequest(Sort sortOptions, Search searchOptions, string searchLine = null, PagingInfo pagingInfo = null)
         {
             SortOptions = sortOptions;
             SearchOptions = searchOptions;
             SearchLine = searchLine;
+            PagingInfo = pagingInfo;
         }
     }
 }

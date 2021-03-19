@@ -44,7 +44,7 @@ namespace Epam.Library.IntegrationTest
         public void Add_True()
         {
             // Arrange
-            Patent patent = new Patent(null, "Add-True", 0, null, null, "Test", "123456780", null, DateTime.Now);
+            Patent patent = new Patent(null, "Add-True", 0, null, false, null, "Test", "123456780", null, DateTime.Now);
             int preCount = GetCount();
             int id;
 
@@ -98,10 +98,91 @@ namespace Epam.Library.IntegrationTest
         }
 
         [Test]
+        public void Update_True()
+        {
+            // Arrange
+            Patent patent1 = new Patent(null, "Add-True", 0, null, false, null, "Test", "123456780", null, DateTime.Now);
+            Patent patent2 = new Patent(null, "Addtrue-True", 0, null, false, null, "Test", "123456780", null, DateTime.Now);
+            int id;
+
+            _patentBll.Add(patent1);
+            _patentIDs.Add(id = GetId(patent1).Value);
+            patent2.Id = id;
+
+            int preCount = GetCount();
+
+            // Act
+            var errors = _patentBll.Update(patent2);
+
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(0, errors.Count());
+                Assert.AreEqual(preCount, postCount);
+                Assert.IsTrue(patent2.Equals(_patentBll.Get(patent2.Id.Value)));
+            });
+        }
+
+        [Test]
+        public void Update_False()
+        {
+            // Arrange
+            Patent patent = new Patent(-100, null, 0, null, false, null, null, null, null, DateTime.Now);
+            int preCount = GetCount();
+
+            // Act
+            var errors = _patentBll.Update(patent);
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(errors.Count() > 0);
+                Assert.AreEqual(preCount, postCount);
+            });
+        }
+
+        [Test]
+        public void Update_Null_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _patentBll.Update(null);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
+        public void Update_IdNull_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _patentBll.Update(new Patent(null,null,0,null,false,null,null,null,null,DateTime.Now));
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
         public void Remove_True()
         {
             // Arrange
-            Patent patent = new Patent(null, "Remove True", 0, null, null, "Test", "128856789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Remove True", 0, null, false, null, "Test", "128856789", null, DateTime.Now);
 
             _patentBll.Add(patent);
 
@@ -148,7 +229,7 @@ namespace Epam.Library.IntegrationTest
         public void Get()
         {
             // Arrange
-            Patent patent = new Patent(null, "Get", 0, null, null, "Test", "123226789", null, DateTime.Now);
+            Patent patent = new Patent(null, "Get", 0, null, false, null, "Test", "123226789", null, DateTime.Now);
 
             _patentBll.Add(patent);
 
@@ -225,8 +306,8 @@ namespace Epam.Library.IntegrationTest
             // Arrange
             Patent[] patents = new Patent[]
             {
-                new Patent(null, "GpoupsByPublishYear One", 0, null, null, "Test", "823456789", null, DateTime.Now.AddYears(-5)),
-                new Patent(null, "GpoupsByPublishYear Two", 0, null, null, "Test", "923456789", null, DateTime.Now.AddYears(-2)),
+                new Patent(null, "GpoupsByPublishYear One", 0, null, false, null, "Test", "823456789", null, DateTime.Now.AddYears(-5)),
+                new Patent(null, "GpoupsByPublishYear Two", 0, null, false, null, "Test", "923456789", null, DateTime.Now.AddYears(-2)),
             };
 
             List<int> ids = new List<int>();
@@ -256,16 +337,14 @@ namespace Epam.Library.IntegrationTest
         {
             return _patentBll.Search(null)
                 .Where(a => a.Equals(patent))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
 
         private int? GetId(Author author)
         {
             return _authorBll.Search(null)
                 .Where(a => a.Equals(author))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
     }
 }
