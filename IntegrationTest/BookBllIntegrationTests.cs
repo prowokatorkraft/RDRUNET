@@ -43,7 +43,7 @@ namespace Epam.Library.IntegrationTest
         public void Add_True()
         {
             // Arrange
-            Book book = new Book(null, "Add-True", 0, null, null, "Test", "Test", 2020, null);
+            Book book = new Book(null, "Add-True", 0, null, false, null, "Test", "Test", 2020, null);
             int preCount = GetCount();
             int id;
 
@@ -97,10 +97,91 @@ namespace Epam.Library.IntegrationTest
         }
 
         [Test]
+        public void Update_True()
+        {
+            // Arrange
+            Book book1 = new Book(null, "Add-True", 0, null, false, null, "Test", "Test", 2020, null);
+            Book book2 = new Book(null, "Addtrue-True", 0, null, false, null, "Test", "Test", 2020, null);
+            int id;
+
+            _bookBll.Add(book1);
+            _bookIDs.Add(id = GetId(book1).Value);
+            book2.Id = id;
+
+            int preCount = GetCount();
+
+            // Act
+            var errors = _bookBll.Update(book2);
+
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(0, errors.Count());
+                Assert.AreEqual(preCount, postCount);
+                Assert.IsTrue(book2.Equals(_bookBll.Get(book2.Id.Value)));
+            });
+        }
+
+        [Test]
+        public void Update_False()
+        {
+            // Arrange
+            Book book = new Book(-100, null, 0, null, false, null, null, null, 0, null);
+            int preCount = GetCount();
+
+            // Act
+            var errors = _bookBll.Update(book);
+            int postCount = GetCount();
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(errors.Count() > 0);
+                Assert.AreEqual(preCount, postCount);
+            });
+        }
+
+        [Test]
+        public void Update_Null_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _bookBll.Update(null);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
+        public void Update_IdNull_Exception()
+        {
+            // Arrange
+            int preCoutn = GetCount();
+
+            // Act
+            TestDelegate test = () => _bookBll.Update(new Book(null,null,0,null,false,null,null,null,0,null));
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<UpdateException>(test);
+                Assert.AreEqual(preCoutn, GetCount());
+            });
+        }
+
+        [Test]
         public void Remove_True()
         {
             // Arrange
-            Book book = new Book(null, "Remove-True", 0, null, null, "Test", "Test", 2020, null);
+            Book book = new Book(null, "Remove-True", 0, null, false, null, "Test", "Test", 2020, null);
 
             _bookBll.Add(book);
 
@@ -147,7 +228,7 @@ namespace Epam.Library.IntegrationTest
         public void Get()
         {
             // Arrange
-            Book book = new Book(null, "Get", 0, null, null, "Test", "Test", 2020, null);
+            Book book = new Book(null, "Get", 0, null, false, null, "Test", "Test", 2020, null);
             _bookBll.Add(book);
 
             int id;
@@ -211,7 +292,7 @@ namespace Epam.Library.IntegrationTest
             }
 
             //Act
-            var result = _bookBll.GetByAuthorId(idAuthors).Any();
+            var result = _bookBll.GetByAuthorId(idAuthors, null).Any();
 
             // Assert
             return result;
@@ -224,8 +305,8 @@ namespace Epam.Library.IntegrationTest
             // Arrange
             Book[] books = new Book[]
             {
-                new Book(null, "GpoupsByPublisher-One " + stringLine, 0, null, null, "Test One", "Test", 2000, null),
-                new Book(null, "GpoupsByPublisher-Two " + stringLine, 0, null, null, "Test Two", "Test", 2000, null)
+                new Book(null, "GpoupsByPublisher-One " + stringLine, 0, null, false, null, "Test One", "Test", 2000, null),
+                new Book(null, "GpoupsByPublisher-Two " + stringLine, 0, null, false, null, "Test Two", "Test", 2000, null)
             };
 
             List<int> ids = new List<int>();
@@ -240,7 +321,7 @@ namespace Epam.Library.IntegrationTest
             _bookIDs.AddRange(ids);
 
             // Act
-            int result = _bookBll.GetAllGroupsByPublisher(stringLine).Count();
+            int result = _bookBll.GetAllGroupsByPublisher(new SearchRequest<SortOptions, BookSearchOptions>(SortOptions.None, BookSearchOptions.Name, stringLine)).Count();
 
             // Assert
             Assert.IsTrue(result >= 2);
@@ -252,8 +333,8 @@ namespace Epam.Library.IntegrationTest
             // Arrange
             Book[] books = new Book[]
             {
-                new Book(null, "GpoupsByPublishYear-One", 0, null, null, "Test", "Test", 2000, null),
-                new Book(null, "GpoupsByPublishYear-Two", 0, null, null, "Test", "Test", 2008, null)
+                new Book(null, "GpoupsByPublishYear-One", 0, null, false, null, "Test", "Test", 2000, null),
+                new Book(null, "GpoupsByPublishYear-Two", 0, null, false, null, "Test", "Test", 2008, null)
             };
 
             List<int> ids = new List<int>();
@@ -283,16 +364,14 @@ namespace Epam.Library.IntegrationTest
         {
             return _bookBll.Search(null)
                 .Where(a => a.Equals(book))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
 
         private int? GetId(Author author)
         {
             return _authorBll.Search(null)
                 .Where(a => a.Equals(author))
-                .LastOrDefault()
-                ?.Id.Value;
+                ?.Max(b => b.Id);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null)
         {
             try
             {
@@ -144,6 +144,11 @@ namespace Epam.Library.Dal.Memory
             }
 
             return query;
+        }
+
+        public void Update(AbstractPatent patent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

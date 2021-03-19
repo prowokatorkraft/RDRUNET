@@ -81,6 +81,64 @@ namespace Epam.Library.Test
             return validation;
         }
 
+        [TestCaseSource(typeof(BookBllTestCases), nameof(BookBllTestCases.AddTestCases))]
+        public bool Update(ErrorValidation error)
+        {
+            // Arrange
+            bool isAddDao = false;
+            Mock<IBookDao> bookDao = InitializeMockDaoForUpdate(() => isAddDao = true);
+            var listErrors = new List<ErrorValidation>();
+            if (error != null)
+            {
+                listErrors.Add(error);
+            }
+            Mock<IValidationBll<AbstractBook>> validation = InitializeMockValidationForAdd(() => listErrors);
+            var bookBll = new BookBll(bookDao.Object, null, validation.Object);
+
+            // Act
+            var errors = bookBll.Update(new Book(0,null,0,null,false,null,null,null,0,null));
+
+            // Assert
+            return isAddDao;
+        }
+
+        [Test]
+        public void Update_Exeption()
+        {
+            // Arrange
+            Mock<IBookDao> bookDao = InitializeMockDaoForUpdate(() => throw new Exception());
+            Mock<IValidationBll<AbstractBook>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            var bookBll = new BookBll(bookDao.Object, null, validation.Object);
+
+            // Act
+            TestDelegate action = () => bookBll.Update(new Book());
+
+            // Assert
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        [Test]
+        public void Update_Exeption_Null()
+        {
+            // Arrange
+            Mock<IBookDao> bookDao = InitializeMockDaoForUpdate(() => { });
+            Mock<IValidationBll<AbstractBook>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            var bookBll = new BookBll(bookDao.Object, null, validation.Object);
+
+            // Act
+            TestDelegate action = () => bookBll.Update(null);
+
+            // Assert
+            Assert.Throws(typeof(UpdateException), action);
+        }
+
+        private static Mock<IBookDao> InitializeMockDaoForUpdate(Action action)
+        {
+            var bookDao = new Mock<IBookDao>();
+            bookDao.Setup(a => a.Update(It.IsAny<AbstractBook>())).Callback(action);
+            return bookDao;
+        }
+
         [Test]
         public void Get()
         {
@@ -270,7 +328,7 @@ namespace Epam.Library.Test
         private static Mock<IBookDao> InitializeMockDaoForGroupsByPublishYear(Func<Dictionary<int,List<AbstractBook>>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetAllGroupsByPublishYear()).Returns(func);
+            bookDao.Setup(a => a.GetAllGroupsByPublishYear(null)).Returns(func);
             return bookDao;
         }
 
@@ -285,7 +343,7 @@ namespace Epam.Library.Test
 
             // Act
 
-            var book = bookBll.GetAllGroupsByPublisher("");
+            var book = bookBll.GetAllGroupsByPublisher(null);
 
             // Assert
 
@@ -303,7 +361,7 @@ namespace Epam.Library.Test
 
             // Act
 
-            TestDelegate book = () => bookBll.GetAllGroupsByPublisher("");
+            TestDelegate book = () => bookBll.GetAllGroupsByPublisher(null);
 
             // Assert
 
@@ -313,7 +371,7 @@ namespace Epam.Library.Test
         private static Mock<IBookDao> InitializeMockDaoForGropusByPublisher(Func<Dictionary<string, List<AbstractBook>>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetAllGroupsByPublisher("")).Returns(func);
+            bookDao.Setup(a => a.GetAllGroupsByPublisher(null)).Returns(func);
             return bookDao;
         }
 
@@ -328,7 +386,7 @@ namespace Epam.Library.Test
 
             // Act
 
-            var book = bookBll.GetByAuthorId(0);
+            var book = bookBll.GetByAuthorId(0, null);
 
             // Assert
 
@@ -346,7 +404,7 @@ namespace Epam.Library.Test
 
             // Act
 
-            TestDelegate book = () => bookBll.GetByAuthorId(0);
+            TestDelegate book = () => bookBll.GetByAuthorId(0, null);
 
             // Assert
 
@@ -356,7 +414,7 @@ namespace Epam.Library.Test
         private static Mock<IBookDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractBook>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);
+            bookDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>())).Returns(func);
             return bookDao;
         }
     }

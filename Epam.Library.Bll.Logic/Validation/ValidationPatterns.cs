@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Epam.Library.Bll.Validation
+﻿namespace Epam.Library.Bll.Validation
 {
     public static class ValidationPatterns 
     {

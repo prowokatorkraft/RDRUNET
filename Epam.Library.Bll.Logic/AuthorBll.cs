@@ -49,6 +49,34 @@ namespace Epam.Library.Bll
             }
         }
 
+        public IEnumerable<ErrorValidation> Update(Author author)
+        {
+            try
+            {
+                if (author is null)
+                {
+                    throw new ArgumentNullException(nameof(author) + " is null");
+                }
+                else if (author.Id is null)
+                {
+                    throw new ArgumentNullException(nameof(author.Id) + $" is null");
+                }
+
+                var errors = _validation.Validate(author);
+
+                if (errors.Count() == 0)
+                {
+                    _dao.Update(author);
+                }
+
+                return errors;
+            }
+            catch (Exception ex)
+            {
+                throw new UpdateException("Error updating item.", ex);
+            }
+        }
+
         public Author Get(int id)
         {
             try

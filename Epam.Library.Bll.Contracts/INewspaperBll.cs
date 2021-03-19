@@ -1,13 +1,14 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Epam.Library.Bll.Contracts
 {
     public interface INewspaperBll
     {
         IEnumerable<ErrorValidation> Add(AbstractNewspaper newspaper);
+
+        IEnumerable<ErrorValidation> Update(AbstractNewspaper newspaper);
 
         bool Remove(int id);
 
