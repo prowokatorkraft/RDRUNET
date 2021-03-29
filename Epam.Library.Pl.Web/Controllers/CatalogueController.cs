@@ -14,11 +14,22 @@ namespace Epam.Library.Pl.Web.Controllers
 {
     public class CatalogueController : Controller
     {
-        private static CatalogueRepo _catalogue;
+        //private static CatalogueRepo _catalogue;
 
-        static CatalogueController()
+        //static CatalogueController()
+        //{
+        //    _catalogue = new CatalogueRepo(DependencyInjection.CatalogueBll);
+        //}
+
+        private CatalogueRepo _catalogue;
+
+        public CatalogueController()
         {
-            _catalogue = new CatalogueRepo(DependencyInjection.CatalogueBll);
+        }
+
+        public CatalogueController(CatalogueRepo catalogue)
+        {
+            _catalogue = catalogue;
         }
 
         [HttpGet]

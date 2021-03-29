@@ -1,6 +1,6 @@
 ﻿namespace Epam.Library.Pl.Web.ViewModels.Catalogue
 {
-    public class ElementViewModel
+    public class ElementVM
     {
         public string Name { get; set; }
         public string Identity { get; set; }

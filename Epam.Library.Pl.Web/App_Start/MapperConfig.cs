@@ -18,16 +18,16 @@ namespace Epam.Library.Pl.Web
         {
             _mapper = new MapperConfiguration(cfg =>
             {
-            cfg.CreateMap<Book, ElementViewModel>()
-                .ForMember(nameof(ElementViewModel.Name), opt => opt.MapFrom((c, f) =>
+            cfg.CreateMap<Book, ElementVM>()
+                .ForMember(nameof(ElementVM.Name), opt => opt.MapFrom((c, f) =>
                     {
                         var d = "fdfdf";
 
                         return d;
                     }))
-                    .ForMember(nameof(ElementViewModel.Identity), opt => opt.MapFrom(c => c.Isbn));
-                cfg.CreateMap<Patent, ElementViewModel>()
-                    .ForMember(nameof(ElementViewModel.Identity), opt => opt.MapFrom(c => c.RegistrationNumber));
+                    .ForMember(nameof(ElementVM.Identity), opt => opt.MapFrom(c => c.Isbn));
+                cfg.CreateMap<Patent, ElementVM>()
+                    .ForMember(nameof(ElementVM.Identity), opt => opt.MapFrom(c => c.RegistrationNumber));
                 // Newspapers
             }).CreateMapper();
 

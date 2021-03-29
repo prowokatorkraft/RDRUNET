@@ -1,5 +1,5 @@
 ﻿@using Epam.Library.Pl.Web.ViewModels.Catalogue
-@model IEnumerable<ElementViewModel>
+@model IEnumerable<ElementVM>
 
 @{
     ViewBag.Title = "GetAll";
@@ -7,9 +7,18 @@
 
 <h2>Catalogue</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@using (Html.BeginForm("Create", "Catalogue", FormMethod.Get))
+{
+    <input type="submit" value="Create" />
+
+    @Html.RadioButton("typeRadio", TypeEnumVM.Book, true)
+    @(" "+TypeEnumVM.Book+" ")
+    @Html.RadioButton("typeRadio", TypeEnumVM.Patent)
+    @(" "+TypeEnumVM.Patent+" ")
+    @Html.RadioButton("typeRadio", TypeEnumVM.Newspaper)
+    @(" "+TypeEnumVM.Newspaper+" ")
+}
+
 <table class="table">
     <tr>
         <th>
@@ -24,23 +33,22 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Identity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumberOfPages)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPages)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
 
 </table>

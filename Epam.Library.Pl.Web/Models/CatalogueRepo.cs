@@ -15,17 +15,17 @@ namespace Epam.Library.Pl.Web.Models
             _catalogueBll = catalogueBll;
         }
 
-        public IEnumerable<ElementViewModel> GetAll(int PageNumber)
+        public IEnumerable<ElementVM> GetAll(int PageNumber)
         {
             foreach (var item in _catalogueBll.Search(null))
             {
                 switch (item)
                 {
                     case Book o:
-                        yield return MapperConfig.Map<ElementViewModel, Book>(o);
+                        yield return MapperConfig.Map<ElementVM, Book>(o);
                         break;
                     case Patent o:
-                        yield return MapperConfig.Map<ElementViewModel, Patent>(o);
+                        yield return MapperConfig.Map<ElementVM, Patent>(o);
                         break;
                     //case Newspaper o:
                     //    yield return MapperConfig.Map<ElementViewModel, Newspaper>(o);
