@@ -23,9 +23,9 @@ namespace Epam.Library.IntegrationTest
         [OneTimeSetUp]
         public void InitClass()
         {
-            _bookBll = DependencyInjection.BookBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
-            _authorBll = DependencyInjection.AuthorBll;
+            _bookBll = NinjectForTests.BookBll;
+            _catalogueBll = NinjectForTests.CatalogueBll;
+            _authorBll = NinjectForTests.AuthorBll;
 
             _bookIDs = new List<int>();
             _authorIDs = new List<int>();

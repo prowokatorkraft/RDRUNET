@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.DependencyInjection;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
@@ -26,9 +25,9 @@ namespace Epam.Library.IntegrationTest
         [OneTimeSetUp]
         public void InitClass()
         {
-            _authorBll = DependencyInjection.AuthorBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
-            _patentBll = DependencyInjection.PatentBll;
+            _authorBll = NinjectForTests.AuthorBll;
+            _catalogueBll = NinjectForTests.CatalogueBll;
+            _patentBll = NinjectForTests.PatentBll;
 
             _authorIDs = new List<int>();
             _patentIDs = new List<int>();

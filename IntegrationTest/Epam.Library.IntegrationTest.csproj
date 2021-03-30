@@ -34,10 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.13.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.13.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +55,7 @@
     <Compile Include="BookBllIntegrationTests.cs" />
     <Compile Include="CatalogueBllIntegrationTests.cs" />
     <Compile Include="NewspaperBllIntegrationTests.cs" />
+    <Compile Include="NinjectForTests.cs" />
     <Compile Include="PatentBllIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCases\AuthorBllIntegrationTestCases.cs" />
@@ -68,12 +73,25 @@
       <Project>{C0E5C2AC-94CD-43EE-8F7C-6A194DC444FF}</Project>
       <Name>Epam.Library.Bll.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Bll.Logic\Epam.Library.Bll.csproj">
+      <Project>{3a3930e4-abe0-461d-9c8b-824f85c33dc4}</Project>
+      <Name>Epam.Library.Bll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Epam.Library.Common.DependencyInjection\Epam.Library.Common.DependencyInjection.csproj">
       <Project>{9a4418bc-55a0-4ceb-b760-d37d29a46075}</Project>
       <Name>Epam.Library.Common.DependencyInjection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Dal.Contracts\Epam.Library.Dal.Contracts.csproj">
+      <Project>{20B2F9DB-EC00-4046-90C7-674952191B23}</Project>
+      <Name>Epam.Library.Dal.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epam.Library.Dal.Database\Epam.Library.Dal.Database.csproj">
+      <Project>{b7047b3b-64f6-4984-a082-d943241ae266}</Project>
+      <Name>Epam.Library.Dal.Database</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

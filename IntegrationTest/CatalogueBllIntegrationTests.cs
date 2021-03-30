@@ -10,7 +10,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IntegrationTest
+namespace Epam.Library.IntegrationTest
 {
     public class CatalogueBllIntegrationTests
     {
@@ -26,10 +26,10 @@ namespace IntegrationTest
         [OneTimeSetUp]
         public void InitClass()
         {
-            _bookBll = DependencyInjection.BookBll;
-            _patentBll = DependencyInjection.PatentBll;
-            _authorBll = DependencyInjection.AuthorBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
+            _bookBll = NinjectForTests.BookBll;
+            _patentBll = NinjectForTests.PatentBll;
+            _authorBll = NinjectForTests.AuthorBll;
+            _catalogueBll = NinjectForTests.CatalogueBll;
 
             _bookIDs = new List<int>();
             _patentIDs = new List<int>();

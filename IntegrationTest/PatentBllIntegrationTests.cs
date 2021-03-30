@@ -24,9 +24,9 @@ namespace Epam.Library.IntegrationTest
         [OneTimeSetUp]
         public void InitClass()
         {
-            _patentBll = DependencyInjection.PatentBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
-            _authorBll = DependencyInjection.AuthorBll;
+            _patentBll = NinjectForTests.PatentBll;
+            _catalogueBll = NinjectForTests.CatalogueBll;
+            _authorBll = NinjectForTests.AuthorBll;
 
             _patentIDs = new List<int>();
             _authorIDs = new List<int>();

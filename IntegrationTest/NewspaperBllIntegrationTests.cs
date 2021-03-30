@@ -21,8 +21,8 @@ namespace Epam.Library.IntegrationTest
         [OneTimeSetUp]
         public void InitClass()
         {
-            _newspaperBll = DependencyInjection.NewspaperBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
+            _newspaperBll = NinjectForTests.NewspaperBll;
+            _catalogueBll = NinjectForTests.CatalogueBll;
 
             _newspaperIDs = new List<int>();
         }
