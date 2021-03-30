@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Epam.Library.Common.DependencyInjection
 
         static NinjectConfig()
         {
-            _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;MultipleActiveResultSets=true;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            _connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
         }
 
         public static void RegisterConfig(IKernel kernel)

@@ -1,7 +1,6 @@
 ﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Epam.Library.Pl.Web.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Epam.Library.Pl.Web.NinjectWebCommon), "Stop")]
 
-
 namespace Epam.Library.Pl.Web
 {
     using System;
@@ -17,9 +16,6 @@ namespace Epam.Library.Pl.Web
     {
         private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
-        /// <summary>
-        /// Starts the application.
-        /// </summary>
         public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
@@ -27,18 +23,11 @@ namespace Epam.Library.Pl.Web
             Bootstrapper.Initialize(CreateKernel);
         }
 
-        /// <summary>
-        /// Stops the application.
-        /// </summary>
         public static void Stop()
         {
             Bootstrapper.ShutDown();
         }
 
-        /// <summary>
-        /// Creates the kernel that will manage your application.
-        /// </summary>
-        /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
             var kernel = new StandardKernel();
@@ -52,8 +41,12 @@ namespace Epam.Library.Pl.Web
 
                 #region Model
                 kernel
+                    .Bind<Mapper>()
+                    .ToSelf()
+                    .InSingletonScope();
+                kernel
                     .Bind<CatalogueRepo>()
-                    .To<CatalogueRepo>()
+                    .ToSelf()
                     .InSingletonScope();
                 #endregion
 

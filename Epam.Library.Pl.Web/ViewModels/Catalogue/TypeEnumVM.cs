@@ -1,4 +1,4 @@
-﻿namespace Epam.Library.Pl.Web.ViewModels.Catalogue
+﻿namespace Epam.Library.Pl.Web.ViewModels
 {
     public enum TypeEnumVM
     {

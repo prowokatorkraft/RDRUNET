@@ -1,31 +1,12 @@
-﻿using AutoMapper;
-using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.DependencyInjection;
-using Epam.Library.Common.Entities.AuthorElement.Book;
-using Epam.Library.Pl.Web.Models;
-using Epam.Library.Pl.Web.ViewModels.Catalogue;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Epam.Library.Pl.Web.Models;
+using Epam.Library.Pl.Web.ViewModels;
 using System.Web.Mvc;
 
 namespace Epam.Library.Pl.Web.Controllers
 {
     public class CatalogueController : Controller
     {
-        //private static CatalogueRepo _catalogue;
-
-        //static CatalogueController()
-        //{
-        //    _catalogue = new CatalogueRepo(DependencyInjection.CatalogueBll);
-        //}
-
         private CatalogueRepo _catalogue;
-
-        public CatalogueController()
-        {
-        }
 
         public CatalogueController(CatalogueRepo catalogue)
         {
@@ -38,6 +19,24 @@ namespace Epam.Library.Pl.Web.Controllers
             var elements = _catalogue.GetAll(pageNumber);
 
             return View(elements);
+        }
+
+        [HttpGet]
+        public ActionResult Create(TypeEnumVM typeRadio)
+        {
+            switch (typeRadio)
+            {
+                case TypeEnumVM.Book:
+                    return RedirectToAction("Create", controllerName: "Book");
+                case TypeEnumVM.Patent:
+                    break;
+                case TypeEnumVM.Newspaper:
+                    break;
+                default:
+                    break;
+            }
+
+            return View();
         }
     }
 }

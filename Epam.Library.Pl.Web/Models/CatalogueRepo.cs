@@ -1,7 +1,7 @@
 ﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Library.Pl.Web.ViewModels.Catalogue;
+using Epam.Library.Pl.Web.ViewModels;
 using System.Collections.Generic;
 
 namespace Epam.Library.Pl.Web.Models
@@ -9,10 +9,12 @@ namespace Epam.Library.Pl.Web.Models
     public class CatalogueRepo
     {
         ICatalogueBll _catalogueBll;
+        Mapper _mapper;
 
-        public CatalogueRepo(ICatalogueBll catalogueBll)
+        public CatalogueRepo(ICatalogueBll catalogueBll, Mapper mapper)
         {
             _catalogueBll = catalogueBll;
+            _mapper = mapper;
         }
 
         public IEnumerable<ElementVM> GetAll(int PageNumber)
@@ -22,10 +24,10 @@ namespace Epam.Library.Pl.Web.Models
                 switch (item)
                 {
                     case Book o:
-                        yield return MapperConfig.Map<ElementVM, Book>(o);
+                        yield return _mapper.Map<ElementVM, Book>(o);
                         break;
                     case Patent o:
-                        yield return MapperConfig.Map<ElementVM, Patent>(o);
+                        yield return _mapper.Map<ElementVM, Patent>(o);
                         break;
                     //case Newspaper o:
                     //    yield return MapperConfig.Map<ElementViewModel, Newspaper>(o);
