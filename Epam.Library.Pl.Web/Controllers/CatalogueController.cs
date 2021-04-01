@@ -1,22 +1,47 @@
-﻿using Epam.Library.Pl.Web.Models;
+﻿using Epam.Library.Bll.Contracts;
+using Epam.Library.Common.Entities;
+using Epam.Library.Common.Entities.AuthorElement.Book;
+using Epam.Library.Common.Entities.AuthorElement.Patent;
+using Epam.Library.Pl.Web.Models;
 using Epam.Library.Pl.Web.ViewModels;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Epam.Library.Pl.Web.Controllers
 {
     public class CatalogueController : Controller
     {
-        private CatalogueRepo _catalogue;
+        ICatalogueBll _catalogueBll;
+        Mapper _mapper;
 
-        public CatalogueController(CatalogueRepo catalogue)
+        public CatalogueController(ICatalogueBll catalogueBll, Mapper mapper)
         {
-            _catalogue = catalogue;
+            _catalogueBll = catalogueBll;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult GetAll(int pageNumber = 1)
         {
-            var elements = _catalogue.GetAll(pageNumber);
+            List<ElementVM> elements = new List<ElementVM>();
+
+            foreach (var item in _catalogueBll.Search(new SearchRequest<SortOptions, CatalogueSearchOptions>(SortOptions.Ascending, CatalogueSearchOptions.None, pagingInfo: new PagingInfo(20, pageNumber))))
+            {
+                switch (item)
+                {
+                    case Book o:
+                        elements.Add(_mapper.Map<ElementVM, Book>(o));
+                        break;
+                    case Patent o:
+                        elements.Add(_mapper.Map<ElementVM, Patent>(o));
+                        break;
+                    //case Newspaper o:
+                    //    yield return MapperConfig.Map<ElementViewModel, Newspaper>(o);
+                    //    break;
+                    default:
+                        break;
+                }
+            }
 
             return View(elements);
         }
@@ -32,7 +57,21 @@ namespace Epam.Library.Pl.Web.Controllers
                     break;
                 case TypeEnumVM.Newspaper:
                     break;
-                default:
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Display(int id, TypeEnumVM type)
+        {
+            switch (type)
+            {
+                case TypeEnumVM.Book:
+                    return RedirectToAction("Display", controllerName: "Book", routeValues: new { id = id });
+                case TypeEnumVM.Patent:
+                    break;
+                case TypeEnumVM.Newspaper:
                     break;
             }
 

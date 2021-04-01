@@ -1,4 +1,5 @@
-﻿using Epam.Library.Pl.Web.Models;
+﻿using Epam.Library.Bll.Contracts;
+using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Pl.Web.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,13 @@ namespace Epam.Library.Pl.Web.Controllers
 {
     public class BookController : Controller
     {
-        private BookRepo _book;
+        IBookBll _bookBll;
+        Mapper _mapper;
 
-        public BookController(BookRepo book)
+        public BookController(IBookBll bookBll, Mapper mapper)
         {
-            _book = book;
+            _bookBll = bookBll;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,11 +27,11 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CreateBookVM book)
+        public ActionResult Create(CreateEditBookVM book)
         {
             if (ModelState.IsValid)
             {
-                var errors = _book.Add(book);
+                var errors = _bookBll.Add(_mapper.Map<Book,CreateEditBookVM>(book));
 
                 if (!errors.Any())
                 {
@@ -42,6 +45,14 @@ namespace Epam.Library.Pl.Web.Controllers
             }
 
             return View(book);
+        }
+
+        [HttpGet]
+        public ActionResult Display(int id)
+        {
+            ////
+
+            return View();
         }
     }
 }

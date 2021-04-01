@@ -1,7 +1,13 @@
 ﻿const AuthorSelect = document.getElementById("AuthorIDs");
-let AuthorIDsSelectedList = AuthorIDs;
+const AddModalBtn = document.getElementById("add-modal-author-btn");
+const FirstNameModalText = document.getElementById("FirstName");
+const LastNameModalText = document.getElementById("LastName");
+const ModelModalValidation = document.getElementById("model-validation-field");
+const FirstNameModalValidation = document.getElementById("firstName-validation-field");
+const LastNameModalValidation = document.getElementById("lastName-validation-field");
+const AuthorIDsSelectedList = AuthorIDs;
 let AuthorList;
-let xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest();
 
 function addChildAuthorSelect(key, value, isSelected) {
     let option = document.createElement("option");
@@ -20,21 +26,59 @@ function deleteAllChildrenAuthorSelect() {
 }
 
 function configureXhr() {
+    const AuthorsPattern = new RegExp("\/Author\/GetList$");
+    const AuthorErrorsPattern = new RegExp("\/Author\/Create$");
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             if (xhr.status == 200) {
-                if (xhr.responseText != "") {
-                    AuthorList = JSON.parse(xhr.responseText);
-
-                    updateAuthorSelect();
+                if (AuthorsPattern.test(xhr.responseURL)) {
+                    if (xhr.responseText != "") {
+                        AuthorList = JSON.parse(xhr.responseText);
+                        updateAuthorSelect();
+                    }
+                }
+                else if (AuthorErrorsPattern.test(xhr.responseURL)) {
+                    if (xhr.responseText == "\"\"") {
+                        clearModal();
+                        requestAuthorListAjax();
+                    }
+                    else {
+                        let errors = JSON.parse(xhr.responseText);
+                        for (var item of errors) {
+                            switch (item.Field) {
+                                case "Model":
+                                    ModelModalValidation.innerText = item.Description;
+                                    break;
+                                case "FirstName":
+                                    FirstNameModalValidation.innerText = item.Description;
+                                    break;
+                                case "LastName":
+                                    LastNameModalValidation.innerText = item.Description;
+                                    break;
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
+function clearModal() {
+    FirstNameModalText.value = "";
+    LastNameModalText.value = "";
+    ModelModalValidation.innerText = "";
+    FirstNameModalValidation.innerText = "";
+    LastNameModalValidation.innerText = "";
+}
 function requestAuthorListAjax() {
     xhr.open("Post", '/Author/GetList');
     xhr.send(null);
+}
+function requestCreateAuthorAjax(author) {
+    xhr.open("POST", '/Author/Create');
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify({ author: author }));
 }
 function updateAuthorSelect() {
     deleteAllChildrenAuthorSelect();
@@ -54,3 +98,7 @@ function updateAuthorSelect() {
 
 configureXhr();
 requestAuthorListAjax();
+AddModalBtn.onclick = () => {
+    let author = { FirstName: FirstNameModalText.value, LastName: LastNameModalText.value };
+    requestCreateAuthorAjax(author);
+};

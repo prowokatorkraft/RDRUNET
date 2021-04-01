@@ -8,6 +8,8 @@
 
 @using (Html.BeginForm("Create", "Catalogue", FormMethod.Get))
 {
+    @Html.AntiForgeryToken();
+
     <input type="submit" value="Create" />
 
     @Html.RadioButton("typeRadio", TypeEnumVM.Book, true)
@@ -45,7 +47,7 @@
                 @Html.DisplayFor(modelItem => item.NumberOfPages)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Details", "Display", new { id = item.Id, type = item.Type })
             </td>
         </tr>
     }

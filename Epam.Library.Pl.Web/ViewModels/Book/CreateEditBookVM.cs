@@ -7,8 +7,10 @@ using System.Web;
 
 namespace Epam.Library.Pl.Web.ViewModels
 {
-    public class CreateBookVM
+    public class CreateEditBookVM
     {
+        //public int? Id { get; set; }
+
         [Required]
         [MaxLength(length: ValidationLengths.NameLength, ErrorMessage = "Value exceeds the allowed size.")]
         public string Name { get; set; }

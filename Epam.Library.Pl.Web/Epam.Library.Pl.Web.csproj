@@ -146,13 +146,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BookRepo.cs" />
-    <Compile Include="Models\CatalogueRepo.cs" />
     <Compile Include="Models\ValidationLengths.cs" />
     <Compile Include="Models\ValidationPatterns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Author\CreateEditAuthorVM.cs" />
     <Compile Include="ViewModels\Author\GetAuthorVM.cs" />
-    <Compile Include="ViewModels\Book\CreateBookVM.cs" />
+    <Compile Include="ViewModels\Book\CreateEditBookVM.cs" />
     <Compile Include="ViewModels\Catalogue\TypeEnumVM.cs" />
     <Compile Include="ViewModels\Catalogue\ElementVM.cs" />
   </ItemGroup>
@@ -192,6 +191,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Catalogue\GetAll.cshtml" />
     <Content Include="Views\Book\Create.cshtml" />
+    <Content Include="Views\Shared\_CreateAuthorModalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

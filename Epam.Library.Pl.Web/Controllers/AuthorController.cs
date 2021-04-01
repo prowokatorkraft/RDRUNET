@@ -1,4 +1,5 @@
 ﻿using Epam.Library.Bll.Contracts;
+using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Pl.Web.ViewModels;
 using System;
@@ -18,6 +19,33 @@ namespace Epam.Library.Pl.Web.Controllers
         {
             _authorBll = authorBll;
             _mapper = mapper;
+        }
+
+        [HttpPost]
+        public ActionResult Create(CreateEditAuthorVM author)
+        {
+            IEnumerable<ErrorValidation> errors;
+
+            if (ModelState.IsValid)
+            {
+                errors = _authorBll.Add(_mapper.Map<Author, CreateEditAuthorVM>(author));
+
+                if (!errors.Any())
+                {
+                    return Json("");
+                }
+
+                foreach (var item in errors)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+            }
+            else
+            {
+                errors = new List<ErrorValidation>() { new ErrorValidation("Model", "Author is invalid.", null) };
+            }
+
+            return Json(errors);
         }
 
         [HttpPost]
