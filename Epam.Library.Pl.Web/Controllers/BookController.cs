@@ -28,9 +28,16 @@ namespace Epam.Library.Pl.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_book.Add(book))
+                var errors = _book.Add(book);
+
+                if (!errors.Any())
                 {
                     return Redirect("~/");
+                }
+
+                foreach (var item in errors)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
                 }
             }
 

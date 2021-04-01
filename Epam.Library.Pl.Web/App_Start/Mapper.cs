@@ -67,6 +67,13 @@ namespace Epam.Library.Pl.Web
 
                 // Newspapers
                 #endregion
+
+                #region GetAuthorVM
+                cfg.CreateMap<Author, GetAuthorVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
+                    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName));
+                #endregion
             }).CreateMapper();
 
             _mapper.ConfigurationProvider.AssertConfigurationIsValid();

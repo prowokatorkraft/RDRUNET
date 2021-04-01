@@ -1,4 +1,5 @@
 ﻿using Epam.Library.Bll.Contracts;
+using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Pl.Web.ViewModels;
 using System;
@@ -19,14 +20,11 @@ namespace Epam.Library.Pl.Web.Models
             _mapper = mapper;
         }
 
-        public bool Add(CreateBookVM book)
+        public IEnumerable<ErrorValidation> Add(CreateBookVM bookVM)
         {
-            if (!_bookBll.Add(_mapper.Map<Book,CreateBookVM>(book)).Any())
-            {
-                return true;
-            }
+            var book = _mapper.Map<Book, CreateBookVM>(bookVM);
 
-            return false;
+            return _bookBll.Add(book);
         }
     }
 }
