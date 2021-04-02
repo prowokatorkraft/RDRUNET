@@ -7,10 +7,7 @@ using Epam.Library.Pl.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Web;
-using System.Web.Mvc;
 
 namespace Epam.Library.Pl.Web
 {
@@ -49,7 +46,19 @@ namespace Epam.Library.Pl.Web
                 #endregion
 
                 #region BookVM
+                cfg.CreateMap<Book, DisplayBookVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs, (f,l)=>$"{f} {l}")))
+                    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
+                    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
+                    .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
+                    .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
+
                 cfg.CreateMap<Book, CreateEditBookVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
                     .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
                     .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
@@ -60,7 +69,7 @@ namespace Epam.Library.Pl.Web
                     .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
                 
                 cfg.CreateMap<CreateEditBookVM, Book>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
                     .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
                     .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
@@ -75,10 +84,11 @@ namespace Epam.Library.Pl.Web
                 #endregion
 
                 #region AuthorVM
-                cfg.CreateMap<Author, GetAuthorVM>()
+                cfg.CreateMap<Author, DisplayAuthorVM>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                     .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
-                    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName));
+                    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName))
+                    .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(c => c.Deleted));
 
                 cfg.CreateMap<CreateEditAuthorVM, Author>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
@@ -118,6 +128,29 @@ namespace Epam.Library.Pl.Web
             str.Append($"{book.Name} ({book.PublishingYear})");
 
             return str;
+        }
+        private string GetAuthorsByIDs(int[] authorIDs, Func<string,string,string> format)
+        {
+            if (authorIDs is null || authorIDs.Length == 0)
+            {
+                return null;
+            }
+
+            StringBuilder builder = new StringBuilder();
+
+            DisplayAuthorVM author;
+            foreach (var item in authorIDs)
+            {
+                if (builder.Length != 0)
+                {
+                    builder.Append(", ");
+                }
+
+                author = Map<DisplayAuthorVM, Author>(_authorBll.Get(item));
+                builder.Append(format(author.FirstName, author.LastName));
+            }
+
+            return builder.ToString();
         }
 
         public TResult Map<TResult, TModel>(TModel model)

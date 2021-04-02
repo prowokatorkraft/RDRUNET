@@ -51,11 +51,11 @@ namespace Epam.Library.Pl.Web.Controllers
         [HttpPost]
         public ActionResult GetList()
         {
-            List<GetAuthorVM> list = new List<GetAuthorVM>();
+            List<DisplayAuthorVM> list = new List<DisplayAuthorVM>();
 
             foreach (var item in _authorBll.Search(null))
             {
-                list.Add(_mapper.Map<GetAuthorVM, Author>(item));
+                list.Add(_mapper.Map<DisplayAuthorVM, Author>(item));
             }
 
             return Json(list);

@@ -9,7 +9,7 @@ namespace Epam.Library.Pl.Web.ViewModels
 {
     public class CreateEditBookVM
     {
-        //public int? Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [MaxLength(length: ValidationLengths.NameLength, ErrorMessage = "Value exceeds the allowed size.")]

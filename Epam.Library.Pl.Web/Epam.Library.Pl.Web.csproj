@@ -150,8 +150,9 @@
     <Compile Include="Models\ValidationPatterns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Author\CreateEditAuthorVM.cs" />
-    <Compile Include="ViewModels\Author\GetAuthorVM.cs" />
+    <Compile Include="ViewModels\Author\DisplayAuthorVM.cs" />
     <Compile Include="ViewModels\Book\CreateEditBookVM.cs" />
+    <Compile Include="ViewModels\Book\DisplayBookVM.cs" />
     <Compile Include="ViewModels\Catalogue\TypeEnumVM.cs" />
     <Compile Include="ViewModels\Catalogue\ElementVM.cs" />
   </ItemGroup>
@@ -192,6 +193,9 @@
     <Content Include="Views\Catalogue\GetAll.cshtml" />
     <Content Include="Views\Book\Create.cshtml" />
     <Content Include="Views\Shared\_CreateAuthorModalPartial.cshtml" />
+    <Content Include="Views\Book\Display.cshtml" />
+    <Content Include="Views\Book\Edit.cshtml" />
+    <Content Include="Views\Book\Remove.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

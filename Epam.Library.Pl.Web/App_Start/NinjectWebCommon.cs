@@ -44,10 +44,6 @@ namespace Epam.Library.Pl.Web
                     .Bind<Mapper>()
                     .ToSelf()
                     .InSingletonScope();
-                kernel
-                    .Bind<CatalogueRepo>()
-                    .ToSelf()
-                    .InSingletonScope();
                 #endregion
 
                 return kernel;
