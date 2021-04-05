@@ -15,8 +15,8 @@ namespace Epam.Library.Pl.Web
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Catalogue", action = "GetAll", id = UrlParameter.Optional }
+                url: "{controller}/{action}/{pageNumber}",
+                defaults: new { controller = "Catalogue", action = "GetAll", pageNumber = UrlParameter.Optional }
             );
         }
     }

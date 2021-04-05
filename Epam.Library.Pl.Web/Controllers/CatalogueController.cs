@@ -2,8 +2,8 @@
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Library.Pl.Web.Models;
 using Epam.Library.Pl.Web.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -24,6 +24,16 @@ namespace Epam.Library.Pl.Web.Controllers
         public ActionResult GetAll(int pageNumber = 1)
         {
             List<ElementVM> elements = new List<ElementVM>();
+            var page = new PageDataVM<ElementVM>()
+            {
+                PageInfo = new PageInfoVM()
+                {
+                    CurrentPage = pageNumber,
+                    CountPage = (int)Math.Ceiling(a: _catalogueBll.GetCount() / 20d),
+                    ActionUrl = $"/Catalogue/{nameof(GetAll)}/"
+                },
+                Elements = elements
+            };
 
             foreach (var item in _catalogueBll.Search(new SearchRequest<SortOptions, CatalogueSearchOptions>(SortOptions.Ascending, CatalogueSearchOptions.None, pagingInfo: new PagingInfo(20, pageNumber))))
             {
@@ -43,7 +53,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 }
             }
 
-            return View(elements);
+            return View(page);
         }
 
         [HttpGet]

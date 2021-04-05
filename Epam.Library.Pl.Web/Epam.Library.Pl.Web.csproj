@@ -155,6 +155,8 @@
     <Compile Include="ViewModels\Book\DisplayBookVM.cs" />
     <Compile Include="ViewModels\Catalogue\TypeEnumVM.cs" />
     <Compile Include="ViewModels\Catalogue\ElementVM.cs" />
+    <Compile Include="ViewModels\PageDataVM.cs" />
+    <Compile Include="ViewModels\PageInfoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -196,6 +198,7 @@
     <Content Include="Views\Book\Display.cshtml" />
     <Content Include="Views\Book\Edit.cshtml" />
     <Content Include="Views\Book\Remove.cshtml" />
+    <Content Include="Views\Shared\_PageIteratorPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

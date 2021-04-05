@@ -1,0 +1,54 @@
+﻿@model PageInfoVM
+
+<nav>
+    <ul class="pagination">
+        @if (Model.CountPage > 1)
+        {
+            <li class="page-item @(Model.CurrentPage > 1 ? "" : "disabled")">
+                <a class="page-link" href=@(Model.CurrentPage > 1 ? (Model.ActionUrl + (Model.CurrentPage - 1)) : "#")>Previous</a>
+            </li>
+
+            if (Model.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href=@(Model.ActionUrl + 1)>1</a>
+                </li>
+
+                int result = Model.CurrentPage - 3;
+                for (int i = result > 2 ? result : 2; i < Model.CurrentPage; i++)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href=@(Model.ActionUrl + i)>@i</a>
+                    </li>
+                }
+            }
+
+            <li class="page-item active">
+                <a class="page-link" href="#">@Model.CurrentPage</a>
+            </li>
+
+            if (Model.CurrentPage < Model.CountPage)
+            {
+                int result = Model.CurrentPage + 4;
+                for (int i = Model.CurrentPage + 1; i < (result < Model.CountPage ? result : Model.CountPage); i++)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href=@(Model.ActionUrl + i)>@i</a>
+                    </li>
+                }
+
+                <li class="page-item">
+                    <a class="page-link" href=@(Model.ActionUrl + Model.CountPage)>@Model.CountPage</a>
+                </li>
+            }
+
+            if (Model.CountPage > 1)
+            {
+                <li class="page-item @(Model.CurrentPage < Model.CountPage ? "" : "disabled")">
+                    <a class="page-link" href="@(Model.CurrentPage < Model.CountPage ? (Model.ActionUrl + (Model.CurrentPage + 1)) : "#")">Next</a>
+                </li>
+            }
+        }
+
+    </ul>
+</nav>

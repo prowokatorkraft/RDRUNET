@@ -1,10 +1,9 @@
-﻿@model IEnumerable<ElementVM>
-
+﻿@model PageDataVM<ElementVM>
 @{
     ViewBag.Title = "GetAll";
 }
 
-<h2>Catalogue</h2>
+<h2>Catalogue </h2>
 
 @using (Html.BeginForm("Create", "Catalogue", FormMethod.Get))
 {
@@ -22,19 +21,13 @@
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Identity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NumberOfPages)
-        </th>
+        <th>Name</th>
+        <th>Identity</th>
+        <th>Number of pages</th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Elements)
     {
         <tr>
             <td>
@@ -53,3 +46,5 @@
     }
 
 </table>
+
+@Html.Partial("_PageIteratorPartial", Model.PageInfo)

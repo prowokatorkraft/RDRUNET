@@ -132,5 +132,10 @@ namespace Epam.Library.Dal.Memory
 
             return query;
         }
+
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

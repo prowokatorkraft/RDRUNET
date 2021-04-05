@@ -72,7 +72,7 @@ function clearModal() {
     LastNameModalValidation.innerText = "";
 }
 function requestAuthorListAjax() {
-    xhr.open("Post", '/Author/GetList');
+    xhr.open("GET", '/Author/GetList');
     xhr.send(null);
 }
 function requestCreateAuthorAjax(author) {

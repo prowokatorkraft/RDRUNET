@@ -48,7 +48,7 @@ namespace Epam.Library.Pl.Web.Controllers
             return Json(errors);
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult GetList()
         {
             List<DisplayAuthorVM> list = new List<DisplayAuthorVM>();
@@ -58,7 +58,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 list.Add(_mapper.Map<DisplayAuthorVM, Author>(item));
             }
 
-            return Json(list);
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
     }
 }

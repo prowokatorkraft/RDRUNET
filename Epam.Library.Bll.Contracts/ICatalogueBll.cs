@@ -11,5 +11,7 @@ namespace Epam.Library.Bll.Contracts
         IEnumerable<AbstractAuthorElement> GetByAuthorId(int id);
 
         IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest);
+
+        int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null);
     }
 }

@@ -5,7 +5,6 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace Epam.Library.Dal.Database
 {
@@ -85,7 +84,7 @@ namespace Epam.Library.Dal.Database
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        idList.Add((reader["BookId"] as int? ??reader["PatentId"] as int?).Value);
+                        idList.Add((reader["BookId"] as int? ?? reader["PatentId"] as int?).Value);
                     }
                 }
 
@@ -135,6 +134,37 @@ namespace Epam.Library.Dal.Database
             }
         }
 
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null)
+        {
+            try
+            {
+                int count;
+
+                string storedProcedure = GetProcedureForCount(searchOptions);
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    AddParametersForCount(searchOptions, searchLine, command);
+
+                    connection.Open();
+
+                    var reader = command.ExecuteReader();
+                    reader.Read();
+                    count = (int)reader["Count"];
+
+                }
+
+                return count;
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
+        }
+
         private TypeDaoEnum GetTypeDaoByReader(SqlDataReader reader)
         {
             if (reader["BookId"] is int)
@@ -174,6 +204,13 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
         }
+        private void AddParametersForCount(CatalogueSearchOptions searchOptions, string searchLine, SqlCommand command)
+        {
+            if (searchOptions != CatalogueSearchOptions.None)
+            {
+                command.Parameters.AddWithValue("@SearchLine", searchLine);
+            }
+        }
 
         private LibraryAbstractElement GetElementByTypeDao(int id, TypeDaoEnum typeDao)
         {
@@ -201,6 +238,22 @@ namespace Epam.Library.Dal.Database
                     break;
                 default:
                     storedProcedure = "dbo.Catalogue_GetAll";
+                    break;
+            }
+
+            return storedProcedure;
+        }
+        private string GetProcedureForCount(CatalogueSearchOptions searchOptions)
+        {
+            string storedProcedure;
+
+            switch (searchOptions)
+            {
+                case CatalogueSearchOptions.Name:
+                    storedProcedure = "dbo.Catalogue_CountByName";
+                    break;
+                default:
+                    storedProcedure = "dbo.Catalogue_Count";
                     break;
             }
 

@@ -41,6 +41,18 @@ namespace Epam.Library.Bll
             }
         }
 
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null)
+        {
+            try
+            {
+                return _dao.GetCount(searchOptions, searchLine);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+
         public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest)
         {
             try
