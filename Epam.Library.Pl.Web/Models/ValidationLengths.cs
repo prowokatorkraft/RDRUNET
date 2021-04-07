@@ -23,5 +23,9 @@
         public const string MinApplicationDateRange = "01.01.1474";
 
         public const string MinDateOfPublicationRange = MinApplicationDateRange;
+
+        public const int MinLogin = 3;
+
+        public const int MinPassword = 3;
     }
 }

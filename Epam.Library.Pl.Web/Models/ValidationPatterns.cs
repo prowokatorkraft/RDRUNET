@@ -15,5 +15,7 @@
         public const string CountryPattern = "^([A-Z]{2,3}|[A-Z][a-z]{1,})$|^([А-ЯЁ]{2,3}|[А-ЯЁ][а-я]{1,})$";
 
         public const string RegistrationNumberPattern = "^[0-9]{1,9}$";
+
+        public const string LoginPattern = "^[A-Za-z]([_]?[A-Za-z0-9]+){0,}[_]?[A-Za-z0-9]$";
     }
 }

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account.cs" />
     <Compile Include="ErrorValidation.cs" />
     <Compile Include="Exceptions\AddException.cs" />
     <Compile Include="Exceptions\GetException.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Newspaper\AbstractNewspaper.cs" />
     <Compile Include="Newspaper\Newspaper.cs" />
     <Compile Include="PagingInfo.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="SearchOptionsEnum\AuthorSearchOptions.cs" />
     <Compile Include="SearchOptionsEnum\CatalogueSearchOptions.cs" />
     <Compile Include="SearchOptionsEnum\NewspaperSearchOptions.cs" />

@@ -28,6 +28,7 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(CreateEditBookVM book)
         {
             if (ModelState.IsValid)
@@ -57,6 +58,7 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(CreateEditBookVM book)
         {
             if (ModelState.IsValid)
@@ -94,6 +96,7 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             if (_bookBll.Remove(id))
