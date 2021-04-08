@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Epam.Common.Entities;
 using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
@@ -51,6 +52,16 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Dal.Database.AuthorDao>()
                 .InSingletonScope()
                 .WithConstructorArgument("connectionString", _connectionString);
+            kernel
+                .Bind<IAccountDao>()
+                .To<Epam.Library.Dal.Database.AccountDao>()
+                .InSingletonScope()
+                .WithConstructorArgument("connectionString", _connectionString);
+            kernel
+                .Bind<IRoleDao>()
+                .To<Epam.Library.Dal.Database.RoleDao>()
+                .InSingletonScope()
+                .WithConstructorArgument("connectionString", _connectionString);
             #endregion
 
             #region Validation
@@ -69,6 +80,10 @@ namespace Epam.Library.Common.DependencyInjection
             kernel
                 .Bind<IValidationBll<Author>>()
                 .To<Epam.Library.Bll.Validation.AuthorValidation>()
+                .InSingletonScope();
+            kernel
+                .Bind<IValidationBll<Account>>()
+                .To<Epam.Library.Bll.Validation.AccountValidation>()
                 .InSingletonScope();
             #endregion
 
@@ -92,6 +107,14 @@ namespace Epam.Library.Common.DependencyInjection
             kernel
                 .Bind<IAuthorBll>()
                 .To<Epam.Library.Bll.AuthorBll>()
+                .InSingletonScope();
+            kernel
+                .Bind<IAccountBll>()
+                .To<Epam.Library.Bll.AccountBll>()
+                .InSingletonScope();
+            kernel
+                .Bind<IRoleBll>()
+                .To<Epam.Library.Bll.RoleBll>()
                 .InSingletonScope();
             #endregion
         }

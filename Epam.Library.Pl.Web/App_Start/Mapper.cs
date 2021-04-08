@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Epam.Common.Entities;
 using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
@@ -51,7 +52,7 @@ namespace Epam.Library.Pl.Web
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
                     .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
                     .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
-                    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs, (f,l)=>$"{f} {l}")))
+                    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs, (f, l) => $"{f} {l}")))
                     .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
                     .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
                     .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
@@ -67,7 +68,7 @@ namespace Epam.Library.Pl.Web
                     .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
                     .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
                     .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
-                
+
                 cfg.CreateMap<CreateEditBookVM, Book>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
@@ -101,6 +102,15 @@ namespace Epam.Library.Pl.Web
                     .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
                     .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName));
                 #endregion
+
+                #region AccountVM
+                cfg.CreateMap<CreateAccountVM, Account>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Login, opt => opt.MapFrom(c => c.Login))
+                    .ForMember(dest => dest.Password, opt => opt.MapFrom(c => c.Password))
+                    .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                    .ForMember(dest => dest.RoleId, opt => opt.Ignore());
+                #endregion
             }).CreateMapper();
 
             _mapper.ConfigurationProvider.AssertConfigurationIsValid();
@@ -129,7 +139,7 @@ namespace Epam.Library.Pl.Web
 
             return str;
         }
-        private string GetAuthorsByIDs(int[] authorIDs, Func<string,string,string> format)
+        private string GetAuthorsByIDs(int[] authorIDs, Func<string, string, string> format)
         {
             if (authorIDs is null || authorIDs.Length == 0)
             {

@@ -6,7 +6,7 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 
-namespace Epam.Library.Bll.Logic.Validation
+namespace Epam.Library.Bll.Validation
 {
     public class AccountValidation : IValidationBll<Account>
     {
@@ -41,7 +41,7 @@ namespace Epam.Library.Bll.Logic.Validation
                 .CheckMatch(field, ValidationPatterns.LoginPattern, _errorList)
                 .Length.CheckRange(field, ValidationLengths.MinLogin, int.MaxValue, _errorList);
 
-            if (_accountDao.IsExists(element.Login))
+            if (_accountDao.Check(element.Login))
             {
                 _errorList.Add(new ErrorValidation
                 (
@@ -58,7 +58,6 @@ namespace Epam.Library.Bll.Logic.Validation
 
             element.Password
                 .CheckNull(field, _errorList)?
-                .CheckMatch(field, ValidationPatterns.LoginPattern, _errorList)
                 .Length.CheckRange(field, ValidationLengths.MinPassword, int.MaxValue, _errorList);
 
             for (int index = 0; index < element.Password.Length; index++)

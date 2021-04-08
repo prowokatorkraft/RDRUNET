@@ -3,20 +3,23 @@
     ViewBag.Title = "GetAll";
 }
 
-<h2>Catalogue </h2>
+<h2>Catalogue</h2>
 
-@using (Html.BeginForm("Create", "Catalogue", FormMethod.Get))
+@if (User.IsInRole(RoleType.librarian.ToString()))
 {
-    @Html.AntiForgeryToken();
+    using (Html.BeginForm("Create", "Catalogue", FormMethod.Get))
+    {
+        @Html.AntiForgeryToken();
 
-    <input type="submit" value="Create" />
+        <input type="submit" value="Create" />
 
-    @Html.RadioButton("typeRadio", TypeEnumVM.Book, true)
-    @(" "+TypeEnumVM.Book+" ")
-    @Html.RadioButton("typeRadio", TypeEnumVM.Patent)
-    @(" "+TypeEnumVM.Patent+" ")
-    @Html.RadioButton("typeRadio", TypeEnumVM.Newspaper)
-    @(" "+TypeEnumVM.Newspaper+" ")
+        @Html.RadioButton("typeRadio", TypeEnumVM.Book, true)
+        @(" "+TypeEnumVM.Book+" ")
+        @Html.RadioButton("typeRadio", TypeEnumVM.Patent)
+        @(" "+TypeEnumVM.Patent+" ")
+        @Html.RadioButton("typeRadio", TypeEnumVM.Newspaper)
+        @(" "+TypeEnumVM.Newspaper+" ")
+    }
 }
 
 <table class="table">
@@ -39,9 +42,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfPages)
             </td>
-            <td>
-                @Html.ActionLink("Details", "Display", new { id = item.Id, type = item.Type })
-            </td>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <td>
+                    @Html.ActionLink("Details", "Display", new { id = item.Id, type = item.Type })
+                </td>
+            }
         </tr>
     }
 

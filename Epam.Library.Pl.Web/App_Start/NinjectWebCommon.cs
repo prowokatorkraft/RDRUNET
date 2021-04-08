@@ -44,6 +44,11 @@ namespace Epam.Library.Pl.Web
                     .Bind<Mapper>()
                     .ToSelf()
                     .InSingletonScope();
+                kernel
+                    .Bind<RoleProviderModel>()
+                    .ToSelf()
+                    .InSingletonScope();
+                kernel.Get<RoleProviderModel>();
                 #endregion
 
                 return kernel;

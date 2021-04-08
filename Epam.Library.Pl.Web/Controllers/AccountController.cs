@@ -1,6 +1,6 @@
-﻿using Epam.Library.Pl.Web.ViewModels;
-using System;
-using System.Collections.Generic;
+﻿using Epam.Common.Entities;
+using Epam.Library.Bll.Contracts;
+using Epam.Library.Pl.Web.ViewModels;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,20 +12,44 @@ namespace Epam.Library.Pl.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAccountBll _accountBll;
+        private readonly Mapper _mapper;
+
+        public AccountController(IAccountBll accountBll, Mapper mapper)
+        {
+            _accountBll = accountBll;
+            _mapper = mapper;
+        }
+
         public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(LoginVM model)
         {
-            return View();
+            var acc = _accountBll.GetByLogin(model.Login);
+
+            if (acc?.PasswordHash == GetPasswordHash(model.Password))
+            {
+                FormsAuthentication.SetAuthCookie(model.Login, true);
+                return Redirect("~/");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Incorrect Login or Password.");
+            }
+
+            return View(model);
         }
 
-        public ActionResult Logon()
+        public ActionResult Logout()
         {
-            return View();/////
+            FormsAuthentication.SignOut();
+
+            return Redirect("~/");
         }
 
         public ActionResult Register()
@@ -34,21 +58,29 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(CreateAccountVM model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var errors = _accountBll.Add(_mapper.Map<Account, CreateAccountVM>(model));
+
+                if (!errors.Any())
+                {
+                    return Redirect("~/");
+                }
+
+                foreach (var item in errors)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+            }
+            return View(model);
         }
 
-        public JsonResult IsLoginAllowed(string login) ///
+        public JsonResult IsLoginAllowed(string login)
         {
-            bool isNotExits = true;
-
-            //if (!this._accountLogic.IsExists(login))
-            //{
-            //    isNotExits = false;
-            //}
-
-            return Json(isNotExits, JsonRequestBehavior.AllowGet);
+            return Json(!_accountBll.Check(login), JsonRequestBehavior.AllowGet);
         }
 
         private string GetPasswordHash(string password)

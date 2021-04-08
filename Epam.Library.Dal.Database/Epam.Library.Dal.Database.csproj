@@ -44,12 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountDao.cs" />
     <Compile Include="AuthorDao.cs" />
     <Compile Include="BookDao.cs" />
     <Compile Include="CatalogueDao.cs" />
     <Compile Include="NewspaperDao.cs" />
     <Compile Include="PatentDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleDao.cs" />
     <Compile Include="TypeDaoEnum.cs" />
   </ItemGroup>
   <ItemGroup>

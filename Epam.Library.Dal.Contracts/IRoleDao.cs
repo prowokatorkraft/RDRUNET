@@ -7,7 +7,7 @@ namespace Epam.Library.Dal.Contracts
     {
         IEnumerable<Role> GetAll();
 
-        Role GetById(long id);
+        Role GetById(int id);
 
         Role GetByName(string name);
     }

@@ -7,8 +7,10 @@ namespace Epam.Library.Bll.Contracts
     {
         IEnumerable<Role> GetAll();
 
-        Role GetById(long id);
+        Role GetById(int id);
 
         Role GetByName(string name);
+
+        bool Check(int id);
     }
 }

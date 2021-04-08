@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Epam.Common.Entities;
+using Epam.Library.Bll.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,19 +10,47 @@ namespace Epam.Library.Pl.Web.Models
 {
     public class RoleProviderModel : RoleProvider
     {
+        private static IAccountBll _accountBll;
+        private static IRoleBll _roleBll;
+
         public RoleProviderModel()
         {
 
         }
+        public RoleProviderModel(IAccountBll accountBll, IRoleBll roleBll)
+        {
+            _accountBll = accountBll;
+            _roleBll = roleBll;
+        }
 
         public override string[] GetRolesForUser(string username)
         {
-            throw new NotImplementedException();
+            var acc = _accountBll.GetByLogin(username);
+            var role = acc is null
+                        ? null
+                        : _roleBll.GetById(acc.RoleId);
+            
+            switch (role?.Name)
+            {
+                case "user":
+                    return new[] { RoleType.user.ToString() };
+                case "librarian":
+                    return new[] { RoleType.user.ToString(), RoleType.librarian.ToString() };
+                case "admin":
+                    return new[] { RoleType.user.ToString(), RoleType.librarian.ToString(), RoleType.admin.ToString() };
+            }
+
+            return new[] { "" };
         }
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            throw new NotImplementedException();
+            var acc = _accountBll.GetByLogin(username);
+            var role = acc is null
+                        ? null
+                        : _roleBll.GetById(acc.RoleId);
+
+            return string.Equals(role?.Name, roleName, StringComparison.InvariantCultureIgnoreCase);
         }
 
         #region Not implemented

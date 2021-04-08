@@ -6,6 +6,7 @@ using Epam.Library.Pl.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Epam.Library.Pl.Web.Controllers
 {
@@ -21,21 +22,41 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAll(int pageNumber = 1)
+        public ActionResult GetAll(int pageNumber = 1, string searchLine = null)
         {
             List<ElementVM> elements = new List<ElementVM>();
+
+            var values = new RouteValueDictionary();
+            if (searchLine != null)
+            {
+                values.Add("searchLine", searchLine);
+            }
+
             var page = new PageDataVM<ElementVM>()
             {
                 PageInfo = new PageInfoVM()
                 {
                     CurrentPage = pageNumber,
-                    CountPage = (int)Math.Ceiling(a: _catalogueBll.GetCount() / 20d),
-                    ActionUrl = $"/Catalogue/{nameof(GetAll)}/"
+                    CountPage = (int)Math.Ceiling(a: _catalogueBll.GetCount(
+                                                searchLine is null 
+                                                    ? CatalogueSearchOptions.None 
+                                                    : CatalogueSearchOptions.Name, 
+                                                searchLine
+                    ) / 20d),
+                    Action = nameof(GetAll),
+                    Controller = "Catalogue",
+                    Values = values
                 },
                 Elements = elements
             };
 
-            foreach (var item in _catalogueBll.Search(new SearchRequest<SortOptions, CatalogueSearchOptions>(SortOptions.Ascending, CatalogueSearchOptions.None, pagingInfo: new PagingInfo(20, pageNumber))))
+            foreach (var item in _catalogueBll.Search(new SearchRequest<SortOptions, CatalogueSearchOptions>()
+            {
+                SortOptions = SortOptions.Ascending,
+                SearchOptions = searchLine is null ? CatalogueSearchOptions.None : CatalogueSearchOptions.Name,
+                SearchLine = searchLine,
+                PagingInfo = new PagingInfo(20, pageNumber)
+            }))
             {
                 switch (item)
                 {
