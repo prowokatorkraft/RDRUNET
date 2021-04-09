@@ -145,6 +145,7 @@
     <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\CatalogueController.cs" />
+    <Compile Include="Controllers\PatentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -152,6 +153,7 @@
     <Compile Include="Models\ValidationLengths.cs" />
     <Compile Include="Models\ValidationPatterns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Authentification\AccountVM.cs" />
     <Compile Include="ViewModels\Authentification\CreateAccountVM.cs" />
     <Compile Include="ViewModels\Author\CreateEditAuthorVM.cs" />
     <Compile Include="ViewModels\Author\DisplayAuthorVM.cs" />
@@ -162,6 +164,8 @@
     <Compile Include="ViewModels\Authentification\LoginVM.cs" />
     <Compile Include="ViewModels\PageDataVM.cs" />
     <Compile Include="ViewModels\PageInfoVM.cs" />
+    <Compile Include="ViewModels\Patent\CreateEditPatentVM.cs" />
+    <Compile Include="ViewModels\Patent\DisplayPatentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -206,6 +210,10 @@
     <Content Include="Views\Shared\_PageIteratorPartial.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Patent\Display.cshtml" />
+    <Content Include="Views\Patent\Create.cshtml" />
+    <Content Include="Views\Patent\Edit.cshtml" />
+    <Content Include="Views\Patent\Remove.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -85,7 +85,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 case TypeEnumVM.Book:
                     return RedirectToAction("Create", controllerName: "Book");
                 case TypeEnumVM.Patent:
-                    break;
+                    return RedirectToAction("Create", controllerName: "Patent");
                 case TypeEnumVM.Newspaper:
                     break;
             }
@@ -101,7 +101,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 case TypeEnumVM.Book:
                     return RedirectToAction("Display", controllerName: "Book", routeValues: new { id = id });
                 case TypeEnumVM.Patent:
-                    break;
+                    return RedirectToAction("Display", controllerName: "Patent", routeValues: new { id = id });
                 case TypeEnumVM.Newspaper:
                     break;
             }

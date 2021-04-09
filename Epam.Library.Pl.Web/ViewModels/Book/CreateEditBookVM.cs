@@ -1,9 +1,5 @@
 ﻿using Epam.Library.Pl.Web.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace Epam.Library.Pl.Web.ViewModels
 {

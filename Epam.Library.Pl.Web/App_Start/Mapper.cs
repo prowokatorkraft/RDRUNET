@@ -80,8 +80,42 @@ namespace Epam.Library.Pl.Web
                     .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
                     .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
                     .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
+                #endregion
 
-                // Newspapers
+                #region PatentVM
+                cfg.CreateMap<Patent, DisplayPatentVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs, (f, l) => $"{f} {l}")))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(c => c.Country))
+                    .ForMember(dest => dest.RegistrationNumber, opt => opt.MapFrom(c => c.RegistrationNumber))
+                    .ForMember(dest => dest.ApplicationDate, opt => opt.MapFrom(c => c.ApplicationDate))
+                    .ForMember(dest => dest.DateOfPublication, opt => opt.MapFrom(c => c.DateOfPublication));
+
+                cfg.CreateMap<Patent, CreateEditPatentVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.AuthorIDs, opt => opt.MapFrom(c => c.AuthorIDs))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(c => c.Country))
+                    .ForMember(dest => dest.RegistrationNumber, opt => opt.MapFrom(c => c.RegistrationNumber))
+                    .ForMember(dest => dest.ApplicationDate, opt => opt.MapFrom(c => c.ApplicationDate))
+                    .ForMember(dest => dest.DateOfPublication, opt => opt.MapFrom(c => c.DateOfPublication));
+                
+                cfg.CreateMap<CreateEditPatentVM, Patent>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Deleted, opt => opt.Ignore())
+                    .ForMember(dest => dest.AuthorIDs, opt => opt.MapFrom(c => c.AuthorIDs))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(c => c.Country))
+                    .ForMember(dest => dest.RegistrationNumber, opt => opt.MapFrom(c => c.RegistrationNumber))
+                    .ForMember(dest => dest.ApplicationDate, opt => opt.MapFrom(c => c.ApplicationDate))
+                    .ForMember(dest => dest.DateOfPublication, opt => opt.MapFrom(c => c.DateOfPublication));
                 #endregion
 
                 #region AuthorVM

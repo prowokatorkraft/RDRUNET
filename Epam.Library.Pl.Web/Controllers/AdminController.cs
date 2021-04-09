@@ -20,7 +20,7 @@ namespace Epam.Library.Pl.Web.Controllers
             _mapper = mapper;
         }
 
-        public ActionResult GetAll()
+        public ActionResult GetAll(int pageNumber = 1, string searchLine = null)
         {
             return View();
         }
