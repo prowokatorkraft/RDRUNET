@@ -1,5 +1,4 @@
 ﻿using Epam.Common.Entities;
-using Epam.Common.Entities.SearchOptionsEnum;
 using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Exceptions;
@@ -56,6 +55,17 @@ namespace Epam.Library.Bll
             try
             {
                 return _dao.Search(searchRequest);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+        public int GetCount(AccountSearchOptions searchOptions = AccountSearchOptions.None, string searchLine = null)
+        {
+            try
+            {
+                return _dao.GetCount(searchOptions, searchLine);
             }
             catch (Exception ex)
             {

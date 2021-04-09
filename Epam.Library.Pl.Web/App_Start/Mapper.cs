@@ -16,10 +16,12 @@ namespace Epam.Library.Pl.Web
     {
         private IMapper _mapper;
         private IAuthorBll _authorBll;
+        private IRoleBll _roleBll;
 
-        public Mapper(IAuthorBll authorBll)
+        public Mapper(IAuthorBll authorBll, IRoleBll roleBll)
         {
             _authorBll = authorBll;
+            _roleBll = roleBll;
 
             RegisterMaps();
         }
@@ -138,6 +140,10 @@ namespace Epam.Library.Pl.Web
                 #endregion
 
                 #region AccountVM
+                cfg.CreateMap<Account, AccountVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Login, opt => opt.MapFrom(c => c.Login))
+                    .ForMember(dest => dest.Role, opt => opt.MapFrom(c => _roleBll.GetById(c.RoleId)));
                 cfg.CreateMap<CreateAccountVM, Account>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Login, opt => opt.MapFrom(c => c.Login))

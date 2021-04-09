@@ -214,11 +214,12 @@
     <Content Include="Views\Patent\Create.cshtml" />
     <Content Include="Views\Patent\Edit.cshtml" />
     <Content Include="Views\Patent\Remove.cshtml" />
+    <Content Include="Views\Admin\GetAll.cshtml" />
+    <Content Include="Views\Admin\EditRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Admin\" />
     <Folder Include="Views\Author\" />
   </ItemGroup>
   <ItemGroup>

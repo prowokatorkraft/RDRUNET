@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Security;
 
 namespace Epam.Library.Dal.Database
 {
@@ -48,9 +49,17 @@ namespace Epam.Library.Dal.Database
         {
             try
             {
+                //var password = new SecureString();
+                //foreach (var item in "Admin")
+                //{
+                //    password.AppendChar(item);
+                //}
+                //password.MakeReadOnly();
+                //SqlCredential credential = new SqlCredential("Admin", password);
+
                 AbstractBook book;
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString/*, credential*/))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_GetById", connection)
                     {

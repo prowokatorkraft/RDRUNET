@@ -1,7 +1,6 @@
 ﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
-using Epam.Library.Common.Entities.SearchOptionsEnum;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,4 @@
 ﻿using Epam.Common.Entities;
-using Epam.Common.Entities.SearchOptionsEnum;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
@@ -79,6 +78,36 @@ namespace Epam.Library.Dal.Database
                 }
 
                 return accountList;
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
+        }
+
+        public int GetCount(AccountSearchOptions searchOptions = AccountSearchOptions.None, string searchLine = null)
+        {
+            try
+            {
+                int count;
+
+                string storedProcedure = GetProcedureForCount(searchOptions);
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    AddParametersForCount(searchOptions, searchLine, command);
+
+                    connection.Open();
+
+                    var reader = command.ExecuteReader();
+                    reader.Read();
+                    count = (int)reader["Count"];
+                }
+
+                return count;
             }
             catch (Exception ex)
             {
@@ -212,6 +241,13 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@Password", account.PasswordHash);
             command.Parameters.AddWithValue("@RoleId", account.RoleId);
         }
+        private void AddParametersForCount(AccountSearchOptions searchOptions, string searchLine, SqlCommand command)
+        {
+            if (searchOptions != AccountSearchOptions.None)
+            {
+                command.Parameters.AddWithValue("@SearchLine", searchLine);
+            }
+        }
 
         private Account GetAuthorByReader(SqlDataReader reader)
         {
@@ -235,6 +271,22 @@ namespace Epam.Library.Dal.Database
                     break;
                 default:
                     storedProcedure = "dbo.Users_GetAll";
+                    break;
+            }
+
+            return storedProcedure;
+        }
+        private string GetProcedureForCount(AccountSearchOptions searchOptions)
+        {
+            string storedProcedure;
+
+            switch (searchOptions)
+            {
+                case AccountSearchOptions.Login:
+                    storedProcedure = "dbo.Users_CountByLogin";
+                    break;
+                default:
+                    storedProcedure = "dbo.Users_Count";
                     break;
             }
 

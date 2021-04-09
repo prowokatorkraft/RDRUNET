@@ -9,7 +9,6 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Bll;
 using Epam.Library.Test.TestCases;
 using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Common.Entities.SearchOptionsEnum;
 
 namespace Epam.Library.Test
 {
