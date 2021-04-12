@@ -11,9 +11,9 @@ namespace Epam.Library.Dal.Database
     {
         private readonly string _connectionString;
 
-        public RoleDao(string connectionString)
+        public RoleDao(ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionString = connectionStrings.GetByRole(RoleType.user);
         }
 
         public IEnumerable<Role> GetAll()

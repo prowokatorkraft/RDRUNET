@@ -26,6 +26,7 @@ namespace Epam.Library.Pl.Web.Controllers
 
         public ActionResult GetAll(int pageNumber = 1, string searchLine = null)
         {
+            var role = GetRoleByCurrentUser();
             List<AccountVM> elements = new List<AccountVM>();
 
             var values = new RouteValueDictionary();
@@ -60,7 +61,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 PagingInfo = new PagingInfo(20, pageNumber)
             }))
             {
-                elements.Add(_mapper.Map<AccountVM, Account>(item));
+                elements.Add(_mapper.Map<AccountVM, Account>(item, role));
             }
 
             return View(page);
@@ -68,7 +69,8 @@ namespace Epam.Library.Pl.Web.Controllers
 
         public ActionResult EditRole(long id)
         {
-            var acc = _mapper.Map<AccountVM, Account>(_accountBll.GetById(id));
+            var role = GetRoleByCurrentUser();
+            var acc = _mapper.Map<AccountVM, Account>(_accountBll.GetById(id), role);
 
             return View(acc);
         }
@@ -91,6 +93,31 @@ namespace Epam.Library.Pl.Web.Controllers
             }
 
             return RedirectToAction("GetAll", controllerName: "Admin");
+        }
+
+        private RoleType GetRoleByCurrentUser()
+        {
+            string roleName = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                roleName = _roleBll.GetById(_accountBll.GetByLogin(User.Identity.Name).RoleId).Name;
+            }
+
+            return GetRole(roleName);
+        }
+        private RoleType GetRole(string roleName)
+        {
+            switch (roleName)
+            {
+                case "admin":
+                    return RoleType.admin;
+                case "librarian":
+                    return RoleType.librarian;
+                case "user":
+                    return RoleType.user;
+                default:
+                    return RoleType.None;
+            }
         }
     }
 }

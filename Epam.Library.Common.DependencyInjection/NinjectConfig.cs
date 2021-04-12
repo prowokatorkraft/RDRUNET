@@ -1,67 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Epam.Common.Entities;
 using Epam.Library.Bll.Contracts;
+using Epam.Library.Common.DependencyInjection;
+using Epam.Library.Common.DependencyInjection.Configuration;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Dal.Contracts;
+using Epam.Library.Dal.Database;
 using Ninject;
 
 namespace Epam.Library.Common.DependencyInjection
 {
     public static class NinjectConfig
     {
-        private static readonly string _connectionString;
+        private static readonly IDictionary<RoleType, string> _identityConnectionStrings;
 
         static NinjectConfig()
         {
-            _connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
+            _identityConnectionStrings = GetIdentityConnectionStrings();
         }
 
         public static void RegisterConfig(IKernel kernel)
         {
+            #region Connection string
+            kernel
+                .Bind<ConnectionStringDb>()
+                .ToSelf()
+                .InSingletonScope()
+                .WithConstructorArgument("identityConnectionStrings", _identityConnectionStrings);
+            #endregion
+
             #region Dal
             kernel
                 .Bind<IBookDao>()
                 .To<Epam.Library.Dal.Database.BookDao>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", _connectionString);
+                .InSingletonScope();
             kernel
                 .Bind<IPatentDao>()
                 .To<Epam.Library.Dal.Database.PatentDao>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", _connectionString);
+                .InSingletonScope();
             kernel
                 .Bind<INewspaperDao>()
                 .To<Epam.Library.Dal.Database.NewspaperDao>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", _connectionString);
+                .InSingletonScope();
             kernel
                 .Bind<ICatalogueDao>()
                 .To<Epam.Library.Dal.Database.CatalogueDao>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", _connectionString);
+                .InSingletonScope();
             kernel
                 .Bind<IAuthorDao>()
                 .To<Epam.Library.Dal.Database.AuthorDao>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", _connectionString);
+                .InSingletonScope();
             kernel
                 .Bind<IAccountDao>()
                 .To<Epam.Library.Dal.Database.AccountDao>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", _connectionString);
+                .InSingletonScope();
             kernel
                 .Bind<IRoleDao>()
                 .To<Epam.Library.Dal.Database.RoleDao>()
-                .InSingletonScope()
-                .WithConstructorArgument("connectionString", _connectionString);
+                .InSingletonScope();
             #endregion
 
             #region Validation
@@ -117,6 +117,25 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Bll.RoleBll>()
                 .InSingletonScope();
             #endregion
+        }
+
+        private static IDictionary<RoleType, string> GetIdentityConnectionStrings()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["Dbase"].ConnectionString;
+
+            var identityConndectionStrings = new Dictionary<RoleType, string>();
+            var identityDb = (IdentityDbConfig)ConfigurationManager.GetSection("identityDb");
+
+            var account = identityDb.Accounts[RoleType.admin.ToString()];
+            identityConndectionStrings.Add(RoleType.admin, string.Format(connectionString, account.UserID, account.Password));
+
+            account = identityDb.Accounts[RoleType.librarian.ToString()];
+            identityConndectionStrings.Add(RoleType.librarian, string.Format(connectionString, account.UserID, account.Password));
+
+            account = identityDb.Accounts[RoleType.user.ToString()];
+            identityConndectionStrings.Add(RoleType.user, string.Format(connectionString, account.UserID, account.Password));
+
+            return identityConndectionStrings;
         }
     }
 }

@@ -17,11 +17,13 @@ namespace Epam.Library.Pl.Web
         private IMapper _mapper;
         private IAuthorBll _authorBll;
         private IRoleBll _roleBll;
+        private RoleType _role;
 
         public Mapper(IAuthorBll authorBll, IRoleBll roleBll)
         {
             _authorBll = authorBll;
             _roleBll = roleBll;
+            _role = RoleType.None;
 
             RegisterMaps();
         }
@@ -159,12 +161,12 @@ namespace Epam.Library.Pl.Web
         private StringBuilder GetNameFromBook(Book book)
         {
             StringBuilder str = new StringBuilder();
-
+            
             if (book.AuthorIDs?.Length > 0)
             {
                 foreach (var item in book.AuthorIDs)
                 {
-                    var author = _authorBll.Get(item);
+                    var author = _authorBll.Get(item, _role);
 
                     if (str.Length != 0)
                     {
@@ -196,15 +198,16 @@ namespace Epam.Library.Pl.Web
                     builder.Append(", ");
                 }
 
-                author = Map<DisplayAuthorVM, Author>(_authorBll.Get(item));
+                author = Map<DisplayAuthorVM, Author>(_authorBll.Get(item, _role), _role);
                 builder.Append(format(author.FirstName, author.LastName));
             }
 
             return builder.ToString();
         }
 
-        public TResult Map<TResult, TModel>(TModel model)
+        public TResult Map<TResult, TModel>(TModel model, RoleType role/* = RoleType.None*/)
         {
+            _role = role;
             return _mapper.Map<TModel, TResult>(model);
         }
     }

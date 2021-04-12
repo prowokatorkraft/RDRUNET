@@ -5,6 +5,7 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 using Epam.Library.Common.Entities.AuthorElement;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Bll
 {
@@ -17,11 +18,11 @@ namespace Epam.Library.Bll
             _dao = catalogueDao;
         }
 
-        public LibraryAbstractElement Get(int id)
+        public LibraryAbstractElement Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -29,11 +30,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.GetByAuthorId(id, role: role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -41,11 +42,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null)
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetCount(searchOptions, searchLine);
+                return _dao.GetCount(searchOptions, searchLine, role);
             }
             catch (Exception ex)
             {
@@ -53,11 +54,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest)
+        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.Search(searchRequest, role);
             }
             catch (Exception ex)
             {

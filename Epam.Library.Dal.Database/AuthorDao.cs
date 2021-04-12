@@ -1,4 +1,5 @@
-﻿using Epam.Library.Common.Entities;
+﻿using Epam.Common.Entities;
+using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
@@ -11,18 +12,18 @@ namespace Epam.Library.Dal.Database
 {
     public class AuthorDao : IAuthorDao
     {
-        private readonly string _connectionString;
+        private readonly ConnectionStringDb _connectionStrings;
 
-        public AuthorDao(string connectionString)
+        public AuthorDao(ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionStrings = connectionStrings;
         }
 
         public void Add(Author author)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Add", connection)
                     {
@@ -42,13 +43,13 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public bool Check(int[] ids)
+        public bool Check(int[] ids, RoleType role = RoleType.None)
         {
             bool result;
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Check", connection)
                     {
@@ -71,13 +72,13 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Author Get(int id)
+        public Author Get(int id, RoleType role = RoleType.None)
         {
             try
             {
                 Author author;
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_GetById", connection)
                     {
@@ -101,11 +102,11 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Remove", connection)
                     {
@@ -130,7 +131,7 @@ namespace Epam.Library.Dal.Database
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Update", connection)
                     {
@@ -149,13 +150,13 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest)
+        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 List<Author> authorList = new List<Author>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     string storedProcedure = GetProcedureForSearch(searchRequest);
 

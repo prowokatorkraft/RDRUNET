@@ -13,9 +13,9 @@ namespace Epam.Library.Dal.Database
     {
         private readonly string _connectionString;
 
-        public AccountDao(string connectionString)
+        public AccountDao(ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionString = connectionStrings.GetByRole(RoleType.admin);
         }
 
         public void Add(Account account)

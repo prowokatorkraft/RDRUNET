@@ -1,4 +1,5 @@
-﻿using Epam.Library.Bll.Contracts;
+﻿using Epam.Common.Entities;
+using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
@@ -12,12 +13,16 @@ namespace Epam.Library.Pl.Web.Controllers
 {
     public class CatalogueController : Controller
     {
-        ICatalogueBll _catalogueBll;
-        Mapper _mapper;
+        private ICatalogueBll _catalogueBll;
+        private IAccountBll _accountBll;
+        private IRoleBll _roleBll;
+        private Mapper _mapper;
 
-        public CatalogueController(ICatalogueBll catalogueBll, Mapper mapper)
+        public CatalogueController(ICatalogueBll catalogueBll, IAccountBll accountBll, IRoleBll roleBll, Mapper mapper)
         {
             _catalogueBll = catalogueBll;
+            _accountBll = accountBll;
+            _roleBll = roleBll;
             _mapper = mapper;
         }
 
@@ -32,6 +37,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 values.Add("searchLine", searchLine);
             }
 
+            var role = GetRoleByCurrentUser();
             var page = new PageDataVM<ElementVM>()
             {
                 PageInfo = new PageInfoVM()
@@ -41,7 +47,8 @@ namespace Epam.Library.Pl.Web.Controllers
                                                 searchLine is null 
                                                     ? CatalogueSearchOptions.None 
                                                     : CatalogueSearchOptions.Name, 
-                                                searchLine
+                                                searchLine,
+                                                role
                     ) / 20d),
                     Action = nameof(GetAll),
                     Controller = "Catalogue",
@@ -56,15 +63,15 @@ namespace Epam.Library.Pl.Web.Controllers
                 SearchOptions = searchLine is null ? CatalogueSearchOptions.None : CatalogueSearchOptions.Name,
                 SearchLine = searchLine,
                 PagingInfo = new PagingInfo(20, pageNumber)
-            }))
+            }, role))
             {
                 switch (item)
                 {
                     case Book o:
-                        elements.Add(_mapper.Map<ElementVM, Book>(o));
+                        elements.Add(_mapper.Map<ElementVM, Book>(o, role));
                         break;
                     case Patent o:
-                        elements.Add(_mapper.Map<ElementVM, Patent>(o));
+                        elements.Add(_mapper.Map<ElementVM, Patent>(o, role));
                         break;
                     //case Newspaper o:
                     //    yield return MapperConfig.Map<ElementViewModel, Newspaper>(o);
@@ -107,6 +114,31 @@ namespace Epam.Library.Pl.Web.Controllers
             }
 
             return View();
+        }
+
+        private RoleType GetRoleByCurrentUser()
+        {
+            string roleName = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                roleName = _roleBll.GetById(_accountBll.GetByLogin(User.Identity.Name).RoleId).Name;
+            }
+
+            return GetRole(roleName);
+        }
+        private RoleType GetRole(string roleName)
+        {
+            switch (roleName)
+            {
+                case "admin":
+                    return RoleType.admin;
+                case "librarian":
+                    return RoleType.librarian;
+                case "user":
+                    return RoleType.user;
+                default:
+                    return RoleType.None;
+            }
         }
     }
 }

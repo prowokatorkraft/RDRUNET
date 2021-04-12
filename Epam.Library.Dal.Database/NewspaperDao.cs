@@ -14,9 +14,9 @@ namespace Epam.Library.Dal.Database
     {
         private readonly string _connectionString;
         
-        public NewspaperDao(string connectionString)
+        public NewspaperDao()/////
         {
-            _connectionString = connectionString;
+            _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=true;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;MultipleActiveResultSets=true;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
 
         public void Add(AbstractNewspaper newspaper)

@@ -12,12 +12,14 @@ namespace Epam.Library.Pl.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountBll _accountBll;
-        private readonly Mapper _mapper;
+        private IAccountBll _accountBll;
+        private IRoleBll _roleBll;
+        private Mapper _mapper;
 
-        public AccountController(IAccountBll accountBll, Mapper mapper)
+        public AccountController(IAccountBll accountBll, IRoleBll roleBll, Mapper mapper)
         {
             _accountBll = accountBll;
+            _roleBll = roleBll;
             _mapper = mapper;
         }
 
@@ -63,7 +65,8 @@ namespace Epam.Library.Pl.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var errors = _accountBll.Add(_mapper.Map<Account, CreateAccountVM>(model));
+                var role = GetRoleByCurrentUser();
+                var errors = _accountBll.Add(_mapper.Map<Account, CreateAccountVM>(model, role));
 
                 if (!errors.Any())
                 {
@@ -96,6 +99,31 @@ namespace Epam.Library.Pl.Web.Controllers
             }
             
             return result;
+        }
+
+        private RoleType GetRoleByCurrentUser()
+        {
+            string roleName = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                roleName = _roleBll.GetById(_accountBll.GetByLogin(User.Identity.Name).RoleId).Name;
+            }
+
+            return GetRole(roleName);
+        }
+        private RoleType GetRole(string roleName)
+        {
+            switch (roleName)
+            {
+                case "admin":
+                    return RoleType.admin;
+                case "librarian":
+                    return RoleType.librarian;
+                case "user":
+                    return RoleType.user;
+                default:
+                    return RoleType.None;
+            }
         }
     }
 }

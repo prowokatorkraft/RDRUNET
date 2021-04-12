@@ -9,12 +9,15 @@ const AuthorIDsSelectedList = AuthorIDs;
 let AuthorList;
 const xhr = new XMLHttpRequest();
 
-function addChildAuthorSelect(key, value, isSelected) {
+function addChildAuthorSelect(key, value, isSelected, isDeleted) {
     let option = document.createElement("option");
     option.innerText = key;
     option.value = value;
     if (isSelected == true) {
         option.setAttribute("selected", "selected");
+    }
+    if (isDeleted == true) {
+        option.setAttribute("style", "color:lightgray");
     }
 
     AuthorSelect.appendChild(option);
@@ -91,7 +94,7 @@ function updateAuthorSelect() {
             }
         }
 
-        addChildAuthorSelect(item1.FirstName + " " + item1.LastName, item1.Id, isSelected);
+        addChildAuthorSelect(item1.FirstName + " " + item1.LastName, item1.Id, isSelected, item1.IsDeleted);
         isSelected = false;
     }
 }

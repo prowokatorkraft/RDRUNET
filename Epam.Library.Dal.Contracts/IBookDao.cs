@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using Epam.Common.Entities;
 using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 
 namespace Epam.Library.Dal.Contracts
@@ -12,16 +11,16 @@ namespace Epam.Library.Dal.Contracts
 
         void Update(AbstractBook book);
 
-        bool Remove(int id);
+        bool Remove(int id, RoleType role = RoleType.None);
 
-        AbstractBook Get(int id);
+        AbstractBook Get(int id, RoleType role = RoleType.None);
 
-        IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null);
+        IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None);
 
-        IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
+        IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None);
 
-        Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null);
+        Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None);
 
-        Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
+        Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None);
     }
 }

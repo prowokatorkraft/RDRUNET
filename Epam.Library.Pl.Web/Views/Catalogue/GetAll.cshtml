@@ -34,6 +34,11 @@
     {
         <tr>
             <td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole(RoleType.admin.ToString()))
+                {
+                    bool isDeleted = !item.IsDeleted;
+                    @Html.DisplayFor(modelItem => isDeleted)
+                }
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>

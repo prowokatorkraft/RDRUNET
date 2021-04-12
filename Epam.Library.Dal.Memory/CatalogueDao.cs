@@ -6,6 +6,7 @@ using System;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Dal.Memory
 {
@@ -37,7 +38,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -49,7 +50,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -62,7 +63,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public LibraryAbstractElement Get(int id)
+        public LibraryAbstractElement Get(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -74,7 +75,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest)
+        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
@@ -133,7 +134,7 @@ namespace Epam.Library.Dal.Memory
             return query;
         }
 
-        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null)
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, RoleType role = RoleType.None)
         {
             throw new NotImplementedException();
         }

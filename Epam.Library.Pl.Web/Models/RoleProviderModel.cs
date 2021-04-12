@@ -1,9 +1,6 @@
 ﻿using Epam.Common.Entities;
 using Epam.Library.Bll.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Security;
 
 namespace Epam.Library.Pl.Web.Models
@@ -40,7 +37,7 @@ namespace Epam.Library.Pl.Web.Models
                     return new[] { RoleType.user.ToString(), RoleType.librarian.ToString(), RoleType.admin.ToString() };
             }
 
-            return new[] { "" };
+            return new string[0];
         }
 
         public override bool IsUserInRole(string username, string roleName)

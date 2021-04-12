@@ -1,4 +1,5 @@
-﻿using Epam.Library.Common.Entities;
+﻿using Epam.Common.Entities;
+using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
@@ -10,15 +11,15 @@ namespace Epam.Library.Dal.Database
 {
     public class CatalogueDao : ICatalogueDao
     {
-        private readonly string _connectionString;
+        private readonly ConnectionStringDb _connectionStrings;
 
         private readonly IBookDao _bookDao;
         private readonly IPatentDao _patentDao;
         private readonly INewspaperDao _newspaperDao;
 
-        public CatalogueDao(string connectionString, IBookDao bookDao, IPatentDao patentDao, INewspaperDao newspaperDao)
+        public CatalogueDao(IBookDao bookDao, IPatentDao patentDao, INewspaperDao newspaperDao, ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionStrings = connectionStrings;
             _bookDao = bookDao;
             _patentDao = patentDao;
             _newspaperDao = newspaperDao;
@@ -29,18 +30,18 @@ namespace Epam.Library.Dal.Database
             throw new NotImplementedException();
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             throw new NotImplementedException();
         }
 
-        public LibraryAbstractElement Get(int id)
+        public LibraryAbstractElement Get(int id, RoleType role = RoleType.None)
         {
             try
             {
                 TypeDaoEnum typeDao;
-
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Catalogue_GetById", connection)
                     {
@@ -56,7 +57,7 @@ namespace Epam.Library.Dal.Database
                            : TypeDaoEnum.None;
                 }
 
-                return GetElementByTypeDao(id, typeDao);
+                return GetElementByTypeDao(id, typeDao, role);
             }
             catch (Exception ex)
             {
@@ -64,14 +65,14 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
                 List<AbstractAuthorElement> authorElements = new List<AbstractAuthorElement>();
                 List<int> idList = new List<int>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Catalogue_GetByAuthorId", connection)
                     {
@@ -98,14 +99,14 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest)
+        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 List<LibraryAbstractElement> elements = new List<LibraryAbstractElement>();
                 List<int> idList = new List<int>();
-
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     string storedProcedure = GetProcedureForSearch(searchRequest);
 
@@ -124,7 +125,7 @@ namespace Epam.Library.Dal.Database
                     }
                 }
 
-                idList.ForEach(e => elements.Add(Get(e)));
+                idList.ForEach(e => elements.Add(Get(e, role)));
 
                 return elements;
             }
@@ -134,14 +135,14 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null)
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, RoleType role = RoleType.None)
         {
             try
             {
                 int count;
 
                 string storedProcedure = GetProcedureForCount(searchOptions);
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand(storedProcedure, connection)
                     {
@@ -154,7 +155,6 @@ namespace Epam.Library.Dal.Database
                     var reader = command.ExecuteReader();
                     reader.Read();
                     count = (int)reader["Count"];
-
                 }
 
                 return count;
@@ -212,16 +212,16 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        private LibraryAbstractElement GetElementByTypeDao(int id, TypeDaoEnum typeDao)
+        private LibraryAbstractElement GetElementByTypeDao(int id, TypeDaoEnum typeDao, RoleType role)
         {
             switch (typeDao)
             {
                 case TypeDaoEnum.Book:
-                    return _bookDao.Get(id);
+                    return _bookDao.Get(id, role);
                 case TypeDaoEnum.Patent:
-                    return _patentDao.Get(id);
+                    return _patentDao.Get(id, role);
                 case TypeDaoEnum.Newspaper:
-                    return _newspaperDao.Get(id);
+                    return _newspaperDao.Get(id);///
                 default:
                     return null;
             }

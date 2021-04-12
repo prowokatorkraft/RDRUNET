@@ -6,6 +6,7 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Bll
 {
@@ -76,11 +77,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Author Get(int id)
+        public Author Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -88,11 +89,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public bool Check(int[] ids)
+        public bool Check(int[] ids, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Check(ids);
+                return _dao.Check(ids, role);
             }
             catch (Exception ex)
             {
@@ -100,11 +101,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                if (_catalogueBll.GetByAuthorId(id).Count() > 0)
+                if (_catalogueBll.GetByAuthorId(id, role).Count() > 0)
                 {
                     return false;
                 }
@@ -117,11 +118,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest)
+        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.Search(searchRequest, role);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using Epam.Library.Bll.Contracts;
+﻿using Epam.Common.Entities;
+using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Pl.Web.ViewModels;
@@ -13,11 +14,15 @@ namespace Epam.Library.Pl.Web.Controllers
     public class AuthorController : Controller
     {
         private IAuthorBll _authorBll;
+        private IAccountBll _accountBll;
+        private IRoleBll _roleBll;
         private Mapper _mapper;
 
-        public AuthorController(IAuthorBll authorBll, Mapper mapper)
+        public AuthorController(IAuthorBll authorBll, IAccountBll accountBll, IRoleBll roleBll, Mapper mapper)
         {
             _authorBll = authorBll;
+            _accountBll = accountBll;
+            _roleBll = roleBll;
             _mapper = mapper;
         }
 
@@ -28,7 +33,8 @@ namespace Epam.Library.Pl.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                errors = _authorBll.Add(_mapper.Map<Author, CreateEditAuthorVM>(author));
+                var role = GetRoleByCurrentUser();
+                errors = _authorBll.Add(_mapper.Map<Author, CreateEditAuthorVM>(author, role));
 
                 if (!errors.Any())
                 {
@@ -53,12 +59,38 @@ namespace Epam.Library.Pl.Web.Controllers
         {
             List<DisplayAuthorVM> list = new List<DisplayAuthorVM>();
 
-            foreach (var item in _authorBll.Search(null))
+            var role = GetRoleByCurrentUser();
+            foreach (var item in _authorBll.Search(null, role))
             {
-                list.Add(_mapper.Map<DisplayAuthorVM, Author>(item));
+                list.Add(_mapper.Map<DisplayAuthorVM, Author>(item, role));
             }
 
             return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        private RoleType GetRoleByCurrentUser()
+        {
+            string roleName = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                roleName = _roleBll.GetById(_accountBll.GetByLogin(User.Identity.Name).RoleId).Name;
+            }
+
+            return GetRole(roleName);
+        }
+        private RoleType GetRole(string roleName)
+        {
+            switch (roleName)
+            {
+                case "admin":
+                    return RoleType.admin;
+                case "librarian":
+                    return RoleType.librarian;
+                case "user":
+                    return RoleType.user;
+                default:
+                    return RoleType.None;
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Bll
 {
@@ -24,7 +25,7 @@ namespace Epam.Library.Bll
             _author = author;
         }
 
-        public IEnumerable<ErrorValidation> Add(AbstractPatent patent)
+        public IEnumerable<ErrorValidation> Add(AbstractPatent patent, RoleType role = RoleType.None)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(patent) + " is null");
                 }
 
-                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs))
+                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -53,7 +54,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<ErrorValidation> Update(AbstractPatent patent)
+        public IEnumerable<ErrorValidation> Update(AbstractPatent patent, RoleType role = RoleType.None)
         {
             try
             {
@@ -66,7 +67,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(patent.Id) + " is null");
                 }
 
-                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs))
+                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -86,11 +87,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public AbstractPatent Get(int id)
+        public AbstractPatent Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -98,11 +99,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id);
+                return _dao.GetByAuthorId(id, role: role);
             }
             catch (Exception ex)
             {
@@ -110,11 +111,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Remove(id);
+                return _dao.Remove(id, role);
             }
             catch (Exception ex)
             {
@@ -122,11 +123,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.Search(searchRequest, role);
             }
             catch (Exception ex)
             {
@@ -134,11 +135,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublishYear();
+                return _dao.GetAllGroupsByPublishYear(role: role);
             }
             catch (Exception ex)
             {

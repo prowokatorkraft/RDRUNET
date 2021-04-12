@@ -5,6 +5,7 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Dal.Memory
 {
@@ -33,7 +34,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Author Get(int id)
+        public Author Get(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -45,7 +46,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public bool Check(int[] ids)
+        public bool Check(int[] ids, RoleType role = RoleType.None)
         {
             try
             {
@@ -64,7 +65,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -76,7 +77,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest)
+        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {

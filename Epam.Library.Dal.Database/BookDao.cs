@@ -9,24 +9,24 @@ using System.Data.SqlClient;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Security;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Dal.Database
 {
     public class BookDao : IBookDao
     {
-        private readonly string _connectionString;
+        private readonly ConnectionStringDb _connectionStrings;
 
-        public BookDao(string connectionString)
+        public BookDao(ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionStrings = connectionStrings;
         }
 
         public void Add(AbstractBook book)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_Add", connection)
                     {
@@ -45,21 +45,13 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractBook Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                //var password = new SecureString();
-                //foreach (var item in "Admin")
-                //{
-                //    password.AppendChar(item);
-                //}
-                //password.MakeReadOnly();
-                //SqlCredential credential = new SqlCredential("Admin", password);
-
                 AbstractBook book;
 
-                using (SqlConnection connection = new SqlConnection(_connectionString/*, credential*/))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_GetById", connection)
                     {
@@ -83,14 +75,14 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 Dictionary<string, List<AbstractBook>> group = new Dictionary<string, List<AbstractBook>>();
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_SearchByPublisher", connection)
                     {
@@ -118,14 +110,14 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
                 Dictionary<int, List<AbstractBook>> group = new Dictionary<int, List<AbstractBook>>();
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_SearchByPublishingYear", connection)
                     {
@@ -152,13 +144,13 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_GetByAuthorId", connection)
                     {
@@ -183,11 +175,11 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_Remove", connection)
                     {
@@ -209,13 +201,13 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     string storedProcedure = GetProcedureForSearch(searchRequest);
 
@@ -248,7 +240,7 @@ namespace Epam.Library.Dal.Database
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_Update", connection)
                     {

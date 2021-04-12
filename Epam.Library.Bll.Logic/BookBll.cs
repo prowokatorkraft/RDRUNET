@@ -6,6 +6,7 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Bll
 {
@@ -24,7 +25,7 @@ namespace Epam.Library.Bll
             _validation = validation;
         }
 
-        public IEnumerable<ErrorValidation> Add(AbstractBook book)
+        public IEnumerable<ErrorValidation> Add(AbstractBook book, RoleType role = RoleType.None)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(book) + " is null");
                 }
 
-                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs))
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -53,7 +54,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<ErrorValidation> Update(AbstractBook book)
+        public IEnumerable<ErrorValidation> Update(AbstractBook book, RoleType role = RoleType.None)
         {
             try
             {
@@ -66,7 +67,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(book.Id) + " is null");
                 }
 
-                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs))
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -86,11 +87,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Remove(id);
+                return _dao.Remove(id, role);
             }
             catch (Exception ex)
             {
@@ -98,11 +99,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.Search(searchRequest, role);
             }
             catch (Exception ex)
             {
@@ -110,11 +111,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublishYear();
+                return _dao.GetAllGroupsByPublishYear(role: role);
             }
             catch (Exception ex)
             {
@@ -122,11 +123,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublisher(searchRequest);
+                return _dao.GetAllGroupsByPublisher(searchRequest, role);
             }
             catch (Exception ex)
             {
@@ -134,11 +135,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractBook Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentOutOfRangeException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentOutOfRangeException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -146,11 +147,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id, page);
+                return _dao.GetByAuthorId(id, page, role);
             }
             catch (Exception ex)
             {

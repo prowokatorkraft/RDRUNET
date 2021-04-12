@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using Epam.Library.Common.Entities.AuthorElement.Book;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Dal.Memory
 {
@@ -30,7 +31,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractBook Get(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -43,7 +44,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page, RoleType role = RoleType.None)
         {
             try
             {
@@ -55,7 +56,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -74,7 +75,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
@@ -96,7 +97,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -108,7 +109,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {

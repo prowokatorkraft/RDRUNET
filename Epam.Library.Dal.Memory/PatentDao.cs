@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
+using Epam.Common.Entities;
 
 namespace Epam.Library.Dal.Memory
 {
@@ -30,7 +31,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public AbstractPatent Get(int id)
+        public AbstractPatent Get(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -43,7 +44,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -55,7 +56,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -74,7 +75,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -86,7 +87,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
