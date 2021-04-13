@@ -1,5 +1,4 @@
-﻿using Epam.Common.Entities;
-using Epam.Library.Common.Entities;
+﻿using Epam.Library.Common.Entities;
 using System.Collections.Generic;
 
 namespace Epam.Library.Bll.Contracts

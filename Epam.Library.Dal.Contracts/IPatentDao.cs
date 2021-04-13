@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Epam.Common.Entities;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 

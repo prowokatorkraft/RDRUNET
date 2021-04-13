@@ -46,13 +46,17 @@
     <Compile Include="BookBll.cs" />
     <Compile Include="CatalogueBll.cs" />
     <Compile Include="NewspaperBll.cs" />
+    <Compile Include="NewspaperIssueBll.cs" />
+    <Compile Include="OldNewspaperBll.cs" />
     <Compile Include="PatentBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleBll.cs" />
     <Compile Include="Validation\AccountValidation.cs" />
     <Compile Include="Validation\AuthorValidation.cs" />
     <Compile Include="Validation\BookValidation.cs" />
+    <Compile Include="Validation\NewspaperIssueValidation.cs" />
     <Compile Include="Validation\NewspaperValidation.cs" />
+    <Compile Include="Validation\OldNewspaperValidation.cs" />
     <Compile Include="Validation\PatentValidation.cs" />
     <Compile Include="Validation\ValidationHandlers.cs" />
     <Compile Include="Validation\ValidationLengths.cs" />

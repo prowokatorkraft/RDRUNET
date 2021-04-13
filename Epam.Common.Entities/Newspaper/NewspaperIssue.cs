@@ -14,7 +14,7 @@ namespace Epam.Library.Common.Entities.Newspaper
         public string Publisher { get; set; }
         public string PublishingCity { get; set; }
         public int PublishingYear { get; set; }
-        public int Number { get; set; }
+        public int? Number { get; set; }
         public DateTime Date { get; set; }
         public int NewspaperId { get; set; }
 
@@ -23,7 +23,7 @@ namespace Epam.Library.Common.Entities.Newspaper
 
         }
         public NewspaperIssue(int? id, string name, int numberOfPages, string annotation, bool deleted, string publisher,
-            string publishingCity, int publishingYear, int number, DateTime date)
+            string publishingCity, int publishingYear, int? number, DateTime date)
         {
             Id = id;
             Name = name;

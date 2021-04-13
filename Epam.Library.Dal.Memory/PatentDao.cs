@@ -6,7 +6,6 @@ using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Common.Entities;
 
 namespace Epam.Library.Dal.Memory
 {

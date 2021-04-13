@@ -7,21 +7,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Epam.Library.Bll
+namespace Epam.Library.Bll.Logic
 {
-    public class NewspaperBll : IOldNewspaperBll
+    public class NewspaperBll : INewspaperBll
     {
-        protected readonly IOldNewspaperDao _dao;
+        protected readonly INewspaperDao _dao;
+        protected readonly IValidationBll<Newspaper> _validation;
 
-        protected readonly IValidationBll<AbstractOldNewspaper> _validation;
-        
-        public NewspaperBll(IOldNewspaperDao newspaperDao, IValidationBll<AbstractOldNewspaper> validation)
+        public NewspaperBll(INewspaperDao dao, IValidationBll<Newspaper> validation)
         {
-            _dao = newspaperDao;
+            _dao = dao;
             _validation = validation;
         }
 
-        public IEnumerable<ErrorValidation> Add(AbstractOldNewspaper newspaper)
+        public IEnumerable<ErrorValidation> Add(Newspaper newspaper)
         {
             try
             {
@@ -45,7 +44,43 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<ErrorValidation> Update(AbstractOldNewspaper newspaper)
+        public Newspaper Get(int id, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+
+        public bool Remove(int id, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.Remove(id, role);
+            }
+            catch (Exception ex)
+            {
+                throw new RemoveException("Error removing item.", ex);
+            }
+        }
+
+        public IEnumerable<Newspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.Search(searchRequest, role);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+
+        public IEnumerable<ErrorValidation> Update(Newspaper newspaper)
         {
             try
             {
@@ -70,54 +105,6 @@ namespace Epam.Library.Bll
             catch (Exception ex)
             {
                 throw new UpdateException("Error updating item.", ex);
-            }
-        }
-
-        public bool Remove(int id)
-        {
-            try
-            {
-                return _dao.Remove(id);
-            }
-            catch (Exception ex)
-            {
-                throw new RemoveException("Error removing item.", ex);
-            }
-        }
-
-        public AbstractOldNewspaper Get(int id)
-        {
-            try
-            {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting item.", ex);
-            }
-        }
-
-        public IEnumerable<AbstractOldNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
-        {
-            try
-            {
-                return _dao.Search(searchRequest);
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting item.", ex);
-            }
-        }
-
-        public Dictionary<int, List<AbstractOldNewspaper>> GetAllGroupsByPublishYear()
-        {
-            try
-            {
-                return _dao.GetAllGroupsByPublishYear();
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting item.", ex);
             }
         }
     }

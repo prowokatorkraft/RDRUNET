@@ -1,5 +1,4 @@
-﻿using Epam.Common.Entities;
-using Epam.Library.Common.Entities;
+﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
 using System.Collections.Generic;
 
@@ -15,10 +14,10 @@ namespace Epam.Library.Dal.Contracts
 
         NewspaperIssue Get(int id, RoleType role = RoleType.None);
 
-        NewspaperIssue GetAllByNewspaper(int newspaperId, RoleType role = RoleType.None);
+        IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, RoleType role = RoleType.None);
 
-        IEnumerable<AbstractOldNewspaper> Search(SearchRequest<SortOptions, NewspaperIssueSearchOptions> searchRequest, RoleType role = RoleType.None);
+        IEnumerable<NewspaperIssue> Search(SearchRequest<SortOptions, NewspaperIssueSearchOptions> searchRequest, RoleType role = RoleType.None);
 
-        Dictionary<int, List<AbstractOldNewspaper>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None);
+        Dictionary<int, List<NewspaperIssue>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None);
     }
 }

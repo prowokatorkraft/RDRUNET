@@ -1,4 +1,4 @@
-﻿using Epam.Common.Entities;
+﻿using Epam.Library.Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

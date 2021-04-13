@@ -20,7 +20,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -38,7 +38,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -55,7 +55,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -73,7 +73,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -90,7 +90,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -107,7 +107,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -125,7 +125,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -142,7 +142,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -160,7 +160,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -177,7 +177,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -195,7 +195,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 
@@ -212,7 +212,7 @@ namespace Epam.Library.Test.Validation
 
             // Act
 
-            var result = new NewspaperValidation().Validate(newspaper);
+            var result = new OldNewspaperValidation().Validate(newspaper);
 
             // Assert
 

@@ -1,4 +1,4 @@
-﻿using Epam.Common.Entities;
+﻿using Epam.Library.Common.Entities;
 
 namespace Epam.Library.Pl.Web.ViewModels
 {

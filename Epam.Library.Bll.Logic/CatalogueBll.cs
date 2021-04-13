@@ -5,7 +5,6 @@ using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 using Epam.Library.Common.Entities.AuthorElement;
-using Epam.Common.Entities;
 
 namespace Epam.Library.Bll
 {

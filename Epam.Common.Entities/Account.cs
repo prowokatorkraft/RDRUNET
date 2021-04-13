@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Epam.Common.Entities
+namespace Epam.Library.Common.Entities
 {
     public class Account
     {

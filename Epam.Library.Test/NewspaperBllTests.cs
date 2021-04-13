@@ -27,7 +27,7 @@ namespace Epam.Library.Test
                 listErrors.Add(error);
             }
             Mock<IValidationBll<AbstractOldNewspaper>> validation = InitializeMockValidationForAdd(() => listErrors);
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             var errors = newspaperBll.Add(new OldNewspaper());
@@ -42,7 +42,7 @@ namespace Epam.Library.Test
             // Arrange
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForAdd(() => throw new Exception());
             Mock<IValidationBll<AbstractOldNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Add(new OldNewspaper());
@@ -57,7 +57,7 @@ namespace Epam.Library.Test
             // Arrange
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForAdd(() => { });
             Mock<IValidationBll<AbstractOldNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Add(null);
@@ -93,7 +93,7 @@ namespace Epam.Library.Test
                 listErrors.Add(error);
             }
             Mock<IValidationBll<AbstractOldNewspaper>> validation = InitializeMockValidationForAdd(() => listErrors);
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             var errors = newspaperBll.Update(new OldNewspaper(0,null,0,null,false,null,null,0,null,null,DateTime.Now));
@@ -108,7 +108,7 @@ namespace Epam.Library.Test
             // Arrange
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForUpdate(() => throw new Exception());
             Mock<IValidationBll<AbstractOldNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Update(new OldNewspaper());
@@ -123,7 +123,7 @@ namespace Epam.Library.Test
             // Arrange
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForUpdate(() => { });
             Mock<IValidationBll<AbstractOldNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Update(null);
@@ -148,7 +148,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForGet(() => newspaperValue.Object);
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -166,7 +166,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForGet(() => throw new Exception());
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -184,7 +184,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForGet(() => null);
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -210,7 +210,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForRemove(() => removeDao);
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -228,7 +228,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForRemove(() => throw new Exception());
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -253,7 +253,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForSearch(() => new List<AbstractOldNewspaper>());
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -271,7 +271,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForSearch(() => throw new Exception());
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -296,7 +296,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForGroupsByPublishYear(() => new Dictionary<int, List<AbstractOldNewspaper>>());
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 
@@ -314,7 +314,7 @@ namespace Epam.Library.Test
 
             Mock<IOldNewspaperDao> newspaperDao = InitializeMockDaoForGroupsByPublishYear(() => throw new Exception());
 
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
+            var newspaperBll = new OldNewspaperBll(newspaperDao.Object, null);
 
             // Act
 

@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Bll.Validation
 {
-    public class NewspaperValidation : IValidationBll<AbstractOldNewspaper>
+    public class NewspaperValidation : IValidationBll<Newspaper>
     {
         List<ErrorValidation> _errorList;
 
-        public IEnumerable<ErrorValidation> Validate(AbstractOldNewspaper element)
+        public IEnumerable<ErrorValidation> Validate(Newspaper element)
         {
             if (element is null)
             {
@@ -21,24 +21,12 @@ namespace Epam.Library.Bll.Validation
 
             Name(element);
 
-            NumberOfPages(element);
-
-            Annotation(element);
-
-            Publisher(element);
-
-            PublishingCity(element);
-
-            PublishingYear(element);
-
-            Date(element);
-
             Issn(element);
 
             return _errorList;
         }
 
-        private void Issn(AbstractOldNewspaper element)
+        private void Issn(Newspaper element)
         {
             if (element.Issn != null)
             {
@@ -49,66 +37,7 @@ namespace Epam.Library.Bll.Validation
             }
         }
 
-        private void Date(AbstractOldNewspaper element)
-        {
-            string field = nameof(element.Date);
-
-                element.Date.Year
-                    .CheckRange(field, element.PublishingYear, element.PublishingYear, _errorList, "The value must match PublishingYear.");
-        }
-
-        private void PublishingYear(AbstractOldNewspaper element)
-        {
-            string field = nameof(element.PublishingYear);
-
-            element.PublishingYear
-                .CheckRange(field,
-                            ValidationLengths.MinPublishingYearLength,
-                            DateTime.Now.Year,
-                            _errorList,
-                            "The value cannot be less than " + ValidationLengths.MinPublishingYearLength + " and more than today."
-                            );
-        }
-
-        private void PublishingCity(AbstractOldNewspaper element)
-        {
-            string field = nameof(element.PublishingCity);
-
-            element.PublishingCity
-                .CheckNull(field, _errorList)?
-                .CheckMatch(field, ValidationPatterns.PublishingCityPattern, _errorList)
-                .Length.CheckRange(field, 0, ValidationLengths.PublishingCityLength, _errorList, ValidationLengths.PublishingCityLength + "");
-        }
-
-        private void Publisher(AbstractOldNewspaper element)
-        {
-            string field = nameof(element.Publisher);
-
-            element.Publisher
-                .CheckNull(field, _errorList)?
-                .Length.CheckRange(field, 0, ValidationLengths.PublisherLength, _errorList, ValidationLengths.PublisherLength + "");
-        }
-
-        private void Annotation(AbstractOldNewspaper element)
-        {
-            if (element.Annotation != null)
-            {
-                string field = nameof(element.Annotation);
-
-                element.Annotation
-                    .Length.CheckRange(field, 0, ValidationLengths.AnnotationLength, _errorList, ValidationLengths.AnnotationLength + "");
-            }
-        }
-
-        private void NumberOfPages(AbstractOldNewspaper element)
-        {
-            string field = nameof(element.NumberOfPages);
-
-            element.NumberOfPages
-                .CheckRange(field, 0, int.MaxValue, _errorList);
-        }
-
-        private void Name(AbstractOldNewspaper element)
+        private void Name(Newspaper element)
         {
             string field = nameof(element.Name);
 

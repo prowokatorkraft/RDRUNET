@@ -9,7 +9,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Epam.Common.Entities;
 
 namespace Epam.Library.Dal.Database
 {

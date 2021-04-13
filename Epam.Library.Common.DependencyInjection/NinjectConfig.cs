@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
-using Epam.Common.Entities;
 using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.DependencyInjection;
 using Epam.Library.Common.DependencyInjection.Configuration;
+using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
@@ -75,7 +75,7 @@ namespace Epam.Library.Common.DependencyInjection
                 .InSingletonScope();
             kernel
                 .Bind<IValidationBll<AbstractOldNewspaper>>()
-                .To<Epam.Library.Bll.Validation.NewspaperValidation>()
+                .To<Epam.Library.Bll.Validation.OldNewspaperValidation>()
                 .InSingletonScope();
             kernel
                 .Bind<IValidationBll<Author>>()
@@ -98,7 +98,7 @@ namespace Epam.Library.Common.DependencyInjection
                 .InSingletonScope();
             kernel
                 .Bind< IOldNewspaperBll> ()
-                .To<Epam.Library.Bll.NewspaperBll>()
+                .To<Epam.Library.Bll.OldNewspaperBll>()
                 .InSingletonScope();
             kernel
                 .Bind<ICatalogueBll>()
