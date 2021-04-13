@@ -15,7 +15,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.Name = null;
 
             // Act
@@ -33,7 +33,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.Name = char.ToUpper(value) + new string(value, count - 1);
 
             // Act
@@ -50,7 +50,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.Annotation = null;
 
             // Act
@@ -68,7 +68,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.Annotation = char.ToUpper(value) + new string(value, count - 1);
 
             // Act
@@ -85,7 +85,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.NumberOfPages = -3;
 
             // Act
@@ -102,7 +102,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.Publisher = null;
 
             // Act
@@ -120,7 +120,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.Publisher = char.ToUpper(value) + new string(value, count - 1);
 
             // Act
@@ -137,7 +137,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.PublishingCity = value;
 
             // Act
@@ -155,7 +155,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.PublishingCity = char.ToUpper(value) + new string(value, count - 1);
 
             // Act
@@ -172,7 +172,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.PublishingYear = value;
 
             // Act
@@ -189,7 +189,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.PublishingYear = publishingYear;
             newspaper.Date = date;
 
@@ -207,7 +207,7 @@ namespace Epam.Library.Test.Validation
         {
             // Arrange
 
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             newspaper.Issn = value;
 
             // Act

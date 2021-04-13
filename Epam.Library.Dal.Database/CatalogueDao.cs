@@ -15,9 +15,9 @@ namespace Epam.Library.Dal.Database
 
         private readonly IBookDao _bookDao;
         private readonly IPatentDao _patentDao;
-        private readonly INewspaperDao _newspaperDao;
+        private readonly IOldNewspaperDao _newspaperDao;
 
-        public CatalogueDao(IBookDao bookDao, IPatentDao patentDao, INewspaperDao newspaperDao, ConnectionStringDb connectionStrings)
+        public CatalogueDao(IBookDao bookDao, IPatentDao patentDao, IOldNewspaperDao newspaperDao, ConnectionStringDb connectionStrings)
         {
             _connectionStrings = connectionStrings;
             _bookDao = bookDao;

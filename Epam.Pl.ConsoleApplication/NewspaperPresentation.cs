@@ -10,9 +10,9 @@ namespace Epam.Library.Pl.ConsoleApplication
 {
     public class NewspaperPresentation
     {
-        private readonly INewspaperBll _newspaperBll;
+        private readonly IOldNewspaperBll _newspaperBll;
 
-        public NewspaperPresentation(INewspaperBll newspaperBll)
+        public NewspaperPresentation(IOldNewspaperBll newspaperBll)
         {
             _newspaperBll = newspaperBll;
         }
@@ -44,9 +44,9 @@ namespace Epam.Library.Pl.ConsoleApplication
         {
             string line = default;
 
-            List<AbstractNewspaper> newspapers;
+            List<AbstractOldNewspaper> newspapers;
 
-            IEnumerator<AbstractNewspaper> enumerator;
+            IEnumerator<AbstractOldNewspaper> enumerator;
 
             while (line != "b")
             {
@@ -54,7 +54,7 @@ namespace Epam.Library.Pl.ConsoleApplication
 
                 Console.WriteLine("Книги\n");
 
-                newspapers = new List<AbstractNewspaper>();
+                newspapers = new List<AbstractOldNewspaper>();
 
                 enumerator = _newspaperBll.Search(new SearchRequest<SortOptions, NewspaperSearchOptions>(SortOptions.Ascending, NewspaperSearchOptions.None, null)).GetEnumerator();
 
@@ -101,7 +101,7 @@ namespace Epam.Library.Pl.ConsoleApplication
             }
         }
 
-        private void SelectElement(AbstractNewspaper newspaper)
+        private void SelectElement(AbstractOldNewspaper newspaper)
         {
             ConsoleKeyInfo keyInfo = default;
 
@@ -153,9 +153,9 @@ namespace Epam.Library.Pl.ConsoleApplication
         {
             string line = default;
 
-            List<AbstractNewspaper> newspapers;
+            List<AbstractOldNewspaper> newspapers;
 
-            IEnumerator<AbstractNewspaper> enumerator;
+            IEnumerator<AbstractOldNewspaper> enumerator;
 
             while (line != "b")
             {
@@ -167,7 +167,7 @@ namespace Epam.Library.Pl.ConsoleApplication
 
                 line = Console.ReadLine();
 
-                newspapers = new List<AbstractNewspaper>();
+                newspapers = new List<AbstractOldNewspaper>();
 
                 enumerator = _newspaperBll.Search(new SearchRequest<SortOptions, NewspaperSearchOptions>(SortOptions.Ascending, NewspaperSearchOptions.Name, line)).GetEnumerator();
 
@@ -193,7 +193,7 @@ namespace Epam.Library.Pl.ConsoleApplication
 
         private void Add()
         {
-            AbstractNewspaper newspaper = new Newspaper();
+            AbstractOldNewspaper newspaper = new OldNewspaper();
 
             IEnumerable<ErrorValidation> errors = default;
 

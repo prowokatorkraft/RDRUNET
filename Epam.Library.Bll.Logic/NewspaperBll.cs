@@ -9,19 +9,19 @@ using System.Linq;
 
 namespace Epam.Library.Bll
 {
-    public class NewspaperBll : INewspaperBll
+    public class NewspaperBll : IOldNewspaperBll
     {
-        protected readonly INewspaperDao _dao;
+        protected readonly IOldNewspaperDao _dao;
 
-        protected readonly IValidationBll<AbstractNewspaper> _validation;
+        protected readonly IValidationBll<AbstractOldNewspaper> _validation;
         
-        public NewspaperBll(INewspaperDao newspaperDao, IValidationBll<AbstractNewspaper> validation)
+        public NewspaperBll(IOldNewspaperDao newspaperDao, IValidationBll<AbstractOldNewspaper> validation)
         {
             _dao = newspaperDao;
             _validation = validation;
         }
 
-        public IEnumerable<ErrorValidation> Add(AbstractNewspaper newspaper)
+        public IEnumerable<ErrorValidation> Add(AbstractOldNewspaper newspaper)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<ErrorValidation> Update(AbstractNewspaper newspaper)
+        public IEnumerable<ErrorValidation> Update(AbstractOldNewspaper newspaper)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public AbstractNewspaper Get(int id)
+        public AbstractOldNewspaper Get(int id)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
+        public IEnumerable<AbstractOldNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractOldNewspaper>> GetAllGroupsByPublishYear()
         {
             try
             {

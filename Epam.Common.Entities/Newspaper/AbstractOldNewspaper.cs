@@ -2,7 +2,7 @@
 
 namespace Epam.Library.Common.Entities.Newspaper
 {
-    public abstract class AbstractNewspaper : LibraryAbstractElement
+    public abstract class AbstractOldNewspaper : LibraryAbstractElement
     {
         public abstract string Publisher { get; set; }
 

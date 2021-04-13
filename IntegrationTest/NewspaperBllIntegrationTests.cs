@@ -13,7 +13,7 @@ namespace Epam.Library.IntegrationTest
 {
     public class NewspaperBllIntegrationTests
     {
-        private INewspaperBll _newspaperBll;
+        private IOldNewspaperBll _newspaperBll;
         private ICatalogueBll _catalogueBll;
 
         private List<int> _newspaperIDs;
@@ -37,7 +37,7 @@ namespace Epam.Library.IntegrationTest
         public void Add_True()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper(null, "Add-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            OldNewspaper newspaper = new OldNewspaper(null, "Add-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
             int preCount = GetCount();
             int id;
 
@@ -58,7 +58,7 @@ namespace Epam.Library.IntegrationTest
         public void Add_False()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper();
+            OldNewspaper newspaper = new OldNewspaper();
             int preCount = GetCount();
 
             // Act
@@ -94,8 +94,8 @@ namespace Epam.Library.IntegrationTest
         public void Update_True()
         {
             // Arrange
-            Newspaper newspaper1 = new Newspaper(null, "Add-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
-            Newspaper newspaper2 = new Newspaper(null, "Addtrue-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            OldNewspaper newspaper1 = new OldNewspaper(null, "Add-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            OldNewspaper newspaper2 = new OldNewspaper(null, "Addtrue-True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
             int id;
 
             _newspaperBll.Add(newspaper1);
@@ -122,7 +122,7 @@ namespace Epam.Library.IntegrationTest
         public void Update_False()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper(-100, null, 0, null, false, null, null, 0, null, null, DateTime.Now);
+            OldNewspaper newspaper = new OldNewspaper(-100, null, 0, null, false, null, null, 0, null, null, DateTime.Now);
             int preCount = GetCount();
 
             // Act
@@ -161,7 +161,7 @@ namespace Epam.Library.IntegrationTest
             int preCoutn = GetCount();
 
             // Act
-            TestDelegate test = () => _newspaperBll.Update(new Newspaper(null,null,0,null,false,null,null,0,null,null,DateTime.Now));
+            TestDelegate test = () => _newspaperBll.Update(new OldNewspaper(null,null,0,null,false,null,null,0,null,null,DateTime.Now));
 
             // Assert
             Assert.Multiple(() =>
@@ -175,7 +175,7 @@ namespace Epam.Library.IntegrationTest
         public void Remove_True()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper(null, "Remove True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            OldNewspaper newspaper = new OldNewspaper(null, "Remove True", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
             _newspaperBll.Add(newspaper);
 
             int id = GetId(newspaper).Value;
@@ -221,7 +221,7 @@ namespace Epam.Library.IntegrationTest
         public void Get()
         {
             // Arrange
-            Newspaper newspaper = new Newspaper(null, "Get", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
+            OldNewspaper newspaper = new OldNewspaper(null, "Get", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now);
             _newspaperBll.Add(newspaper);
 
             int id;
@@ -249,7 +249,7 @@ namespace Epam.Library.IntegrationTest
         }
 
         [TestCaseSource(typeof(NewspaperBllIntegrationTestCases), nameof(NewspaperBllIntegrationTestCases.Search))]
-        public bool Search(Newspaper newspaper, SearchRequest<SortOptions, NewspaperSearchOptions> request)
+        public bool Search(OldNewspaper newspaper, SearchRequest<SortOptions, NewspaperSearchOptions> request)
         {
             // Arrange
             if (newspaper != null)
@@ -270,10 +270,10 @@ namespace Epam.Library.IntegrationTest
         public void GetAllGroupsByPublishYear()
         {
             // Arrange
-            Newspaper[] newspapers = new Newspaper[]
+            OldNewspaper[] newspapers = new OldNewspaper[]
             {
-                new Newspaper(null, "GpoupsByPublishYear One", 0, null, false, "Test", "Test", DateTime.Now.Year - 5, null, null, DateTime.Now.AddYears(-5)),
-                new Newspaper(null, "GpoupsByPublishYear Two", 0, null, false, "Test", "Test", DateTime.Now.Year - 2, null, null, DateTime.Now.AddYears(-2)),
+                new OldNewspaper(null, "GpoupsByPublishYear One", 0, null, false, "Test", "Test", DateTime.Now.Year - 5, null, null, DateTime.Now.AddYears(-5)),
+                new OldNewspaper(null, "GpoupsByPublishYear Two", 0, null, false, "Test", "Test", DateTime.Now.Year - 2, null, null, DateTime.Now.AddYears(-2)),
             };
 
             List<int> ids = new List<int>();
@@ -299,7 +299,7 @@ namespace Epam.Library.IntegrationTest
             return _newspaperBll.Search(null).Count();
         }
 
-        private int? GetId(Newspaper newspaper)
+        private int? GetId(OldNewspaper newspaper)
         {
             return _newspaperBll.Search(null)
                 .Where(a => a.Equals(newspaper))

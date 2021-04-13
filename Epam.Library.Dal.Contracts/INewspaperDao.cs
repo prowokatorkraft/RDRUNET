@@ -1,22 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Epam.Common.Entities;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
+using System.Collections.Generic;
 
 namespace Epam.Library.Dal.Contracts
 {
     public interface INewspaperDao
     {
-        void Add(AbstractNewspaper newspaper);
+        void Add(Newspaper newspaper);
 
-        bool Remove(int id);
+        bool Remove(int id, RoleType role = RoleType.None);
 
-        void Update(AbstractNewspaper newspaper);
+        void Update(Newspaper newspaper);
 
-        AbstractNewspaper Get(int id);
+        Newspaper Get(int id, RoleType role = RoleType.None);
 
-        IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest);
-
-        Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear(PagingInfo page = null);
+        IEnumerable<Newspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, RoleType role = RoleType.None);
     }
 }

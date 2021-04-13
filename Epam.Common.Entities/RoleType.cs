@@ -1,4 +1,4 @@
-﻿namespace Epam.Common.Entities
+﻿namespace Epam.Library.Common.Entities
 {
     public enum RoleType
     {

@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Bll.Validation
 {
-    public class NewspaperValidation : IValidationBll<AbstractNewspaper>
+    public class NewspaperValidation : IValidationBll<AbstractOldNewspaper>
     {
         List<ErrorValidation> _errorList;
 
-        public IEnumerable<ErrorValidation> Validate(AbstractNewspaper element)
+        public IEnumerable<ErrorValidation> Validate(AbstractOldNewspaper element)
         {
             if (element is null)
             {
@@ -38,7 +38,7 @@ namespace Epam.Library.Bll.Validation
             return _errorList;
         }
 
-        private void Issn(AbstractNewspaper element)
+        private void Issn(AbstractOldNewspaper element)
         {
             if (element.Issn != null)
             {
@@ -49,7 +49,7 @@ namespace Epam.Library.Bll.Validation
             }
         }
 
-        private void Date(AbstractNewspaper element)
+        private void Date(AbstractOldNewspaper element)
         {
             string field = nameof(element.Date);
 
@@ -57,7 +57,7 @@ namespace Epam.Library.Bll.Validation
                     .CheckRange(field, element.PublishingYear, element.PublishingYear, _errorList, "The value must match PublishingYear.");
         }
 
-        private void PublishingYear(AbstractNewspaper element)
+        private void PublishingYear(AbstractOldNewspaper element)
         {
             string field = nameof(element.PublishingYear);
 
@@ -70,7 +70,7 @@ namespace Epam.Library.Bll.Validation
                             );
         }
 
-        private void PublishingCity(AbstractNewspaper element)
+        private void PublishingCity(AbstractOldNewspaper element)
         {
             string field = nameof(element.PublishingCity);
 
@@ -80,7 +80,7 @@ namespace Epam.Library.Bll.Validation
                 .Length.CheckRange(field, 0, ValidationLengths.PublishingCityLength, _errorList, ValidationLengths.PublishingCityLength + "");
         }
 
-        private void Publisher(AbstractNewspaper element)
+        private void Publisher(AbstractOldNewspaper element)
         {
             string field = nameof(element.Publisher);
 
@@ -89,7 +89,7 @@ namespace Epam.Library.Bll.Validation
                 .Length.CheckRange(field, 0, ValidationLengths.PublisherLength, _errorList, ValidationLengths.PublisherLength + "");
         }
 
-        private void Annotation(AbstractNewspaper element)
+        private void Annotation(AbstractOldNewspaper element)
         {
             if (element.Annotation != null)
             {
@@ -100,7 +100,7 @@ namespace Epam.Library.Bll.Validation
             }
         }
 
-        private void NumberOfPages(AbstractNewspaper element)
+        private void NumberOfPages(AbstractOldNewspaper element)
         {
             string field = nameof(element.NumberOfPages);
 
@@ -108,7 +108,7 @@ namespace Epam.Library.Bll.Validation
                 .CheckRange(field, 0, int.MaxValue, _errorList);
         }
 
-        private void Name(AbstractNewspaper element)
+        private void Name(AbstractOldNewspaper element)
         {
             string field = nameof(element.Name);
 

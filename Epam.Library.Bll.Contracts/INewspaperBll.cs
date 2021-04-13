@@ -6,16 +6,14 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface INewspaperBll
     {
-        IEnumerable<ErrorValidation> Add(AbstractNewspaper newspaper);
+        IEnumerable<ErrorValidation> Add(Newspaper newspaper);
 
-        IEnumerable<ErrorValidation> Update(AbstractNewspaper newspaper);
+        bool Remove(int id, RoleType role = RoleType.None);
 
-        bool Remove(int id);
+        IEnumerable<ErrorValidation> Update(Newspaper newspaper);
 
-        AbstractNewspaper Get(int id);
+        Newspaper Get(int id, RoleType role = RoleType.None);
 
-        IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest);
-
-        Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear();
+        IEnumerable<Newspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, RoleType role = RoleType.None);
     }
 }

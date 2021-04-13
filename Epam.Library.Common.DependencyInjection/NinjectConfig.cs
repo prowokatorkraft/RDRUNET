@@ -43,8 +43,8 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Dal.Database.PatentDao>()
                 .InSingletonScope();
             kernel
-                .Bind<INewspaperDao>()
-                .To<Epam.Library.Dal.Database.NewspaperDao>()
+                .Bind<IOldNewspaperDao>()
+                .To<Epam.Library.Dal.Database.OldNewspaperDao>()
                 .InSingletonScope();
             kernel
                 .Bind<ICatalogueDao>()
@@ -74,7 +74,7 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Bll.Validation.PatentValidation>()
                 .InSingletonScope();
             kernel
-                .Bind<IValidationBll<AbstractNewspaper>>()
+                .Bind<IValidationBll<AbstractOldNewspaper>>()
                 .To<Epam.Library.Bll.Validation.NewspaperValidation>()
                 .InSingletonScope();
             kernel
@@ -97,7 +97,7 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Bll.PatentBll>()
                 .InSingletonScope();
             kernel
-                .Bind< INewspaperBll> ()
+                .Bind< IOldNewspaperBll> ()
                 .To<Epam.Library.Bll.NewspaperBll>()
                 .InSingletonScope();
             kernel
