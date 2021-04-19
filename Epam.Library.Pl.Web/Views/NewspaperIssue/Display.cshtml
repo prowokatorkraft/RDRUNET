@@ -1,0 +1,126 @@
+﻿@model Epam.Library.Pl.Web.ViewModels.DisplayNewspaperIssueVM
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("~/Account/Login");
+    }
+
+    ViewBag.Title = "Display";
+}
+
+<h2>Display</h2>
+
+<div>
+    <h4>Newspaper issue</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Newspaper.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Newspaper.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Newspaper.ISSN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Newspaper.ISSN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfPages)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfPages)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Annotation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Annotation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PublishingCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PublishingCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+    </dl>
+
+    <h4>Other issue</h4>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Number of pages</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.PageData.Elements)
+        {
+            <tr>
+                <td>
+                    @if (User.IsInRole(RoleType.admin.ToString()))
+                    {
+                        bool isDeleted = !item.IsDeleted;
+                        @Html.DisplayFor(modelItem => isDeleted)
+                    }
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfPages)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Display", new { id = item.Id, pageNumber = Model.PageData.PageInfo.CurrentPage })
+                </td>
+            </tr>
+        }
+    </table>
+    @Html.Partial("_PageIteratorPartial", Model.PageData.PageInfo)
+</div>
+<p>
+    @if (User.IsInRole(RoleType.librarian.ToString()))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id })@: |
+        @Html.ActionLink("Remove", "Remove", new { id = Model.Id }); @: |
+    }
+    @Html.ActionLink("Back", "GetAll", "Catalogue")
+</p>

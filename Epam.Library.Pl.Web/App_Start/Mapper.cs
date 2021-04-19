@@ -4,9 +4,9 @@ using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
+using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Pl.Web.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -15,13 +15,15 @@ namespace Epam.Library.Pl.Web
     public class Mapper
     {
         private IMapper _mapper;
+        private INewspaperBll _newspaperBll;
         private IAuthorBll _authorBll;
         private IRoleBll _roleBll;
         private RoleType _role;
 
-        public Mapper(IAuthorBll authorBll, IRoleBll roleBll)
+        public Mapper(IAuthorBll authorBll, INewspaperBll newspaperBll, IRoleBll roleBll)
         {
             _authorBll = authorBll;
+            _newspaperBll = newspaperBll;
             _roleBll = roleBll;
             _role = RoleType.None;
 
@@ -47,7 +49,18 @@ namespace Epam.Library.Pl.Web
                     .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
                     .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(c => c.Deleted))
                     .ForMember(dest => dest.Type, opt => opt.MapFrom(c => TypeEnumVM.Patent));
-                // Newspapers
+                cfg.CreateMap<NewspaperIssue, ElementVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom((c, m) =>
+                    {
+                        var news = _newspaperBll.Get(c.NewspaperId);
+                        var number = c.Number.HasValue ?"№" + c.Number + "/" : "";
+                        return $"{news.Name} {number}{c.PublishingYear}";
+                    }))
+                    .ForMember(dest => dest.Identity, opt => opt.MapFrom(c => _newspaperBll.Get(c.NewspaperId, _role).Issn ?? "<no identity>"))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(c => c.Deleted))
+                    .ForMember(dest => dest.Type, opt => opt.MapFrom(c => TypeEnumVM.NewspaperIssue));
                 #endregion
 
                 #region BookVM
@@ -120,6 +133,62 @@ namespace Epam.Library.Pl.Web
                     .ForMember(dest => dest.RegistrationNumber, opt => opt.MapFrom(c => c.RegistrationNumber))
                     .ForMember(dest => dest.ApplicationDate, opt => opt.MapFrom(c => c.ApplicationDate))
                     .ForMember(dest => dest.DateOfPublication, opt => opt.MapFrom(c => c.DateOfPublication));
+                #endregion
+
+                #region NewspaperIssue
+                cfg.CreateMap<NewspaperIssue, DisplayNewspaperIssueVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
+                    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
+                    .ForMember(dest => dest.Number, opt => opt.MapFrom(c => c.Number))
+                    .ForMember(dest => dest.Date, opt => opt.MapFrom(c => c.Date))
+                    .ForMember(dest => dest.Newspaper, opt => opt.MapFrom((c,m) =>
+                    {
+                        return Map<DisplayNewspaperVM, Newspaper>(_newspaperBll.Get(c.NewspaperId, _role),_role);
+                    }))
+                    .ForMember(dest => dest.PageData, opt => opt.Ignore());
+                cfg.CreateMap<NewspaperIssue, CreateEditNewspaperIssueVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
+                    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
+                    .ForMember(dest => dest.Number, opt => opt.MapFrom(c => c.Number))
+                    .ForMember(dest => dest.Date, opt => opt.MapFrom(c => c.Date))
+                    .ForMember(dest => dest.NewspaperId, opt => opt.MapFrom(c => c.NewspaperId));
+                cfg.CreateMap<CreateEditNewspaperIssueVM, NewspaperIssue>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Deleted, opt => opt.MapFrom(c => false))
+                    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
+                    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
+                    .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.Date.Year))
+                    .ForMember(dest => dest.Number, opt => opt.MapFrom(c => c.Number))
+                    .ForMember(dest => dest.Date, opt => opt.MapFrom(c => c.Date))
+                    .ForMember(dest => dest.NewspaperId, opt => opt.MapFrom(c => c.NewspaperId));
+                #endregion
+
+                #region NewspaperVM
+                cfg.CreateMap<Newspaper, DisplayNewspaperVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.ISSN, opt => opt.MapFrom(c => c.Issn))
+                    .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(c => c.Deleted));
+                cfg.CreateMap<CreateEditNewspaperVM, Newspaper>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.Issn, opt => opt.MapFrom(c => c.ISSN))
+                    .ForMember(dest => dest.Deleted, opt => opt.Ignore());
+                cfg.CreateMap<Newspaper, CreateEditNewspaperVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.ISSN, opt => opt.MapFrom(c => c.Issn));
                 #endregion
 
                 #region AuthorVM

@@ -43,8 +43,12 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Dal.Database.PatentDao>()
                 .InSingletonScope();
             kernel
-                .Bind<IOldNewspaperDao>()
-                .To<Epam.Library.Dal.Database.OldNewspaperDao>()
+                .Bind<INewspaperDao>()
+                .To<Epam.Library.Dal.Database.NewspaperDao>()
+                .InSingletonScope();
+            kernel
+                .Bind<INewspaperIssueDao>()
+                .To<Epam.Library.Dal.Database.NewspaperIssueDao>()
                 .InSingletonScope();
             kernel
                 .Bind<ICatalogueDao>()
@@ -74,8 +78,12 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Bll.Validation.PatentValidation>()
                 .InSingletonScope();
             kernel
-                .Bind<IValidationBll<AbstractOldNewspaper>>()
-                .To<Epam.Library.Bll.Validation.OldNewspaperValidation>()
+                .Bind<IValidationBll<Newspaper>>()
+                .To<Epam.Library.Bll.Validation.NewspaperValidation>()
+                .InSingletonScope();
+            kernel
+                .Bind<IValidationBll<NewspaperIssue>>()
+                .To<Epam.Library.Bll.Validation.NewspaperIssueValidation>()
                 .InSingletonScope();
             kernel
                 .Bind<IValidationBll<Author>>()
@@ -97,8 +105,12 @@ namespace Epam.Library.Common.DependencyInjection
                 .To<Epam.Library.Bll.PatentBll>()
                 .InSingletonScope();
             kernel
-                .Bind< IOldNewspaperBll> ()
-                .To<Epam.Library.Bll.OldNewspaperBll>()
+                .Bind<INewspaperBll> ()
+                .To<Epam.Library.Bll.NewspaperBll>()
+                .InSingletonScope();
+            kernel
+                .Bind<INewspaperIssueBll>()
+                .To<Epam.Library.Bll.NewspaperIssueBll>()
                 .InSingletonScope();
             kernel
                 .Bind<ICatalogueBll>()

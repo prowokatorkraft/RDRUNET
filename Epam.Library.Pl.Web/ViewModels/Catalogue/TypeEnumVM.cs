@@ -4,6 +4,6 @@
     {
         Book,
         Patent,
-        Newspaper
+        NewspaperIssue
     }
 }

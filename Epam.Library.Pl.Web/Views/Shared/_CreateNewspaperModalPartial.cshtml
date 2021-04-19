@@ -1,0 +1,40 @@
+﻿@using Epam.Library.Pl.Web.Models
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Add new newspaper
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new newspaper</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="model-validation-field" class="field-validation-valid text-danger" data-valmsg-for="Model" data-valmsg-replace="true"></span>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Name">Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" data-val="true" data-val-regex="Incorrect entered value." data-val-regex-pattern=".{2,@ValidationLengths.NameLength}" data-val-required="The field is required." id="NameModal" name="Name" type="text" value="" />
+                        <span id="name-validation-field" class="field-validation-valid text-danger" data-valmsg-for="name" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <span id="model-validation-field" class="field-validation-valid text-danger" data-valmsg-for="Model" data-valmsg-replace="true"></span>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="ISSN">ISSN</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" data-val="true" data-val-regex="Incorrect entered value." data-val-regex-pattern="@ValidationPatterns.IssnPattern" id="ISSN" name="ISSN" type="text" value="" />
+                        <span id="issn-validation-field" class="field-validation-valid text-danger" data-valmsg-for="ISSN" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="add-modal-newspaper-btn">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

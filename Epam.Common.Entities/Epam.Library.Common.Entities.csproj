@@ -54,10 +54,8 @@
     <Compile Include="AutorElement\Book\Book.cs" />
     <Compile Include="AutorElement\Patent\AbstractPatent.cs" />
     <Compile Include="AutorElement\Patent\Patent.cs" />
-    <Compile Include="Newspaper\AbstractOldNewspaper.cs" />
     <Compile Include="Newspaper\Newspaper.cs" />
     <Compile Include="Newspaper\NewspaperIssue.cs" />
-    <Compile Include="Newspaper\OldNewspaper.cs" />
     <Compile Include="PagingInfo.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RoleType.cs" />

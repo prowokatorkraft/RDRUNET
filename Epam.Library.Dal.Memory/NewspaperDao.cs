@@ -9,7 +9,7 @@ using Epam.Library.Common.Entities.Newspaper;
 
 namespace Epam.Library.Dal.Memory
 {
-    public class NewspaperDao : IOldNewspaperDao
+    public class NewspaperDao //: IOldNewspaperDao
     {
         private readonly ICatalogueDao _catalogue;
 
@@ -18,7 +18,7 @@ namespace Epam.Library.Dal.Memory
             _catalogue = catalogue;
         }
 
-        public void Add(AbstractOldNewspaper newspaper)
+        public void Add(NewspaperIssue newspaper)
         {
             try
             {
@@ -30,11 +30,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public AbstractOldNewspaper Get(int id)
+        public NewspaperIssue Get(int id)
         {
             try
             {
-                return _catalogue.Get(id)?.Clone() as AbstractOldNewspaper
+                return _catalogue.Get(id)?.Clone() as NewspaperIssue
                     ?? throw new ArgumentOutOfRangeException("Incorrect id");
             }
             catch (Exception ex)
@@ -43,11 +43,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<int, List<AbstractOldNewspaper>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<NewspaperIssue>> GetAllGroupsByPublishYear(PagingInfo page = null)
         {
             try
             {
-                Dictionary<int, List<AbstractOldNewspaper>> groups = new Dictionary<int, List<AbstractOldNewspaper>>();
+                Dictionary<int, List<NewspaperIssue>> groups = new Dictionary<int, List<NewspaperIssue>>();
 
                 foreach (var item in Search(null).GroupBy(b => b.PublishingYear))
                 {
@@ -74,11 +74,11 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractOldNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
+        public IEnumerable<NewspaperIssue> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
         {
             try
             {
-                var query = _catalogue.Search(null).OfType<AbstractOldNewspaper>().AsQueryable();
+                var query = _catalogue.Search(null).OfType<NewspaperIssue>().AsQueryable();
 
                 if (searchRequest != null)
                 {
@@ -95,7 +95,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        private IQueryable<AbstractOldNewspaper> DetermineSortQuery(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, IQueryable<AbstractOldNewspaper> query)
+        private IQueryable<NewspaperIssue> DetermineSortQuery(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, IQueryable<NewspaperIssue> query)
         {
             switch (searchRequest.SortOptions)
             {
@@ -118,7 +118,7 @@ namespace Epam.Library.Dal.Memory
             return query;
         }
 
-        private IQueryable<AbstractOldNewspaper> DetermineSearchQuery(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, IQueryable<AbstractOldNewspaper> query)
+        private IQueryable<NewspaperIssue> DetermineSearchQuery(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, IQueryable<NewspaperIssue> query)
         {
             switch (searchRequest.SearchOptions)
             {
@@ -134,7 +134,7 @@ namespace Epam.Library.Dal.Memory
             return query;
         }
 
-        private string DetermineLineForRequest(AbstractOldNewspaper newspaper, SearchRequest<SortOptions, NewspaperSearchOptions> request)
+        private string DetermineLineForRequest(Newspaper newspaper, SearchRequest<SortOptions, NewspaperSearchOptions> request)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -146,7 +146,7 @@ namespace Epam.Library.Dal.Memory
             return builder.ToString();
         }
 
-        public void Update(AbstractOldNewspaper newspaper)
+        public void Update(Newspaper newspaper)
         {
             throw new NotImplementedException();
         }

@@ -7,7 +7,7 @@
     <ProjectGuid>{3A3930E4-ABE0-461D-9C8B-824F85C33DC4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Epam.Library.Bll.Logic</RootNamespace>
+    <RootNamespace>Epam.Library.Bll</RootNamespace>
     <AssemblyName>Epam.Library.Bll.Logic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,7 +47,6 @@
     <Compile Include="CatalogueBll.cs" />
     <Compile Include="NewspaperBll.cs" />
     <Compile Include="NewspaperIssueBll.cs" />
-    <Compile Include="OldNewspaperBll.cs" />
     <Compile Include="PatentBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleBll.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="Validation\BookValidation.cs" />
     <Compile Include="Validation\NewspaperIssueValidation.cs" />
     <Compile Include="Validation\NewspaperValidation.cs" />
-    <Compile Include="Validation\OldNewspaperValidation.cs" />
     <Compile Include="Validation\PatentValidation.cs" />
     <Compile Include="Validation\ValidationHandlers.cs" />
     <Compile Include="Validation\ValidationLengths.cs" />

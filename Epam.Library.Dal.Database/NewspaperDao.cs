@@ -159,7 +159,7 @@ namespace Epam.Library.Dal.Database
                 ParameterName = "@Id",
                 DbType = DbType.Int32,
                 Direction = ParameterDirection.InputOutput,
-                Value = newspaper.Id
+                Value = newspaper.Id ?? (object)DBNull.Value
             };
             command.Parameters.Add(idParam);
 

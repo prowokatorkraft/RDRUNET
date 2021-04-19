@@ -14,7 +14,9 @@ namespace Epam.Library.Bll.Contracts
 
         NewspaperIssue Get(int id, RoleType role = RoleType.None);
 
-        IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, RoleType role = RoleType.None);
+        IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, PagingInfo paging = null, SortOptions sort = SortOptions.None, RoleType role = RoleType.None);
+
+        int GetCountByNewspaper(int newspaperId, RoleType role = RoleType.None);
 
         IEnumerable<NewspaperIssue> Search(SearchRequest<SortOptions, NewspaperIssueSearchOptions> searchRequest, RoleType role = RoleType.None);
 

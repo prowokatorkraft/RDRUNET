@@ -2,6 +2,7 @@
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
+using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Pl.Web.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace Epam.Library.Pl.Web.Controllers
         [HttpGet]
         public ActionResult GetAll(int pageNumber = 1, string searchLine = null)
         {
+            const int sizePage = 20;
             List<ElementVM> elements = new List<ElementVM>();
 
             var values = new RouteValueDictionary();
@@ -48,7 +50,7 @@ namespace Epam.Library.Pl.Web.Controllers
                                                     : CatalogueSearchOptions.Name, 
                                                 searchLine,
                                                 role
-                    ) / 20d),
+                    ) / (double)sizePage),
                     Action = nameof(GetAll),
                     Controller = "Catalogue",
                     Values = values
@@ -61,7 +63,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 SortOptions = SortOptions.Ascending,
                 SearchOptions = searchLine is null ? CatalogueSearchOptions.None : CatalogueSearchOptions.Name,
                 SearchLine = searchLine,
-                PagingInfo = new PagingInfo(20, pageNumber)
+                PagingInfo = new PagingInfo(sizePage, pageNumber)
             }, role))
             {
                 switch (item)
@@ -72,9 +74,9 @@ namespace Epam.Library.Pl.Web.Controllers
                     case Patent o:
                         elements.Add(_mapper.Map<ElementVM, Patent>(o, role));
                         break;
-                    //case Newspaper o:
-                    //    yield return MapperConfig.Map<ElementViewModel, Newspaper>(o);
-                    //    break;
+                    case NewspaperIssue o:
+                        elements.Add(_mapper.Map<ElementVM, NewspaperIssue>(o, role));
+                        break;
                     default:
                         break;
                 }
@@ -92,8 +94,8 @@ namespace Epam.Library.Pl.Web.Controllers
                     return RedirectToAction("Create", controllerName: "Book");
                 case TypeEnumVM.Patent:
                     return RedirectToAction("Create", controllerName: "Patent");
-                case TypeEnumVM.Newspaper:
-                    break;
+                case TypeEnumVM.NewspaperIssue:
+                    return RedirectToAction("Create", controllerName: "NewspaperIssue");
             }
 
             return View();
@@ -108,8 +110,8 @@ namespace Epam.Library.Pl.Web.Controllers
                     return RedirectToAction("Display", controllerName: "Book", routeValues: new { id = id });
                 case TypeEnumVM.Patent:
                     return RedirectToAction("Display", controllerName: "Patent", routeValues: new { id = id });
-                case TypeEnumVM.Newspaper:
-                    break;
+                case TypeEnumVM.NewspaperIssue:
+                    return RedirectToAction("Display", controllerName: "NewspaperIssue", routeValues: new { id = id });
             }
 
             return View();

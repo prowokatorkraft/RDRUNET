@@ -145,6 +145,8 @@
     <Compile Include="Controllers\AuthorController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\CatalogueController.cs" />
+    <Compile Include="Controllers\NewspaperController.cs" />
+    <Compile Include="Controllers\NewspaperIssueController.cs" />
     <Compile Include="Controllers\PatentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -162,6 +164,10 @@
     <Compile Include="ViewModels\Catalogue\TypeEnumVM.cs" />
     <Compile Include="ViewModels\Catalogue\ElementVM.cs" />
     <Compile Include="ViewModels\Authentification\LoginVM.cs" />
+    <Compile Include="ViewModels\NewspaperIssue\CreateEditNewspaperIssueVM.cs" />
+    <Compile Include="ViewModels\NewspaperIssue\DisplayNewspaperIssueVM.cs" />
+    <Compile Include="ViewModels\Newspaper\CreateEditNewspaperVM.cs" />
+    <Compile Include="ViewModels\Newspaper\DisplayNewspaperVM.cs" />
     <Compile Include="ViewModels\PageDataVM.cs" />
     <Compile Include="ViewModels\PageInfoVM.cs" />
     <Compile Include="ViewModels\Patent\CreateEditPatentVM.cs" />
@@ -180,6 +186,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Custom\AuthorIDs.js" />
+    <Content Include="Scripts\Custom\NewspaperId.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -216,11 +223,16 @@
     <Content Include="Views\Patent\Remove.cshtml" />
     <Content Include="Views\Admin\GetAll.cshtml" />
     <Content Include="Views\Admin\EditRole.cshtml" />
+    <Content Include="Views\NewspaperIssue\Create.cshtml" />
+    <Content Include="Views\Shared\_CreateNewspaperModalPartial.cshtml" />
+    <Content Include="Views\NewspaperIssue\Display.cshtml" />
+    <Content Include="Views\NewspaperIssue\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Author\" />
+    <Folder Include="Views\Newspaper\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

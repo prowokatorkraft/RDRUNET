@@ -14,14 +14,14 @@ namespace Epam.Library.Dal.Database
 
         private readonly IBookDao _bookDao;
         private readonly IPatentDao _patentDao;
-        private readonly IOldNewspaperDao _newspaperDao;
+        private readonly INewspaperIssueDao _newspaperIssueDao;
 
-        public CatalogueDao(IBookDao bookDao, IPatentDao patentDao, IOldNewspaperDao newspaperDao, ConnectionStringDb connectionStrings)
+        public CatalogueDao(IBookDao bookDao, IPatentDao patentDao, INewspaperIssueDao newspaperIssueDao, ConnectionStringDb connectionStrings)
         {
             _connectionStrings = connectionStrings;
             _bookDao = bookDao;
             _patentDao = patentDao;
-            _newspaperDao = newspaperDao;
+            _newspaperIssueDao = newspaperIssueDao;
         }
 
         public void Add(LibraryAbstractElement element)
@@ -220,7 +220,7 @@ namespace Epam.Library.Dal.Database
                 case TypeDaoEnum.Patent:
                     return _patentDao.Get(id, role);
                 case TypeDaoEnum.Newspaper:
-                    return _newspaperDao.Get(id);///
+                    return _newspaperIssueDao.Get(id, role);
                 default:
                     return null;
             }

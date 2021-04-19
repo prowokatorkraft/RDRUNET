@@ -14,11 +14,11 @@
         <input type="submit" value="Create" />
 
         @Html.RadioButton("typeRadio", TypeEnumVM.Book, true)
-        @(" "+TypeEnumVM.Book+" ")
+        @(" Book ")
         @Html.RadioButton("typeRadio", TypeEnumVM.Patent)
-        @(" "+TypeEnumVM.Patent+" ")
-        @Html.RadioButton("typeRadio", TypeEnumVM.Newspaper)
-        @(" "+TypeEnumVM.Newspaper+" ")
+        @(" Patent ")
+        @Html.RadioButton("typeRadio", TypeEnumVM.NewspaperIssue)
+        @(" Newspaper issue ")
     }
 }
 

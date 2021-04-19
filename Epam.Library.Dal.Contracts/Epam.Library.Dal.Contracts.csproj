@@ -45,7 +45,6 @@
     <Compile Include="IAuthorDao.cs" />
     <Compile Include="IBookDao.cs" />
     <Compile Include="ICatalogueDao.cs" />
-    <Compile Include="IOldNewspaperDao.cs" />
     <Compile Include="IPatentDao.cs" />
     <Compile Include="IRoleDao.cs" />
     <Compile Include="INewspaperDao.cs" />

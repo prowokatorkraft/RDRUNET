@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Epam.Library.Bll.Logic
+namespace Epam.Library.Bll
 {
     public class NewspaperIssueBll : INewspaperIssueBll
     {
@@ -63,11 +63,11 @@ namespace Epam.Library.Bll.Logic
             }
         }
 
-        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, RoleType role = RoleType.None)
+        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, PagingInfo paging = null, SortOptions sort = SortOptions.None, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllByNewspaper(newspaperId, role) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.GetAllByNewspaper(newspaperId, paging, sort, role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -80,6 +80,18 @@ namespace Epam.Library.Bll.Logic
             try
             {
                 return _dao.GetAllGroupsByPublishYear(role: role);
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting item.", ex);
+            }
+        }
+
+        public int GetCountByNewspaper(int newspaperId, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.GetCountByNewspaper(newspaperId, role);
             }
             catch (Exception ex)
             {

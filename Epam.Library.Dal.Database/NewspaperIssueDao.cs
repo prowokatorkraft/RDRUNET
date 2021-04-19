@@ -72,7 +72,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, RoleType role = RoleType.None)
+        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, PagingInfo paging = null, SortOptions sort = SortOptions.None, RoleType role = RoleType.None)
         {
             try
             {
@@ -80,11 +80,11 @@ namespace Epam.Library.Dal.Database
 
                 using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
-                    SqlCommand command = new SqlCommand("dbo.NewspaperIssues_GetByNewspaperId", connection)
+                    SqlCommand command = new SqlCommand("dbo.NewspaperIssues_GetAllByNewspaperId", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    command.Parameters.AddWithValue("@Id", newspaperId);
+                    AddParametersForGetAllByNewspaper(newspaperId, paging, sort, command);
 
                     connection.Open();
 
@@ -96,6 +96,35 @@ namespace Epam.Library.Dal.Database
                 }
 
                 return newspaperList;
+            }
+            catch (Exception ex)
+            {
+                throw new GetException("Error getting data.", ex);
+            }
+        }
+
+        public int GetCountByNewspaper(int newspaperId, RoleType role = RoleType.None)
+        {
+            try
+            {
+                int count;
+
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
+                {
+                    SqlCommand command = new SqlCommand("dbo.NewspaperIssues_GetCountByNewspaperId", connection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    command.Parameters.AddWithValue("@Id", newspaperId);
+
+                    connection.Open();
+
+                    var reader = command.ExecuteReader();
+                    reader.Read();
+                    count = (int)reader["Count"];
+                }
+
+                return count;
             }
             catch (Exception ex)
             {
@@ -217,30 +246,7 @@ namespace Epam.Library.Dal.Database
                 throw new UpdateException("Error updating data.", ex);
             }
         }
-
-        private void AddParametersForAdd(NewspaperIssue issue, SqlCommand command)
-        {
-            var idParam = new SqlParameter()
-            {
-                ParameterName = "@Id",
-                DbType = DbType.Int32,
-                Direction = ParameterDirection.InputOutput,
-                Value = issue.Id
-            };
-            command.Parameters.Add(idParam);
-
-            command.Parameters.AddWithValue("@Name", issue.Name);
-            command.Parameters.AddWithValue("@NumberOfPages", issue.NumberOfPages);
-            command.Parameters.AddWithValue("@Annotation", issue.Annotation);
-            command.Parameters.AddWithValue("@Publisher", issue.Publisher);
-            command.Parameters.AddWithValue("@PublishingCity", issue.PublishingCity);
-            command.Parameters.AddWithValue("@PublishingYear", issue.PublishingYear);
-            command.Parameters.AddWithValue("@Number", issue.Number);
-            command.Parameters.AddWithValue("@PublishingYear", issue.PublishingYear);
-            command.Parameters.AddWithValue("@Date", issue.Date);
-            command.Parameters.AddWithValue("@NewspaperId", issue.NewspaperId);
-        }
-
+        
         private NewspaperIssue GetIssueByReader(SqlDataReader reader)
         {
             NewspaperIssue issue;
@@ -255,6 +261,7 @@ namespace Epam.Library.Dal.Database
                 Publisher = (string)reader["Publisher"],
                 PublishingCity = (string)reader["PublishingCity"],
                 PublishingYear = ((DateTime)reader["Date"]).Year,
+                Number = reader["Number"] as int?,
                 Date = (DateTime)reader["Date"],
                 NewspaperId = (int)reader["NewspaperId"]
             };
@@ -279,6 +286,36 @@ namespace Epam.Library.Dal.Database
             return storedProcedure;
         }
 
+        private void AddParametersForAdd(NewspaperIssue issue, SqlCommand command)
+        {
+            var idParam = new SqlParameter()
+            {
+                ParameterName = "@Id",
+                DbType = DbType.Int32,
+                Direction = ParameterDirection.InputOutput,
+                Value = issue.Id
+            };
+            command.Parameters.Add(idParam);
+
+            command.Parameters.AddWithValue("@Name", issue.Name);
+            command.Parameters.AddWithValue("@NumberOfPages", issue.NumberOfPages);
+            command.Parameters.AddWithValue("@Annotation", issue.Annotation);
+            command.Parameters.AddWithValue("@Publisher", issue.Publisher);
+            command.Parameters.AddWithValue("@PublishingCity", issue.PublishingCity);
+            command.Parameters.AddWithValue("@Number", issue.Number);
+            command.Parameters.AddWithValue("@Date", issue.Date);
+            command.Parameters.AddWithValue("@NewspaperId", issue.NewspaperId);
+        }
+        private void AddParametersForGetAllByNewspaper(int id, PagingInfo paging, SortOptions sort, SqlCommand command)
+        {
+            command.Parameters.AddWithValue("@Id", id);
+
+            PagingInfo page = paging ?? new PagingInfo();
+
+            command.Parameters.AddWithValue("@SortDescending", sort.HasFlag(SortOptions.Descending) ? false : true);
+            command.Parameters.AddWithValue("@SizePage", page.SizePage);
+            command.Parameters.AddWithValue("@Page", page.PageNumber);
+        }
         private void AddParametersForSearch(SearchRequest<SortOptions, NewspaperIssueSearchOptions> searchRequest, SqlCommand command)
         {
             if (searchRequest != null && searchRequest.SearchOptions != NewspaperIssueSearchOptions.None)
@@ -322,5 +359,7 @@ namespace Epam.Library.Dal.Database
                 }
             }
         }
+
+        
     }
 }
