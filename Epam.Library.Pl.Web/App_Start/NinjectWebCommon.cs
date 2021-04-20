@@ -1,5 +1,6 @@
 ﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Epam.Library.Pl.Web.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Epam.Library.Pl.Web.NinjectWebCommon), "Stop")]
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace Epam.Library.Pl.Web
 {
@@ -7,6 +8,7 @@ namespace Epam.Library.Pl.Web
     using System.Web;
     using Epam.Library.Common.DependencyInjection;
     using Epam.Library.Pl.Web.Models;
+    using log4net;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
@@ -49,6 +51,12 @@ namespace Epam.Library.Pl.Web
                     .ToSelf()
                     .InSingletonScope();
                 kernel.Get<RoleProviderModel>();
+
+                kernel.Bind<ILog>()
+                    .ToConstant(LogManager.GetLogger("WebPL"))
+                    .InSingletonScope();
+
+                kernel.Load<FilterBindingModule>();
                 #endregion
 
                 return kernel;

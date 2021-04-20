@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -38,7 +37,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
@@ -67,7 +66,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Check), "Error getting data.", ex);
             }
         }
 
@@ -97,7 +96,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
@@ -122,7 +121,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
@@ -145,7 +144,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Update), "Error updating data.", ex);
             }
         }
 
@@ -178,7 +177,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Search), "Error getting data.", ex);
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -40,7 +39,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
@@ -49,7 +48,7 @@ namespace Epam.Library.Dal.Database
             try
             {
                 AbstractBook book;
-
+                
                 using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_GetById", connection)
@@ -70,7 +69,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
@@ -105,7 +104,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(GetAllGroupsByPublisher), "Error getting data.", ex);
             }
         }
 
@@ -139,7 +138,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(GetAllGroupsByPublishYear), "Error getting data.", ex);
             }
         }
 
@@ -170,7 +169,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(GetByAuthorId), "Error getting data.", ex);
             }
         }
 
@@ -196,7 +195,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
@@ -231,7 +230,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Search), "Error getting data.", ex);
             }
         }
 
@@ -254,7 +253,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Update), "Error updating data.", ex);
             }
         }
 

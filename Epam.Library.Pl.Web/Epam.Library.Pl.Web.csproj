@@ -48,6 +48,9 @@
     <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
@@ -136,7 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\FilterBindingModule.cs" />
     <Compile Include="App_Start\Mapper.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -148,6 +151,12 @@
     <Compile Include="Controllers\NewspaperController.cs" />
     <Compile Include="Controllers\NewspaperIssueController.cs" />
     <Compile Include="Controllers\PatentController.cs" />
+    <Compile Include="Filters\AdminLogAttribute.cs" />
+    <Compile Include="Filters\ErrorLogAttribute.cs" />
+    <Compile Include="Filters\ForbiddenLogAttribute.cs" />
+    <Compile Include="Filters\LoginLoggerAttribute.cs" />
+    <Compile Include="Filters\LogoutLoggerAttribute.cs" />
+    <Compile Include="Filters\RegisterLoggingAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

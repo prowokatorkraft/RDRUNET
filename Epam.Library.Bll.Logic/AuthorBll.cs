@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Dal.Contracts;
 using System;
@@ -44,7 +43,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Add), "Error adding item.", ex);
             }
         }
 
@@ -72,7 +71,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Update), "Error updating item.", ex);
             }
         }
 
@@ -84,7 +83,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
@@ -96,7 +95,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error checking item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Check), "Error getting item.", ex);
             }
         }
 
@@ -113,7 +112,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Remove), "Error removing item.", ex);
             }
         }
 
@@ -125,7 +124,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Search), "Error getting item.", ex);
             }
         }
     }

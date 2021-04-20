@@ -1,5 +1,4 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -42,7 +41,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(RoleDao), nameof(GetAll), "Error getting data.", ex);
             }
         }
 
@@ -72,7 +71,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(RoleDao), nameof(GetById), "Error getting data.", ex);
             }
         }
 
@@ -102,7 +101,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(RoleDao), nameof(GetByName), "Error getting data.", ex);
             }
         }
 

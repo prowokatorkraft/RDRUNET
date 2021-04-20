@@ -1,5 +1,4 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Text;
@@ -26,7 +25,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dao", nameof(PatentDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
@@ -39,7 +38,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
@@ -51,7 +50,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(GetByAuthorId), "Error getting data.", ex);
             }
         }
 
@@ -70,7 +69,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(GetAllGroupsByPublishYear), "Error getting data.", ex);
             }
         }
 
@@ -82,7 +81,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
@@ -103,7 +102,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Search), "Error getting data.", ex);
             }
         }
 

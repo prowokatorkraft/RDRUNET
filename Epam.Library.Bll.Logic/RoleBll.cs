@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -24,7 +23,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(RoleBll), nameof(Check), "Error getting item.", ex);
             }
         }
 
@@ -36,7 +35,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(RoleBll), nameof(GetAll), "Error getting item.", ex);
             }
         }
 
@@ -48,7 +47,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(RoleBll), nameof(GetById), "Error getting item.", ex);
             }
         }
 
@@ -60,7 +59,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(RoleBll), nameof(GetByName), "Error getting item.", ex);
             }
         }
     }

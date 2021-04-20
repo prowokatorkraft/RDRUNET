@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -45,7 +44,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(Add),"Error adding item.", ex);
             }
         }
 
@@ -57,7 +56,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(Search), "Error getting item.", ex);
             }
         }
         public int GetCount(AccountSearchOptions searchOptions = AccountSearchOptions.None, string searchLine = null)
@@ -68,7 +67,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(GetCount), "Error getting item.", ex);
             }
         }
 
@@ -80,7 +79,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(GetById), "Error getting item.", ex);
             }
         }
 
@@ -92,7 +91,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(GetByLogin), "Error getting item.", ex);
             }
         }
 
@@ -104,7 +103,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(Check), "Error getting item.", ex);
             }
         }
         public bool Check(string login)
@@ -115,7 +114,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(Check), "Error getting item.", ex);
             }
         }
 
@@ -127,7 +126,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(Remove), "Error removing item.", ex);
             }
         }
 
@@ -150,7 +149,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
+                throw new LayerException("Bll", nameof(AccountBll), nameof(UpdateRole), "Error updating item.", ex);
             }
         }
 

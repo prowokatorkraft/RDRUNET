@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Text;
@@ -33,7 +32,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dao", nameof(CatalogueDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
@@ -45,7 +44,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(CatalogueDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
@@ -58,7 +57,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(CatalogueDao), nameof(GetByAuthorId), "Error getting data.", ex);
             }
         }
 
@@ -70,7 +69,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(CatalogueDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
@@ -91,7 +90,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(CatalogueDao), nameof(Search), "Error getting data.", ex);
             }
         }
 

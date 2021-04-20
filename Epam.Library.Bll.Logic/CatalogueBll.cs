@@ -1,5 +1,4 @@
-﻿using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Bll.Contracts;
+﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Dal.Contracts;
 using System;
@@ -25,7 +24,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting value.", ex);
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
@@ -37,7 +36,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting value.", ex);
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(GetByAuthorId), "Error getting item.", ex);
             }
         }
 
@@ -49,7 +48,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(GetCount), "Error getting item.", ex);
             }
         }
 
@@ -61,7 +60,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(Search), "Error getting item.", ex);
             }
         }
     }

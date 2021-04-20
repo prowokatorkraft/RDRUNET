@@ -27,11 +27,12 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult GetAll(int pageNumber = 1, string searchLine = null)
         {
             const int sizePage = 20;
             List<ElementVM> elements = new List<ElementVM>();
-
+            
             var values = new RouteValueDictionary();
             if (searchLine != null)
             {

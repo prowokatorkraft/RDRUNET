@@ -2,9 +2,8 @@
 @{
     if (!User.Identity.IsAuthenticated)
     {
-        Response.Redirect("~/Account/Login");
+        Response.Redirect("/Account/Login");
     }
-
     ViewBag.Title = "Display";
 }
 

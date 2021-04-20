@@ -5,7 +5,6 @@ using Epam.Library.Pl.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -88,6 +87,7 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Display(int id, int pageNumber = 1)
         {
             const int sizePage = 10;

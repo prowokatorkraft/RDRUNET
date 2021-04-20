@@ -1,10 +1,5 @@
 ﻿@model Epam.Library.Pl.Web.ViewModels.ElementVM
 @{
-    if (!User.IsInRole(RoleType.librarian.ToString()))
-    {
-        Response.Redirect("~/Account/Login");
-    }
-
     ViewBag.Title = "Remove";
 }
 

@@ -1,5 +1,4 @@
-﻿using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Bll.Contracts;
+﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Dal.Contracts;
@@ -40,7 +39,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Add), "Error adding item.", ex);
             }
         }
 
@@ -52,7 +51,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
@@ -64,7 +63,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item.", ex);
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Remove), "Error removing item.", ex);
             }
         }
 
@@ -76,7 +75,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Search), "Error getting item.", ex);
             }
         }
 
@@ -104,7 +103,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Update), "Error updating item.", ex);
             }
         }
     }

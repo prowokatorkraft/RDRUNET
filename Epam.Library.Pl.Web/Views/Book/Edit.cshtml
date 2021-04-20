@@ -1,9 +1,5 @@
 ﻿@model Epam.Library.Pl.Web.ViewModels.CreateEditBookVM
 @{
-    if (!User.IsInRole(RoleType.librarian.ToString()))
-    {
-        Response.Redirect("~/Account/Login");
-    }
     ViewBag.Title = "Edit";
 }
 

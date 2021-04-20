@@ -1,5 +1,4 @@
-﻿using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Bll.Contracts;
+﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Dal.Contracts;
@@ -49,7 +48,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Add), "Error adding item.", ex);
             }
         }
 
@@ -82,7 +81,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Update), "Error updating item.", ex);
             }
         }
 
@@ -94,7 +93,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Remove), "Error removing item.", ex);
             }
         }
 
@@ -106,7 +105,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Search), "Error getting item.", ex);
             }
         }
 
@@ -118,7 +117,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(GetAllGroupsByPublishYear), "Error getting item.", ex);
             }
         }
 
@@ -130,7 +129,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(GetAllGroupsByPublisher), "Error getting item.", ex);
             }
         }
 
@@ -142,7 +141,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
@@ -154,7 +153,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(GetByAuthorId), "Error getting item.", ex);
             }
         }
     }

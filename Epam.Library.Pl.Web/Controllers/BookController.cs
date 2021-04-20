@@ -2,11 +2,7 @@
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Pl.Web.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Epam.Library.Pl.Web.Controllers
@@ -88,6 +84,7 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Display(int id)
         {
             var role = GetRoleByCurrentUser();

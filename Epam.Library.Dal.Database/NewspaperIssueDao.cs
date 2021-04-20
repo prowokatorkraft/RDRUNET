@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -38,7 +37,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
@@ -68,7 +67,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
@@ -99,7 +98,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(GetAllByNewspaper), "Error getting data.", ex);
             }
         }
 
@@ -128,7 +127,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(GetCountByNewspaper), "Error getting data.", ex);
             }
         }
 
@@ -162,7 +161,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(GetAllGroupsByPublishYear), "Error getting data.", ex);
             }
         }
 
@@ -187,7 +186,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
@@ -220,7 +219,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(Search), "Error getting data.", ex);
             }
         }
 
@@ -243,7 +242,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating data.", ex);
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(Update), "Error updating data.", ex);
             }
         }
         

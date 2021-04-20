@@ -1,10 +1,5 @@
 ﻿@model PageDataVM<AccountVM>
 @{
-    if (!User.IsInRole(RoleType.admin.ToString()))
-    {
-        Response.Redirect("~/Account/Login");
-    }
-
     Html.ViewData["Action"] = "GetAll";
     Html.ViewData["Controller"] = "Admin";
 

@@ -1,15 +1,16 @@
 ﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
+using Epam.Library.Pl.Web.Filters;
 using Epam.Library.Pl.Web.ViewModels;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
 namespace Epam.Library.Pl.Web.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private IAccountBll _accountBll;
@@ -29,6 +30,7 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpPost]
+        [LoginLog]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginVM model)
         {
@@ -36,6 +38,9 @@ namespace Epam.Library.Pl.Web.Controllers
 
             if (acc?.PasswordHash == GetPasswordHash(model.Password))
             {
+                TempData["UserName"] = model.Login;
+                TempData["IsAuth"] = true;
+
                 FormsAuthentication.SetAuthCookie(model.Login, true);
                 return Redirect("~/");
             }
@@ -47,6 +52,7 @@ namespace Epam.Library.Pl.Web.Controllers
             return View(model);
         }
 
+        [LogoutLog]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -60,6 +66,7 @@ namespace Epam.Library.Pl.Web.Controllers
         }
 
         [HttpPost]
+        [RegisterLog]
         [ValidateAntiForgeryToken]
         public ActionResult Register(CreateAccountVM model)
         {
@@ -70,6 +77,9 @@ namespace Epam.Library.Pl.Web.Controllers
 
                 if (!errors.Any())
                 {
+                    TempData["UserName"] = model.Login;
+                    TempData["IsAuth"] = true;
+
                     return Redirect("~/");
                 }
 

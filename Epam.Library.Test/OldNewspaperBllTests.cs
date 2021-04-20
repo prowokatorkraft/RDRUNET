@@ -13,7 +13,7 @@ using Epam.Library.Common.Entities.Newspaper;
 namespace Epam.Library.Test
 {
     [TestFixture]
-    public class NewspaperBllTests
+    public class OldNewspaperBllTests
     {
         [TestCaseSource(typeof(NewspaperBllTestCases), nameof(NewspaperBllTestCases.AddTestCases))]
         public bool Add(ErrorValidation error)

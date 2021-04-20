@@ -64,7 +64,7 @@
     <Compile Include="AuthorBllTests.cs" />
     <Compile Include="BookBllTests.cs" />
     <Compile Include="CatalogueBllTests.cs" />
-    <Compile Include="NewspaperBllTests.cs" />
+    <Compile Include="OldNewspaperBllTests.cs" />
     <Compile Include="PatentBllTests.cs" />
     <Compile Include="TestCases\AuthorBllTestCases.cs" />
     <Compile Include="TestCases\BookBllTestCases.cs" />
