@@ -1,16 +1,14 @@
 ﻿using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.DependencyInjection;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.IntegrationTest.TestCases;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IntegrationTest
+namespace Epam.Library.IntegrationTest
 {
     public class CatalogueBllIntegrationTests
     {
@@ -26,10 +24,10 @@ namespace IntegrationTest
         [OneTimeSetUp]
         public void InitClass()
         {
-            _bookBll = DependencyInjection.BookBll;
-            _patentBll = DependencyInjection.PatentBll;
-            _authorBll = DependencyInjection.AuthorBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
+            _bookBll = NinjectForTests.BookBll;
+            _patentBll = NinjectForTests.PatentBll;
+            _authorBll = NinjectForTests.AuthorBll;
+            _catalogueBll = NinjectForTests.CatalogueBll;
 
             _bookIDs = new List<int>();
             _patentIDs = new List<int>();
@@ -39,11 +37,11 @@ namespace IntegrationTest
         [OneTimeTearDown]
         public void DiposeClass()
         {
-            _bookIDs.ForEach(a => _bookBll.Remove(a));
+            _bookIDs.ForEach(a => _bookBll.Remove(a, RoleType.admin));
 
-            _patentIDs.ForEach(a => _patentBll.Remove(a));
+            _patentIDs.ForEach(a => _patentBll.Remove(a, RoleType.admin));
 
-            _authorIDs.ForEach(a => _authorBll.Remove(a));
+            _authorIDs.ForEach(a => _authorBll.Remove(a, RoleType.admin));
         }
 
         [Test]
@@ -74,7 +72,7 @@ namespace IntegrationTest
             TestDelegate test = () => _catalogueBll.Get(-30000);
 
             // Assert
-            Assert.Throws<GetException>(test);
+            Assert.Throws<LayerException>(test);
         }
 
         [TestCaseSource(typeof(CatalogueBllIntegrationTestCases), nameof(CatalogueBllIntegrationTestCases.Search))]

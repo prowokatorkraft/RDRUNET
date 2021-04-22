@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.DependencyInjection;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Common.Entities.SearchOptionsEnum;
 using Epam.Library.IntegrationTest.TestCases;
 using NUnit.Framework;
 
@@ -26,9 +23,9 @@ namespace Epam.Library.IntegrationTest
         [OneTimeSetUp]
         public void InitClass()
         {
-            _authorBll = DependencyInjection.AuthorBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
-            _patentBll = DependencyInjection.PatentBll;
+            _authorBll = NinjectForTests.AuthorBll;
+            _catalogueBll = NinjectForTests.CatalogueBll;
+            _patentBll = NinjectForTests.PatentBll;
 
             _authorIDs = new List<int>();
             _patentIDs = new List<int>();
@@ -37,9 +34,9 @@ namespace Epam.Library.IntegrationTest
         [OneTimeTearDown]
         public void DiposeClass()
         {
-            _patentIDs.ForEach(p => _patentBll.Remove(p));
+            _patentIDs.ForEach(p => _patentBll.Remove(p, RoleType.admin));
 
-            _authorIDs.ForEach(a => _authorBll.Remove(a));
+            _authorIDs.ForEach(a => _authorBll.Remove(a, RoleType.admin));
         }
 
         [Test]
@@ -94,7 +91,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<AddException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCoutn, GetCount());
             });
         }
@@ -158,7 +155,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<UpdateException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCoutn, GetCount());
             });
         }
@@ -175,7 +172,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<UpdateException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCoutn, GetCount());
             });
         }
@@ -193,21 +190,17 @@ namespace Epam.Library.IntegrationTest
             int preCount = GetCount();
 
             // Act
-            bool isRemoved = _authorBll.Remove(id);
+            _authorBll.Remove(id, RoleType.admin);
 
             int postCount = GetCount();
 
-            if (!isRemoved || preCount == postCount)
+            if (preCount == postCount)
             {
                 _authorIDs.Add(id);
             }
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsTrue(isRemoved);
-                Assert.AreEqual(preCount - 1, postCount);
-            });
+            Assert.AreEqual(preCount - 1, postCount);
         }
 
         [Test]
@@ -222,7 +215,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<RemoveException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCount, GetCount());
             });
         }
@@ -284,7 +277,7 @@ namespace Epam.Library.IntegrationTest
             TestDelegate test = () => _authorBll.Get(-30000);
 
             // Assert
-            Assert.Throws<GetException>(test);
+            Assert.Throws<LayerException>(test);
         }
 
         [Test]

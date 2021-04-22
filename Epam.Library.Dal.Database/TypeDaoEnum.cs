@@ -5,6 +5,6 @@
         None,
         Book,
         Patent,
-        Newspaper
+        NewspaperIssue
     }
 }

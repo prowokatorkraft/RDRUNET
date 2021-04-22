@@ -7,7 +7,6 @@ using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Bll;
 using Epam.Library.Test.TestCases;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 
 namespace Epam.Library.Test
@@ -48,7 +47,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => patentBll.Add(new Patent());
 
             // Assert
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -63,7 +62,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => patentBll.Add(null);
 
             // Assert
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<IPatentDao> InitializeMockDaoForAdd(Action action)
@@ -114,7 +113,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => patentBll.Update(new Patent());
 
             // Assert
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -129,7 +128,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => patentBll.Update(null);
 
             // Assert
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<IPatentDao> InitializeMockDaoForUpdate(Action action)
@@ -174,7 +173,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), patent);
+            Assert.Throws(typeof(LayerException), patent);
         }
 
         [Test]
@@ -192,13 +191,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), patent);
+            Assert.Throws(typeof(LayerException), patent);
         }
 
         private static Mock<IPatentDao> InitializeMockDaoForGet(Func<AbstractPatent> func)
         {
             var patentDao = new Mock<IPatentDao>();
-            patentDao.Setup(a => a.Get(It.IsAny<int>())).Returns(func);
+            patentDao.Setup(a => a.Get(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return patentDao;
         }
 
@@ -236,13 +235,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(RemoveException), patent);
+            Assert.Throws(typeof(LayerException), patent);
         }
 
-        private static Mock<IPatentDao> InitializeMockDaoForRemove(Func<bool> func)
+        private Mock<IPatentDao> InitializeMockDaoForRemove(Func<bool> func)
         {
             var patentDao = new Mock<IPatentDao>();
-            patentDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(func);
+            patentDao.Setup(a => a.Remove(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return patentDao;
         }
 
@@ -279,13 +278,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), patent);
+            Assert.Throws(typeof(LayerException), patent);
         }
 
         private static Mock<IPatentDao> InitializeMockDaoForSearch(Func<IEnumerable<AbstractPatent>> func)
         {
             var patentDao = new Mock<IPatentDao>();
-            patentDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, PatentSearchOptions>>())).Returns(func);
+            patentDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, PatentSearchOptions>>(), It.IsAny<RoleType>())).Returns(func);
             return patentDao;
         }
 
@@ -322,13 +321,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), patent);
+            Assert.Throws(typeof(LayerException), patent);
         }
 
         private static Mock<IPatentDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractPatent>> func)
         {
             var patentDao = new Mock<IPatentDao>();
-            patentDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>())).Returns(func);
+            patentDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>(), It.IsAny<RoleType>())).Returns(func);
             return patentDao;
         }
 
@@ -365,13 +364,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), patent);
+            Assert.Throws(typeof(LayerException), patent);
         }
 
         private static Mock<IPatentDao> InitializeMockDaoForGroupsByPublishYear(Func<Dictionary<int, List<AbstractPatent>>> func)
         {
             var patentDao = new Mock<IPatentDao>();
-            patentDao.Setup(a => a.GetAllGroupsByPublishYear(It.IsAny<PagingInfo>())).Returns(func);
+            patentDao.Setup(a => a.GetAllGroupsByPublishYear(It.IsAny<PagingInfo>(), It.IsAny<RoleType>())).Returns(func);
             return patentDao;
         }
     }

@@ -7,7 +7,6 @@ using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Bll;
 using Epam.Library.Test.TestCases;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 
 namespace Epam.Library.Test
@@ -48,7 +47,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => bookBll.Add(new Book());
             
             // Assert
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -63,7 +62,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => bookBll.Add(null);
 
             // Assert
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForAdd(Action action)
@@ -114,7 +113,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => bookBll.Update(new Book());
 
             // Assert
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -129,7 +128,7 @@ namespace Epam.Library.Test
             TestDelegate action = () => bookBll.Update(null);
 
             // Assert
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForUpdate(Action action)
@@ -174,7 +173,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), book);
+            Assert.Throws(typeof(LayerException), book);
         }
 
         [Test]
@@ -192,13 +191,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), book);
+            Assert.Throws(typeof(LayerException), book);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForGet(Func<AbstractBook> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.Get(It.IsAny<int>())).Returns(func);
+            bookDao.Setup(a => a.Get(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return bookDao;
         }
 
@@ -236,13 +235,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(RemoveException), book);
+            Assert.Throws(typeof(LayerException), book);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForRemove(Func<bool> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(func);
+            bookDao.Setup(a => a.Remove(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return bookDao;
         }
 
@@ -279,13 +278,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), book);
+            Assert.Throws(typeof(LayerException), book);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForSearch(Func<IEnumerable<AbstractBook>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, BookSearchOptions>>())).Returns(func);
+            bookDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, BookSearchOptions>>(), It.IsAny<RoleType>())).Returns(func);
             return bookDao;
         }
 
@@ -322,13 +321,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), book);
+            Assert.Throws(typeof(LayerException), book);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForGroupsByPublishYear(Func<Dictionary<int,List<AbstractBook>>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetAllGroupsByPublishYear(null)).Returns(func);
+            bookDao.Setup(a => a.GetAllGroupsByPublishYear(null, It.IsAny<RoleType>())).Returns(func);
             return bookDao;
         }
 
@@ -365,13 +364,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), book);
+            Assert.Throws(typeof(LayerException), book);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForGropusByPublisher(Func<Dictionary<string, List<AbstractBook>>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetAllGroupsByPublisher(null)).Returns(func);
+            bookDao.Setup(a => a.GetAllGroupsByPublisher(null, It.IsAny<RoleType>())).Returns(func);
             return bookDao;
         }
 
@@ -408,13 +407,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), book);
+            Assert.Throws(typeof(LayerException), book);
         }
 
         private static Mock<IBookDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractBook>> func)
         {
             var bookDao = new Mock<IBookDao>();
-            bookDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>())).Returns(func);
+            bookDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>(), It.IsAny<RoleType>())).Returns(func);
             return bookDao;
         }
     }

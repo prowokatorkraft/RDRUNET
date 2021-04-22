@@ -6,20 +6,20 @@ namespace Epam.Library.Bll.Contracts
 {
     public interface IBookBll
     {
-        IEnumerable<ErrorValidation> Add(AbstractBook book);
+        IEnumerable<ErrorValidation> Add(AbstractBook book, RoleType role = RoleType.None);
 
-        IEnumerable<ErrorValidation> Update(AbstractBook book);
+        IEnumerable<ErrorValidation> Update(AbstractBook book, RoleType role = RoleType.None);
 
-        bool Remove(int id);
+        bool Remove(int id, RoleType role = RoleType.None);
 
-        AbstractBook Get(int id);
+        AbstractBook Get(int id, RoleType role = RoleType.None);
 
-        IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page);
+        IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page, RoleType role = RoleType.None);
 
-        IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
+        IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None);
 
-        Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear();
+        Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(RoleType role = RoleType.None);
 
-        Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest);
+        Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None);
     }
 }

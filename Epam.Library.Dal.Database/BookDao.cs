@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
@@ -14,18 +13,18 @@ namespace Epam.Library.Dal.Database
 {
     public class BookDao : IBookDao
     {
-        private readonly string _connectionString;
+        private readonly ConnectionStringDb _connectionStrings;
 
-        public BookDao(string connectionString)
+        public BookDao(ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionStrings = connectionStrings;
         }
 
         public void Add(AbstractBook book)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_Add", connection)
                     {
@@ -40,17 +39,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractBook Get(int id, RoleType role = RoleType.None)
         {
             try
             {
                 AbstractBook book;
-
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_GetById", connection)
                     {
@@ -70,18 +69,18 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 Dictionary<string, List<AbstractBook>> group = new Dictionary<string, List<AbstractBook>>();
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_SearchByPublisher", connection)
                     {
@@ -105,18 +104,18 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(GetAllGroupsByPublisher), "Error getting data.", ex);
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
                 Dictionary<int, List<AbstractBook>> group = new Dictionary<int, List<AbstractBook>>();
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_SearchByPublishingYear", connection)
                     {
@@ -139,17 +138,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(GetAllGroupsByPublishYear), "Error getting data.", ex);
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_GetByAuthorId", connection)
                     {
@@ -170,15 +169,15 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(GetByAuthorId), "Error getting data.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_Remove", connection)
                     {
@@ -196,17 +195,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 List<AbstractBook> bookList = new List<AbstractBook>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     string storedProcedure = GetProcedureForSearch(searchRequest);
 
@@ -231,7 +230,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Search), "Error getting data.", ex);
             }
         }
 
@@ -239,7 +238,7 @@ namespace Epam.Library.Dal.Database
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_Update", connection)
                     {
@@ -254,7 +253,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating data.", ex);
+                throw new LayerException("Dal", nameof(BookDao), nameof(Update), "Error updating data.", ex);
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,18 +13,18 @@ namespace Epam.Library.Dal.Database
 {
     public class PatentDao : IPatentDao
     {
-        private readonly string _connectionString;
+        private readonly ConnectionStringDb _connectionStrings;
 
-        public PatentDao(string connectionString)
+        public PatentDao(ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionStrings = connectionStrings;
         }
 
         public void Add(AbstractPatent patent)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Patents_Add", connection)
                     {
@@ -40,17 +39,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
-        public AbstractPatent Get(int id)
+        public AbstractPatent Get(int id, RoleType role = RoleType.None)
         {
             try
             {
                 AbstractPatent patent;
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Patents_GetById", connection)
                     {
@@ -70,18 +69,18 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
                 Dictionary<int, List<AbstractPatent>> group = new Dictionary<int, List<AbstractPatent>>();
                 List<AbstractPatent> bookList = new List<AbstractPatent>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Patents_SearchByPublishingYear", connection)
                     {
@@ -104,17 +103,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(GetAllGroupsByPublishYear), "Error getting data.", ex);
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
                 List<AbstractPatent> patentList = new List<AbstractPatent>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Patents_GetByAuthorId", connection)
                     {
@@ -135,15 +134,15 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(GetByAuthorId), "Error getting data.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Patents_Remove", connection)
                     {
@@ -161,7 +160,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
@@ -169,7 +168,7 @@ namespace Epam.Library.Dal.Database
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Patents_Update", connection)
                     {
@@ -184,17 +183,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Update), "Error updating data.", ex);
             }
         }
 
-        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 List<AbstractPatent> patentList = new List<AbstractPatent>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     string storedProcedure = GetProcedureForSearch(searchRequest);
 
@@ -219,7 +218,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Search), "Error getting data.", ex);
             }
         }
 

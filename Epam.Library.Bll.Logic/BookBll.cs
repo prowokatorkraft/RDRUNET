@@ -1,5 +1,4 @@
-﻿using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Bll.Contracts;
+﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Dal.Contracts;
@@ -24,7 +23,7 @@ namespace Epam.Library.Bll
             _validation = validation;
         }
 
-        public IEnumerable<ErrorValidation> Add(AbstractBook book)
+        public IEnumerable<ErrorValidation> Add(AbstractBook book, RoleType role = RoleType.None)
         {
             try
             {
@@ -33,7 +32,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(book) + " is null");
                 }
 
-                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs))
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -49,11 +48,11 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Add), "Error adding item.", ex);
             }
         }
 
-        public IEnumerable<ErrorValidation> Update(AbstractBook book)
+        public IEnumerable<ErrorValidation> Update(AbstractBook book, RoleType role = RoleType.None)
         {
             try
             {
@@ -66,7 +65,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(book.Id) + " is null");
                 }
 
-                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs))
+                if (book.AuthorIDs != null && !_author.Check(book.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -82,79 +81,79 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Update), "Error updating item.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Remove(id);
+                return _dao.Remove(id, role);
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Remove), "Error removing item.", ex);
             }
         }
 
-        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public IEnumerable<AbstractBook> Search(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.Search(searchRequest, role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Search), "Error getting item.", ex);
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublishYear();
+                return _dao.GetAllGroupsByPublishYear(role: role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(GetAllGroupsByPublishYear), "Error getting item.", ex);
             }
         }
 
-        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest)
+        public Dictionary<string, List<AbstractBook>> GetAllGroupsByPublisher(SearchRequest<SortOptions, BookSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublisher(searchRequest);
+                return _dao.GetAllGroupsByPublisher(searchRequest, role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(GetAllGroupsByPublisher), "Error getting item.", ex);
             }
         }
 
-        public AbstractBook Get(int id)
+        public AbstractBook Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentOutOfRangeException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentOutOfRangeException("Incorrect id.");
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id, page);
+                return _dao.GetByAuthorId(id, page, role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Bll", nameof(BookBll), nameof(GetByAuthorId), "Error getting item.", ex);
             }
         }
     }

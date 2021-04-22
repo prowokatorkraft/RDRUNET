@@ -1,4 +1,4 @@
-﻿namespace Epam.Library.Common.Entities.SearchOptionsEnum
+﻿namespace Epam.Library.Common.Entities
 {
     public enum AuthorSearchOptions
     {

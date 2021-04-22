@@ -1,7 +1,5 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
-using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Common.Entities.SearchOptionsEnum;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Linq;
@@ -30,11 +28,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dao", nameof(AuthorDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
-        public Author Get(int id)
+        public Author Get(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -42,11 +40,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
-        public bool Check(int[] ids)
+        public bool Check(int[] ids, RoleType role = RoleType.None)
         {
             try
             {
@@ -61,11 +59,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error checking data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Check), "Error getting data.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -73,11 +71,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
-        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest)
+        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
@@ -94,7 +92,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Search), "Error getting data.", ex);
             }
         }
 

@@ -1,0 +1,61 @@
+﻿@model PageDataVM<ElementVM>
+@{
+    ViewBag.Title = "GetAll";
+}
+
+<h2>Catalogue</h2>
+
+@if (User.IsInRole(RoleType.librarian.ToString()))
+{
+    using (Html.BeginForm("Create", "Catalogue", FormMethod.Get))
+    {
+        @Html.AntiForgeryToken();
+
+        <input type="submit" value="Create" />
+
+        @Html.RadioButton("typeRadio", TypeEnumVM.Book, true)
+        @(" Book ")
+        @Html.RadioButton("typeRadio", TypeEnumVM.Patent)
+        @(" Patent ")
+        @Html.RadioButton("typeRadio", TypeEnumVM.NewspaperIssue)
+        @(" Newspaper issue ")
+    }
+}
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Identity</th>
+        <th>Number of pages</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Elements)
+    {
+        <tr>
+            <td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole(RoleType.admin.ToString()))
+                {
+                    bool isDeleted = !item.IsDeleted;
+                    @Html.DisplayFor(modelItem => isDeleted)
+                }
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPages)
+            </td>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <td>
+                    @Html.ActionLink("Details", "Display", new { id = item.Id, type = item.Type })
+                </td>
+            }
+        </tr>
+    }
+
+</table>
+
+@Html.Partial("_PageIteratorPartial", Model.PageInfo)

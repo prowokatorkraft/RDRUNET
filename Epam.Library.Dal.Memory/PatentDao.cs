@@ -1,5 +1,4 @@
 ﻿using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Text;
@@ -26,11 +25,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dao", nameof(PatentDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
-        public AbstractPatent Get(int id)
+        public AbstractPatent Get(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -39,11 +38,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -51,11 +50,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(GetByAuthorId), "Error getting data.", ex);
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null)
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -70,11 +69,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(GetAllGroupsByPublishYear), "Error getting data.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
@@ -82,11 +81,11 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
-        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
@@ -103,7 +102,7 @@ namespace Epam.Library.Dal.Memory
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(PatentDao), nameof(Search), "Error getting data.", ex);
             }
         }
 

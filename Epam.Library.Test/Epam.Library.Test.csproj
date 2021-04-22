@@ -65,18 +65,22 @@
     <Compile Include="BookBllTests.cs" />
     <Compile Include="CatalogueBllTests.cs" />
     <Compile Include="NewspaperBllTests.cs" />
+    <Compile Include="NewspaperIssueBllTests.cs" />
     <Compile Include="PatentBllTests.cs" />
     <Compile Include="TestCases\AuthorBllTestCases.cs" />
     <Compile Include="TestCases\BookBllTestCases.cs" />
     <Compile Include="TestCases\NewspaperBllTestCases.cs" />
+    <Compile Include="TestCases\NewspaperIssueBllTestCases.cs" />
     <Compile Include="TestCases\PatentBllTestCases.cs" />
     <Compile Include="Validation\AuthorValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\BookValidationTests.cs" />
+    <Compile Include="Validation\NewspaperIssueValidationTests.cs" />
     <Compile Include="Validation\NewspaperValidationTests.cs" />
     <Compile Include="Validation\PatentValidationTests.cs" />
     <Compile Include="Validation\TestCases\AuthorValidationTestCases.cs" />
     <Compile Include="Validation\TestCases\BookValidationTestCases.cs" />
+    <Compile Include="Validation\TestCases\NewspaperIssueValidationTestCases.cs" />
     <Compile Include="Validation\TestCases\NewspaperValidationTestCases.cs" />
     <Compile Include="Validation\TestCases\PatentValidationTestCases.cs" />
   </ItemGroup>

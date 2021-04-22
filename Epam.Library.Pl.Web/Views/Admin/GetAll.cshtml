@@ -1,0 +1,32 @@
+﻿@model PageDataVM<AccountVM>
+@{
+    Html.ViewData["Action"] = "GetAll";
+    Html.ViewData["Controller"] = "Admin";
+
+    ViewBag.Title = "GetAll";
+}
+
+<h2>GetAll</h2>
+
+<table class="table">
+    <tr>
+        <th>Login</th>
+        <th>Role</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Elements) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Login)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Role.Name)
+    </td>
+    <td>
+        @Html.ActionLink("Edit role", "EditRole", new { id = item.Id.Value })
+    </td>
+</tr>
+}
+
+</table>

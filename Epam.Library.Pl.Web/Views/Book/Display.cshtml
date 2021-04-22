@@ -1,0 +1,88 @@
+﻿@model Epam.Library.Pl.Web.ViewModels.DisplayBookVM
+@{
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("/Account/Login");
+    }
+    ViewBag.Title = "Display";
+}
+
+<h2>Display</h2>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfPages)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfPages)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Annotation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Annotation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Authors)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Authors)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PublishingCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PublishingCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PublishingYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PublishingYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Isbn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Isbn)
+        </dd>
+    </dl>
+</div>
+<p>
+    @if (User.IsInRole(RoleType.librarian.ToString()))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id })@: |
+        @Html.ActionLink("Remove", "Remove", new { id = Model.Id }); @: |
+    }
+    @Html.ActionLink("Back", "GetAll", "Catalogue")
+</p>
