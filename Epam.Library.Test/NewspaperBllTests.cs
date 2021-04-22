@@ -7,7 +7,6 @@ using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Bll;
 using Epam.Library.Test.TestCases;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Common.Entities.Newspaper;
 
 namespace Epam.Library.Test
@@ -26,7 +25,7 @@ namespace Epam.Library.Test
             {
                 listErrors.Add(error);
             }
-            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => listErrors);
+            Mock<IValidationBll<Newspaper>> validation = InitializeMockValidationForAdd(() => listErrors);
             var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
@@ -41,14 +40,14 @@ namespace Epam.Library.Test
         {
             // Arrange
             Mock<INewspaperDao> newspaperDao = InitializeMockDaoForAdd(() => throw new Exception());
-            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            Mock<IValidationBll<Newspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
             var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Add(new Newspaper());
 
             // Assert
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -56,27 +55,27 @@ namespace Epam.Library.Test
         {
             // Arrange
             Mock<INewspaperDao> newspaperDao = InitializeMockDaoForAdd(() => { });
-            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            Mock<IValidationBll<Newspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
             var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Add(null);
 
             // Assert
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<INewspaperDao> InitializeMockDaoForAdd(Action action)
         {
             var newspaperDao = new Mock<INewspaperDao>();
-            newspaperDao.Setup(a => a.Add(It.IsAny<AbstractNewspaper>())).Callback(action);
+            newspaperDao.Setup(a => a.Add(It.IsAny<Newspaper>())).Callback(action);
             return newspaperDao;
         }
 
-        private static Mock<IValidationBll<AbstractNewspaper>> InitializeMockValidationForAdd(Func<IEnumerable<ErrorValidation>> func)
+        private static Mock<IValidationBll<Newspaper>> InitializeMockValidationForAdd(Func<IEnumerable<ErrorValidation>> func)
         {
-            var validation = new Mock<IValidationBll<AbstractNewspaper>>();
-            validation.Setup<IEnumerable<ErrorValidation>>(a => a.Validate(It.IsAny<AbstractNewspaper>()))
+            var validation = new Mock<IValidationBll<Newspaper>>();
+            validation.Setup<IEnumerable<ErrorValidation>>(a => a.Validate(It.IsAny<Newspaper>()))
                 .Returns(func);
             return validation;
         }
@@ -92,11 +91,11 @@ namespace Epam.Library.Test
             {
                 listErrors.Add(error);
             }
-            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => listErrors);
+            Mock<IValidationBll<Newspaper>> validation = InitializeMockValidationForAdd(() => listErrors);
             var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
-            var errors = newspaperBll.Update(new Newspaper(0,null,0,null,false,null,null,0,null,null,DateTime.Now));
+            var errors = newspaperBll.Update(new Newspaper(0, null, null, false));
 
             // Assert
             return isAddDao;
@@ -107,14 +106,14 @@ namespace Epam.Library.Test
         {
             // Arrange
             Mock<INewspaperDao> newspaperDao = InitializeMockDaoForUpdate(() => throw new Exception());
-            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            Mock<IValidationBll<Newspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
             var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Update(new Newspaper());
 
             // Assert
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -122,20 +121,20 @@ namespace Epam.Library.Test
         {
             // Arrange
             Mock<INewspaperDao> newspaperDao = InitializeMockDaoForUpdate(() => { });
-            Mock<IValidationBll<AbstractNewspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
+            Mock<IValidationBll<Newspaper>> validation = InitializeMockValidationForAdd(() => new List<ErrorValidation>());
             var newspaperBll = new NewspaperBll(newspaperDao.Object, validation.Object);
 
             // Act
             TestDelegate action = () => newspaperBll.Update(null);
 
             // Assert
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<INewspaperDao> InitializeMockDaoForUpdate(Action action)
         {
             var newspaperDao = new Mock<INewspaperDao>();
-            newspaperDao.Setup(a => a.Update(It.IsAny<AbstractNewspaper>())).Callback(action);
+            newspaperDao.Setup(a => a.Update(It.IsAny<Newspaper>())).Callback(action);
             return newspaperDao;
         }
 
@@ -144,7 +143,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            Mock<AbstractNewspaper> newspaperValue = new Mock<AbstractNewspaper>();
+            Mock<Newspaper> newspaperValue = new Mock<Newspaper>();
 
             Mock<INewspaperDao> newspaperDao = InitializeMockDaoForGet(() => newspaperValue.Object);
 
@@ -174,7 +173,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), newspaper);
+            Assert.Throws(typeof(LayerException), newspaper);
         }
 
         [Test]
@@ -192,13 +191,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), newspaper);
+            Assert.Throws(typeof(LayerException), newspaper);
         }
 
-        private static Mock<INewspaperDao> InitializeMockDaoForGet(Func<AbstractNewspaper> func)
+        private static Mock<INewspaperDao> InitializeMockDaoForGet(Func<Newspaper> func)
         {
             var newspaperDao = new Mock<INewspaperDao>();
-            newspaperDao.Setup(a => a.Get(It.IsAny<int>())).Returns(func);
+            newspaperDao.Setup(a => a.Get(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return newspaperDao;
         }
 
@@ -236,13 +235,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(RemoveException), newspaper);
+            Assert.Throws(typeof(LayerException), newspaper);
         }
 
         private static Mock<INewspaperDao> InitializeMockDaoForRemove(Func<bool> func)
         {
             var newspaperDao = new Mock<INewspaperDao>();
-            newspaperDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(func);
+            newspaperDao.Setup(a => a.Remove(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return newspaperDao;
         }
 
@@ -251,7 +250,7 @@ namespace Epam.Library.Test
         {
             // Arrange
 
-            Mock<INewspaperDao> newspaperDao = InitializeMockDaoForSearch(() => new List<AbstractNewspaper>());
+            Mock<INewspaperDao> newspaperDao = InitializeMockDaoForSearch(() => new List<Newspaper>());
 
             var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
 
@@ -279,56 +278,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), newspaper);
+            Assert.Throws(typeof(LayerException), newspaper);
         }
 
-        private static Mock<INewspaperDao> InitializeMockDaoForSearch(Func<IEnumerable<AbstractNewspaper>> func)
+        private static Mock<INewspaperDao> InitializeMockDaoForSearch(Func<IEnumerable<Newspaper>> func)
         {
             var newspaperDao = new Mock<INewspaperDao>();
-            newspaperDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, NewspaperSearchOptions>>())).Returns(func);
-            return newspaperDao;
-        }
-
-        [Test]
-        public void GetAllGroupsByPublishYear()
-        {
-            // Arrange
-
-            Mock<INewspaperDao> newspaperDao = InitializeMockDaoForGroupsByPublishYear(() => new Dictionary<int, List<AbstractNewspaper>>());
-
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
-
-            // Act
-
-            var newspaper = newspaperBll.GetAllGroupsByPublishYear();
-
-            // Assert
-
-            Assert.NotNull(newspaper);
-        }
-
-        [Test]
-        public void GetAllGroupsByPublishYear_Exception()
-        {
-            // Arrange
-
-            Mock<INewspaperDao> newspaperDao = InitializeMockDaoForGroupsByPublishYear(() => throw new Exception());
-
-            var newspaperBll = new NewspaperBll(newspaperDao.Object, null);
-
-            // Act
-
-            TestDelegate newspaper = () => newspaperBll.GetAllGroupsByPublishYear();
-
-            // Assert
-
-            Assert.Throws(typeof(GetException), newspaper);
-        }
-
-        private static Mock<INewspaperDao> InitializeMockDaoForGroupsByPublishYear(Func<Dictionary<int, List<AbstractNewspaper>>> func)
-        {
-            var newspaperDao = new Mock<INewspaperDao>();
-            newspaperDao.Setup(a => a.GetAllGroupsByPublishYear(It.IsAny<PagingInfo>())).Returns(func);
+            newspaperDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, NewspaperSearchOptions>>(), It.IsAny<RoleType>())).Returns(func);
             return newspaperDao;
         }
     }

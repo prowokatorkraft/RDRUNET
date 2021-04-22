@@ -1,5 +1,4 @@
-﻿using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Bll.Contracts;
+﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Dal.Contracts;
@@ -12,16 +11,15 @@ namespace Epam.Library.Bll
     public class NewspaperBll : INewspaperBll
     {
         protected readonly INewspaperDao _dao;
+        protected readonly IValidationBll<Newspaper> _validation;
 
-        protected readonly IValidationBll<AbstractNewspaper> _validation;
-        
-        public NewspaperBll(INewspaperDao newspaperDao, IValidationBll<AbstractNewspaper> validation)
+        public NewspaperBll(INewspaperDao dao, IValidationBll<Newspaper> validation)
         {
-            _dao = newspaperDao;
+            _dao = dao;
             _validation = validation;
         }
 
-        public IEnumerable<ErrorValidation> Add(AbstractNewspaper newspaper)
+        public IEnumerable<ErrorValidation> Add(Newspaper newspaper)
         {
             try
             {
@@ -41,11 +39,47 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Add), "Error adding item.", ex);
             }
         }
 
-        public IEnumerable<ErrorValidation> Update(AbstractNewspaper newspaper)
+        public Newspaper Get(int id, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Get), "Error getting item.", ex);
+            }
+        }
+
+        public bool Remove(int id, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.Remove(id, role);
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Remove), "Error removing item.", ex);
+            }
+        }
+
+        public IEnumerable<Newspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.Search(searchRequest, role);
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Search), "Error getting item.", ex);
+            }
+        }
+
+        public IEnumerable<ErrorValidation> Update(Newspaper newspaper)
         {
             try
             {
@@ -69,55 +103,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
-            }
-        }
-
-        public bool Remove(int id)
-        {
-            try
-            {
-                return _dao.Remove(id);
-            }
-            catch (Exception ex)
-            {
-                throw new RemoveException("Error removing item.", ex);
-            }
-        }
-
-        public AbstractNewspaper Get(int id)
-        {
-            try
-            {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting item.", ex);
-            }
-        }
-
-        public IEnumerable<AbstractNewspaper> Search(SearchRequest<SortOptions, NewspaperSearchOptions> searchRequest)
-        {
-            try
-            {
-                return _dao.Search(searchRequest);
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting item.", ex);
-            }
-        }
-
-        public Dictionary<int, List<AbstractNewspaper>> GetAllGroupsByPublishYear()
-        {
-            try
-            {
-                return _dao.GetAllGroupsByPublishYear();
-            }
-            catch (Exception ex)
-            {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(NewspaperBll), nameof(Update), "Error updating item.", ex);
             }
         }
     }

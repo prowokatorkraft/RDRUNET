@@ -1,5 +1,4 @@
-﻿using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Bll.Contracts;
+﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Dal.Contracts;
@@ -24,7 +23,7 @@ namespace Epam.Library.Bll
             _author = author;
         }
 
-        public IEnumerable<ErrorValidation> Add(AbstractPatent patent)
+        public IEnumerable<ErrorValidation> Add(AbstractPatent patent, RoleType role = RoleType.None)
         {
             try
             {
@@ -33,7 +32,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(patent) + " is null");
                 }
 
-                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs))
+                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -49,11 +48,11 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(PatentBll), nameof(Add), "Error adding item.", ex);
             }
         }
 
-        public IEnumerable<ErrorValidation> Update(AbstractPatent patent)
+        public IEnumerable<ErrorValidation> Update(AbstractPatent patent, RoleType role = RoleType.None)
         {
             try
             {
@@ -66,7 +65,7 @@ namespace Epam.Library.Bll
                     throw new ArgumentNullException(nameof(patent.Id) + " is null");
                 }
 
-                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs))
+                if (patent.AuthorIDs != null && !_author.Check(patent.AuthorIDs, role))
                 {
                     throw new ArgumentOutOfRangeException("Incorrect AuthorIDs.");
                 }
@@ -82,67 +81,67 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
+                throw new LayerException("Bll", nameof(PatentBll), nameof(Update), "Error updating item.", ex);
             }
         }
 
-        public AbstractPatent Get(int id)
+        public AbstractPatent Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(PatentBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id);
+                return _dao.GetByAuthorId(id, role: role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Bll", nameof(PatentBll), nameof(GetByAuthorId), "Error getting item.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Remove(id);
+                return _dao.Remove(id, role);
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item.", ex);
+                throw new LayerException("Bll", nameof(PatentBll), nameof(Remove), "Error removing item.", ex);
             }
         }
 
-        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest)
+        public IEnumerable<AbstractPatent> Search(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.Search(searchRequest, role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(PatentBll), nameof(Search), "Error getting item.", ex);
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear()
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublishYear();
+                return _dao.GetAllGroupsByPublishYear(role: role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(PatentBll), nameof(GetAllGroupsByPublishYear), "Error getting item.", ex);
             }
         }
     }

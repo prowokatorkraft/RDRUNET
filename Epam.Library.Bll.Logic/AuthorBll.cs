@@ -1,8 +1,6 @@
 ﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.Common.Entities.AuthorElement;
-using Epam.Library.Common.Entities.SearchOptionsEnum;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Linq;
@@ -45,7 +43,7 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Add), "Error adding item.", ex);
             }
         }
 
@@ -73,60 +71,60 @@ namespace Epam.Library.Bll
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Update), "Error updating item.", ex);
             }
         }
 
-        public Author Get(int id)
+        public Author Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
-        public bool Check(int[] ids)
+        public bool Check(int[] ids, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Check(ids);
+                return _dao.Check(ids, role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error checking item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Check), "Error getting item.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                if (_catalogueBll.GetByAuthorId(id).Count() > 0)
+                if (_catalogueBll.GetByAuthorId(id, role).Count() > 0)
                 {
                     return false;
                 }
 
-                return _dao.Remove(id);
+                return _dao.Remove(id, role);
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Remove), "Error removing item.", ex);
             }
         }
 
-        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest)
+        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.Search(searchRequest, role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(AuthorBll), nameof(Search), "Error getting item.", ex);
             }
         }
     }

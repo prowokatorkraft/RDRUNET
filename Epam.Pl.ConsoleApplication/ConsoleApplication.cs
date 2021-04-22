@@ -31,11 +31,11 @@ namespace Epam.Library.Pl.ConsoleApplication
 
         public ConsoleApplication()
         {
-            _authorBll = DependencyInjection.AuthorBll;
-            _catalogueBll = DependencyInjection.CatalogueBll;
-            _bookBll = DependencyInjection.BookBll;
-            _newspaperBll = DependencyInjection.NewspaperBll;
-            _patentBll = DependencyInjection.PatentBll;
+            //_authorBll = authorBll;
+            //_catalogueBll = catalogueBll;
+            //_bookBll = bookBll;
+            //_newspaperBll = newspaperBll;
+            //_patentBll = patentBll;
 
             _authorPresentation = new AuthorPresentation(_authorBll, _catalogueBll, _bookBll, _patentBll);
             _bookPresentation = new BookPresentation(_authorBll, _bookBll);

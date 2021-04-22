@@ -1,5 +1,4 @@
-﻿using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Bll.Contracts;
+﻿using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Dal.Contracts;
 using System;
@@ -17,39 +16,51 @@ namespace Epam.Library.Bll
             _dao = catalogueDao;
         }
 
-        public LibraryAbstractElement Get(int id)
+        public LibraryAbstractElement Get(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Get(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.Get(id, role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting value.", ex);
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(Get), "Error getting item.", ex);
             }
         }
 
-        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.GetByAuthorId(id, role: role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting value.", ex);
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(GetByAuthorId), "Error getting item.", ex);
             }
         }
 
-        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest)
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.Search(searchRequest);
+                return _dao.GetCount(searchOptions, searchLine, role);
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting item.", ex);
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(GetCount), "Error getting item.", ex);
+            }
+        }
+
+        public IEnumerable<LibraryAbstractElement> Search(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.Search(searchRequest, role);
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Bll", nameof(CatalogueBll), nameof(Search), "Error getting item.", ex);
             }
         }
     }

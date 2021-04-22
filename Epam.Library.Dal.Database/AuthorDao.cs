@@ -1,30 +1,27 @@
 ﻿using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
-using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Common.Entities.SearchOptionsEnum;
 using Epam.Library.Dal.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace Epam.Library.Dal.Database
 {
     public class AuthorDao : IAuthorDao
     {
-        private readonly string _connectionString;
+        private readonly ConnectionStringDb _connectionStrings;
 
-        public AuthorDao(string connectionString)
+        public AuthorDao(ConnectionStringDb connectionStrings)
         {
-            _connectionString = connectionString;
+            _connectionStrings = connectionStrings;
         }
 
         public void Add(Author author)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Add", connection)
                     {
@@ -40,17 +37,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new AddException("Error adding data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Add), "Error adding data.", ex);
             }
         }
 
-        public bool Check(int[] ids)
+        public bool Check(int[] ids, RoleType role = RoleType.None)
         {
             bool result;
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Check", connection)
                     {
@@ -69,17 +66,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Check), "Error getting data.", ex);
             }
         }
 
-        public Author Get(int id)
+        public Author Get(int id, RoleType role = RoleType.None)
         {
             try
             {
                 Author author;
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_GetById", connection)
                     {
@@ -99,15 +96,15 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Get), "Error getting data.", ex);
             }
         }
 
-        public bool Remove(int id)
+        public bool Remove(int id, RoleType role = RoleType.None)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Remove", connection)
                     {
@@ -124,7 +121,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new RemoveException("Error removing data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Remove), "Error removing data.", ex);
             }
         }
 
@@ -132,7 +129,7 @@ namespace Epam.Library.Dal.Database
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(RoleType.librarian)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Authors_Update", connection)
                     {
@@ -147,17 +144,17 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new UpdateException("Error updating data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Update), "Error updating data.", ex);
             }
         }
 
-        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest)
+        public IEnumerable<Author> Search(SearchRequest<SortOptions, AuthorSearchOptions> searchRequest, RoleType role = RoleType.None)
         {
             try
             {
                 List<Author> authorList = new List<Author>();
 
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     string storedProcedure = GetProcedureForSearch(searchRequest);
 
@@ -180,7 +177,7 @@ namespace Epam.Library.Dal.Database
             }
             catch (Exception ex)
             {
-                throw new GetException("Error getting data.", ex);
+                throw new LayerException("Dal", nameof(AuthorDao), nameof(Search), "Error getting data.", ex);
             }
         }
 

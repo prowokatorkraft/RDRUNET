@@ -14,19 +14,19 @@ namespace Epam.Library.IntegrationTest.TestCases
             {
                 yield return new TestCaseData
                 (
-                    new Newspaper(null, "Search Null", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now),
+                    new Newspaper(null, "Search Null", null, false),
                     null
                 ).Returns(true);
 
                 yield return new TestCaseData
                 (
-                    new Newspaper(null, "Test One", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now),
+                    new Newspaper(null, "Test One", null, false),
                     new SearchRequest<SortOptions, NewspaperSearchOptions>(SortOptions.None, NewspaperSearchOptions.None, null)
                 ).Returns(true);
 
                 yield return new TestCaseData
                 (
-                    new Newspaper(null, "Test Name", 0, null, false, "Test", "Test", DateTime.Now.Year, null, null, DateTime.Now),
+                    new Newspaper(null, "Test Name", null, false),
                     new SearchRequest<SortOptions, NewspaperSearchOptions>(SortOptions.None, NewspaperSearchOptions.Name, "Test Name")
                 ).Returns(true);
 

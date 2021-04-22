@@ -3,12 +3,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using Epam.Library.Dal.Contracts;
-using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Bll;
-using Epam.Library.Test.TestCases;
-using Epam.Library.Common.Entities.Exceptions;
-using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement;
 
 namespace Epam.Library.Test
@@ -51,7 +47,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), catalogue);
+            Assert.Throws(typeof(LayerException), catalogue);
         }
 
         [Test]
@@ -69,13 +65,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), catalogue);
+            Assert.Throws(typeof(LayerException), catalogue);
         }
 
         private static Mock<ICatalogueDao> InitializeMockDaoForGet(Func<LibraryAbstractElement> func)
         {
             var catalogueDao = new Mock<ICatalogueDao>();
-            catalogueDao.Setup(a => a.Get(It.IsAny<int>())).Returns(func);
+            catalogueDao.Setup(a => a.Get(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return catalogueDao;
         }
 
@@ -112,13 +108,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), catalogue);
+            Assert.Throws(typeof(LayerException), catalogue);
         }
 
         private static Mock<ICatalogueDao> InitializeMockDaoForGetByAuthorId(Func<IEnumerable<AbstractAuthorElement>> func)
         {
             var catalogueDao = new Mock<ICatalogueDao>();
-            catalogueDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>())).Returns(func);
+            catalogueDao.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<PagingInfo>(), It.IsAny<RoleType>())).Returns(func);
             return catalogueDao;
         }
 
@@ -155,13 +151,55 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), catalogue);
+            Assert.Throws(typeof(LayerException), catalogue);
+        }
+
+        [Test]
+        public void GetCount()
+        {
+            // Arrange
+
+            Mock<ICatalogueDao> catalogueDao = InitializeMockDaoForGetCount(() => 3);
+
+            var catalogueBll = new CatalogueBll(catalogueDao.Object);
+
+            // Act
+
+            var count = catalogueBll.GetCount();
+
+            // Assert
+
+            Assert.AreEqual(count, 3);
+        }
+
+        [Test]
+        public void GetCount_Exception()
+        {
+            // Arrange
+
+            Mock<ICatalogueDao> catalogueDao = InitializeMockDaoForGetCount(() => throw new Exception());
+
+            var catalogueBll = new CatalogueBll(catalogueDao.Object);
+
+            // Act
+
+            TestDelegate catalogue = () => catalogueBll.GetCount();
+
+            // Assert
+
+            Assert.Throws(typeof(LayerException), catalogue);
         }
 
         private static Mock<ICatalogueDao> InitializeMockDaoForSearch(Func<IEnumerable<LibraryAbstractElement>> func)
         {
             var catalogueDao = new Mock<ICatalogueDao>();
-            catalogueDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, CatalogueSearchOptions>>())).Returns(func);
+            catalogueDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, CatalogueSearchOptions>>(), It.IsAny<RoleType>())).Returns(func);
+            return catalogueDao;
+        }
+        private static Mock<ICatalogueDao> InitializeMockDaoForGetCount(Func<int> func)
+        {
+            var catalogueDao = new Mock<ICatalogueDao>();
+            catalogueDao.Setup(a => a.GetCount(It.IsAny<CatalogueSearchOptions>(), It.IsAny<string>(), It.IsAny<RoleType>())).Returns(func);
             return catalogueDao;
         }
     }

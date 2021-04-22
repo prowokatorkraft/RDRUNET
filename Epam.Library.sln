@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Database.sql = Database.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.Library.Pl.Web", "Epam.Library.Pl.Web\Epam.Library.Pl.Web.csproj", "{818CAC02-2C71-46C0-A4B5-C5935935C9A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{B7047B3B-64F6-4984-A082-D943241AE266}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7047B3B-64F6-4984-A082-D943241AE266}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7047B3B-64F6-4984-A082-D943241AE266}.Release|Any CPU.Build.0 = Release|Any CPU
+		{818CAC02-2C71-46C0-A4B5-C5935935C9A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{818CAC02-2C71-46C0-A4B5-C5935935C9A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{818CAC02-2C71-46C0-A4B5-C5935935C9A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{818CAC02-2C71-46C0-A4B5-C5935935C9A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{C029DF8B-E3F8-4B47-A22E-BCD473B60CA9} = {F4F5A632-E255-43C1-8298-9DCA1CCCF1DC}
 		{AD0B8DE3-3159-47F3-A84E-4618E1E2DD53} = {F4F5A632-E255-43C1-8298-9DCA1CCCF1DC}
 		{B7047B3B-64F6-4984-A082-D943241AE266} = {53F09DE8-5FA7-4BB0-8BAB-1A31E7C7254F}
+		{818CAC02-2C71-46C0-A4B5-C5935935C9A9} = {13F0FA62-A488-4C7D-BA02-73A6ED9B93B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97F975EB-63A0-4C5D-B89F-4626C9954327}
