@@ -55,6 +55,7 @@
     <Compile Include="BookBllIntegrationTests.cs" />
     <Compile Include="CatalogueBllIntegrationTests.cs" />
     <Compile Include="NewspaperBllIntegrationTests.cs" />
+    <Compile Include="NewspaperIssueBllIntegrationTests.cs" />
     <Compile Include="NinjectForTests.cs" />
     <Compile Include="PatentBllIntegrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="TestCases\BookBllIntegrationTestCases.cs" />
     <Compile Include="TestCases\CatalogueBllIntegrationTestCases.cs" />
     <Compile Include="TestCases\NewspaperBllIntegrationTestCases.cs" />
+    <Compile Include="TestCases\NewspaperIssueBllIntegrationTestCases.cs" />
     <Compile Include="TestCases\PatentBllIntegrationTestCases.cs" />
   </ItemGroup>
   <ItemGroup>

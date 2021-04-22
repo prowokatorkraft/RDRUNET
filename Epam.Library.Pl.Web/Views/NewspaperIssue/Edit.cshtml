@@ -100,9 +100,8 @@
 @section Scripts {
     @Scripts.Render("~/Scripts/jquery.validate.js")
     @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.js")
-    @if (Model != null)
-    {
-        <script> let newspaperIdSelected = @Model.NewspaperId; </script>
-    }
+    <script>
+        let newspaperIdSelected = @(Model != null ? Model.NewspaperId : -1);
+    </script>
     @Scripts.Render("~/Scripts/Custom/NewspaperId.js")
 }

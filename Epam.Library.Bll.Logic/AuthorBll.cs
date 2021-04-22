@@ -108,7 +108,7 @@ namespace Epam.Library.Bll
                     return false;
                 }
 
-                return _dao.Remove(id);
+                return _dao.Remove(id, role);
             }
             catch (Exception ex)
             {

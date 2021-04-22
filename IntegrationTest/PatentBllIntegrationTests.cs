@@ -1,9 +1,7 @@
 ﻿using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.DependencyInjection;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.IntegrationTest.TestCases;
 using NUnit.Framework;
 using System;
@@ -35,9 +33,9 @@ namespace Epam.Library.IntegrationTest
         [OneTimeTearDown]
         public void DiposeClass()
         {
-            _patentIDs.ForEach(a => _patentBll.Remove(a));
+            _patentIDs.ForEach(a => _patentBll.Remove(a, RoleType.admin));
 
-            _authorIDs.ForEach(a => _authorBll.Remove(a));
+            _authorIDs.ForEach(a => _authorBll.Remove(a, RoleType.admin));
         }
 
         [Test]
@@ -92,7 +90,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<AddException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCoutn, GetCount());
             });
         }
@@ -156,7 +154,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<UpdateException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCoutn, GetCount());
             });
         }
@@ -173,7 +171,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<UpdateException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCoutn, GetCount());
             });
         }
@@ -191,21 +189,17 @@ namespace Epam.Library.IntegrationTest
             int preCount = GetCount();
 
             // Act
-            bool isRemoved = _patentBll.Remove(id);
+            _patentBll.Remove(id, RoleType.admin);
 
             int postCount = GetCount();
 
-            if (!isRemoved || preCount == postCount)
+            if (preCount == postCount)
             {
                 _patentIDs.Add(id);
             }
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.IsTrue(isRemoved);
-                Assert.AreEqual(preCount - 1, postCount);
-            });
+            Assert.AreEqual(preCount - 1, postCount);
         }
 
         [Test]
@@ -220,7 +214,7 @@ namespace Epam.Library.IntegrationTest
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.Throws<RemoveException>(test);
+                Assert.Throws<LayerException>(test);
                 Assert.AreEqual(preCount, GetCount());
             });
         }
@@ -254,7 +248,7 @@ namespace Epam.Library.IntegrationTest
             TestDelegate test = () => _patentBll.Get(-30000);
 
             // Assert
-            Assert.Throws<GetException>(test);
+            Assert.Throws<LayerException>(test);
         }
 
         [TestCaseSource(typeof(PatentBllIntegrationTestCases), nameof(PatentBllIntegrationTestCases.Search))]

@@ -1,10 +1,8 @@
 ﻿using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.DependencyInjection;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
-using Epam.Library.Common.Entities.Exceptions;
 using Epam.Library.IntegrationTest.TestCases;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -39,11 +37,11 @@ namespace Epam.Library.IntegrationTest
         [OneTimeTearDown]
         public void DiposeClass()
         {
-            _bookIDs.ForEach(a => _bookBll.Remove(a));
+            _bookIDs.ForEach(a => _bookBll.Remove(a, RoleType.admin));
 
-            _patentIDs.ForEach(a => _patentBll.Remove(a));
+            _patentIDs.ForEach(a => _patentBll.Remove(a, RoleType.admin));
 
-            _authorIDs.ForEach(a => _authorBll.Remove(a));
+            _authorIDs.ForEach(a => _authorBll.Remove(a, RoleType.admin));
         }
 
         [Test]
@@ -74,7 +72,7 @@ namespace Epam.Library.IntegrationTest
             TestDelegate test = () => _catalogueBll.Get(-30000);
 
             // Assert
-            Assert.Throws<GetException>(test);
+            Assert.Throws<LayerException>(test);
         }
 
         [TestCaseSource(typeof(CatalogueBllIntegrationTestCases), nameof(CatalogueBllIntegrationTestCases.Search))]

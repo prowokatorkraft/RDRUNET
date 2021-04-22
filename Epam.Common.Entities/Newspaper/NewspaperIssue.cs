@@ -23,7 +23,7 @@ namespace Epam.Library.Common.Entities.Newspaper
 
         }
         public NewspaperIssue(int? id, string name, int numberOfPages, string annotation, bool deleted, string publisher,
-            string publishingCity, int publishingYear, int? number, DateTime date)
+            string publishingCity, int publishingYear, int? number, DateTime date, int newspaperId)
         {
             Id = id;
             Name = name;
@@ -35,6 +35,7 @@ namespace Epam.Library.Common.Entities.Newspaper
             PublishingYear = publishingYear;
             Number = number;
             Date = date;
+            NewspaperId = newspaperId;
         }
 
         public override bool Equals(object obj)
@@ -54,7 +55,7 @@ namespace Epam.Library.Common.Entities.Newspaper
         }
         public override object Clone()
         {
-            return new NewspaperIssue(Id, Name, NumberOfPages, Annotation, Deleted, Publisher, PublishingCity, PublishingYear, Number, Date);
+            return new NewspaperIssue(Id, Name, NumberOfPages, Annotation, Deleted, Publisher, PublishingCity, PublishingYear, Number, Date, NewspaperId);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Epam.Library.Pl.ConsoleApplication
 
         private readonly IBookBll _bookBll;
 
-        private readonly IOldNewspaperBll _newspaperBll;
+        private readonly INewspaperBll _newspaperBll;
 
         private readonly IPatentBll _patentBll;
 

@@ -10,7 +10,8 @@ namespace Epam.Library.IntegrationTest
         public static ICatalogueBll CatalogueBll { get; private set; }
         public static IBookBll BookBll { get; private set; }
         public static IPatentBll PatentBll { get; private set; }
-        public static IOldNewspaperBll NewspaperBll { get; private set; }
+        public static INewspaperBll NewspaperBll { get; private set; }
+        public static INewspaperIssueBll NewspaperIssueBll { get; private set; }
 
         static NinjectForTests()
         {
@@ -21,7 +22,8 @@ namespace Epam.Library.IntegrationTest
             CatalogueBll = kernel.Get<ICatalogueBll>();
             BookBll = kernel.Get<IBookBll>();
             PatentBll = kernel.Get<IPatentBll>();
-            NewspaperBll = kernel.Get<IOldNewspaperBll>();
+            NewspaperBll = kernel.Get<INewspaperBll>();
+            NewspaperIssueBll = kernel.Get<INewspaperIssueBll>();
         }
     }
 }

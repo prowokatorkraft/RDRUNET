@@ -8,7 +8,6 @@ using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.Entities;
 using Epam.Library.Bll;
 using Epam.Library.Test.TestCases;
-using Epam.Library.Common.Entities.Exceptions;
 
 namespace Epam.Library.Test
 {
@@ -59,7 +58,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -78,7 +77,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(AddException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<IValidationBll<Author>> InitializeMockValidationForAdd(Func<IEnumerable<ErrorValidation>> func)
@@ -140,7 +139,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         [Test]
@@ -159,7 +158,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(UpdateException), action);
+            Assert.Throws(typeof(LayerException), action);
         }
 
         private static Mock<IAuthorDao> InitializeMockDaoForUpdate(Action action)
@@ -202,7 +201,7 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), author);
+            Assert.Throws(typeof(LayerException), author);
         }
 
         [Test]
@@ -220,13 +219,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), author);
+            Assert.Throws(typeof(LayerException), author);
         }
 
         private static Mock<IAuthorDao> InitializeMockDaoForGet(Func<Author> func)
         {
             var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Get(It.IsAny<int>())).Returns(func);
+            authorDao.Setup(a => a.Get(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return authorDao;
         }
 
@@ -264,13 +263,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), author);
+            Assert.Throws(typeof(LayerException), author);
         }
 
         private static Mock<IAuthorDao> InitializeMockDaoForCheck(Func<bool> func)
         {
             var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Check(It.IsAny<int[]>())).Returns(func);
+            authorDao.Setup(a => a.Check(It.IsAny<int[]>(), It.IsAny<RoleType>())).Returns(func);
             return authorDao;
         }
 
@@ -334,20 +333,20 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(RemoveException), author);
+            Assert.Throws(typeof(LayerException), author);
         }
 
         private static Mock<ICatalogueBll> InitializeMockCatalogueForRemove(Func<IEnumerable<AbstractAuthorElement>> func)
         {
             var catalogue = new Mock<ICatalogueBll>();
-            catalogue.Setup(a => a.GetByAuthorId(It.IsAny<int>())).Returns(func);
+            catalogue.Setup(a => a.GetByAuthorId(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return catalogue;
         }
 
         private static Mock<IAuthorDao> InitializeMockDaoForRemove(Func<bool> func)
         {
             var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Remove(It.IsAny<int>())).Returns(func);
+            authorDao.Setup(a => a.Remove(It.IsAny<int>(), It.IsAny<RoleType>())).Returns(func);
             return authorDao;
         }
 
@@ -384,13 +383,13 @@ namespace Epam.Library.Test
 
             // Assert
 
-            Assert.Throws(typeof(GetException), author);
+            Assert.Throws(typeof(LayerException), author);
         }
 
         private static Mock<IAuthorDao> InitializeMockDaoForSearch(Func<IEnumerable<Author>> func)
         {
             var authorDao = new Mock<IAuthorDao>();
-            authorDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, AuthorSearchOptions>>())).Returns(func);
+            authorDao.Setup(a => a.Search(It.IsAny<SearchRequest<SortOptions, AuthorSearchOptions>>(), It.IsAny<RoleType>())).Returns(func);
             return authorDao;
         }
     }

@@ -175,7 +175,7 @@ namespace Epam.Library.Dal.Database
             }
             if (reader["NewspaperId"] is int)
             {
-                return TypeDaoEnum.Newspaper;
+                return TypeDaoEnum.NewspaperIssue;
             }
 
             return TypeDaoEnum.None;
@@ -218,7 +218,7 @@ namespace Epam.Library.Dal.Database
                     return _bookDao.Get(id, role);
                 case TypeDaoEnum.Patent:
                     return _patentDao.Get(id, role);
-                case TypeDaoEnum.Newspaper:
+                case TypeDaoEnum.NewspaperIssue:
                     return _newspaperIssueDao.Get(id, role);
                 default:
                     return null;
