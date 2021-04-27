@@ -48,7 +48,7 @@ namespace Epam.Library.Dal.Database
             try
             {
                 AbstractBook book;
-                
+
                 using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Books_GetById", connection)
@@ -108,7 +108,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForSearchByPublishingYear(null, page, command);
+                    AddParametersForSearchByPublishingYear(null, page, numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -142,7 +142,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForGet(id, page ?? new PagingInfo(), command);
+                    AddParametersForGet(id, page ?? new PagingInfo(), numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -282,23 +282,32 @@ namespace Epam.Library.Dal.Database
             authorParam.SqlDbType = SqlDbType.Structured;
             authorParam.TypeName = "dbo.IDList";
         }
-        private void AddParametersForGet(int id, PagingInfo page, SqlCommand command)
+        private void AddParametersForGet(int id, PagingInfo page, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
-        private void AddParametersForGrouping(PagingInfo page, SqlCommand command)
+        private void AddParametersForGrouping(PagingInfo page, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             command.Parameters.AddWithValue("@SortDescending", false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
         private void AddParametersForSearch(SearchRequest<SortOptions, BookSearchOptions> searchRequest, SqlCommand command)
         {
-            if (searchRequest != null && searchRequest.SearchOptions != BookSearchOptions.None)
+            if (searchRequest != null)
             {
-                command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                if (searchRequest.SearchOptions != BookSearchOptions.None)
+                {
+                    command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                }
+                command.Parameters.AddWithValue("@MinNumberOfPages", searchRequest?.NumberOfPageFilter.MinNumberOfPages);
+                command.Parameters.AddWithValue("@MaxNumberOfPages", searchRequest?.NumberOfPageFilter.MaxNumberOfPages);
             }
 
             PagingInfo page = searchRequest?.PagingInfo ?? new PagingInfo();
@@ -307,12 +316,14 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
         }
-        private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, SqlCommand command)
+        private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             if (publishingYear != null)
             {
                 command.Parameters.AddWithValue("@SearchLine", publishingYear);
             }
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
 
             PagingInfo page = paging is null
                         ? new PagingInfo()

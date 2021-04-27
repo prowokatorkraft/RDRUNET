@@ -109,11 +109,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(RoleType role = RoleType.None)
+        public Dictionary<int, List<AbstractBook>> GetAllGroupsByPublishYear(PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublishYear(role: role);
+                return _dao.GetAllGroupsByPublishYear(page: page, numberOfPageFilter: numberOfPageFilter, role: role);
             }
             catch (Exception ex)
             {
@@ -145,11 +145,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page, RoleType role = RoleType.None)
+        public IEnumerable<AbstractBook> GetByAuthorId(int id, PagingInfo page, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id, page, role);
+                return _dao.GetByAuthorId(id, page, numberOfPageFilter: numberOfPageFilter, role);
             }
             catch (Exception ex)
             {

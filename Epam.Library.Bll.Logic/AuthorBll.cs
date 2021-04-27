@@ -103,7 +103,7 @@ namespace Epam.Library.Bll
         {
             try
             {
-                if (_catalogueBll.GetByAuthorId(id, role).Count() > 0)
+                if (_catalogueBll.GetByAuthorId(id, role: role).Count() > 0)
                 {
                     return false;
                 }

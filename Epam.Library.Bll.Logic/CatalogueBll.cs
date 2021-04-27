@@ -28,11 +28,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, RoleType role = RoleType.None)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id, role: role) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.GetByAuthorId(id, numberOfPageFilter: numberOfPageFilter, role: role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -40,11 +40,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, RoleType role = RoleType.None)
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetCount(searchOptions, searchLine, role);
+                return _dao.GetCount(searchOptions, searchLine, numberOfPageFilter, role);
             }
             catch (Exception ex)
             {

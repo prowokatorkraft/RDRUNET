@@ -38,7 +38,7 @@ namespace Epam.Library.Dal.Database
             try
             {
                 TypeDaoEnum typeDao;
-                
+
                 using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     SqlCommand command = new SqlCommand("dbo.Catalogue_GetById", connection)
@@ -63,7 +63,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
+        public IEnumerable<AbstractAuthorElement> GetByAuthorId(int id, PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForGet(id, page, command);
+                    AddParametersForGet(id, page, numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -103,7 +103,7 @@ namespace Epam.Library.Dal.Database
             {
                 List<LibraryAbstractElement> elements = new List<LibraryAbstractElement>();
                 List<int> idList = new List<int>();
-                
+
                 using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
                 {
                     string storedProcedure = GetProcedureForSearch(searchRequest);
@@ -133,7 +133,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, RoleType role = RoleType.None)
+        public int GetCount(CatalogueSearchOptions searchOptions = CatalogueSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -146,7 +146,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForCount(searchOptions, searchLine, command);
+                    AddParametersForCount(searchOptions, searchLine, numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -181,19 +181,26 @@ namespace Epam.Library.Dal.Database
             return TypeDaoEnum.None;
         }
 
-        private void AddParametersForGet(int id, PagingInfo pagingInfo, SqlCommand command)
+        private void AddParametersForGet(int id, PagingInfo pagingInfo, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             PagingInfo page = pagingInfo ?? new PagingInfo();
 
             command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
         private void AddParametersForSearch(SearchRequest<SortOptions, CatalogueSearchOptions> searchRequest, SqlCommand command)
         {
-            if (searchRequest != null && searchRequest.SearchOptions != CatalogueSearchOptions.None)
+            if (searchRequest != null)
             {
-                command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                if (searchRequest.SearchOptions != CatalogueSearchOptions.None)
+                {
+                    command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                }
+                command.Parameters.AddWithValue("@MinNumberOfPages", searchRequest.NumberOfPageFilter?.MinNumberOfPages);
+                command.Parameters.AddWithValue("@MaxNumberOfPages", searchRequest.NumberOfPageFilter?.MaxNumberOfPages);
             }
 
             PagingInfo page = searchRequest?.PagingInfo ?? new PagingInfo();
@@ -202,12 +209,14 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
             command.Parameters.AddWithValue("@Page", page.PageNumber);
         }
-        private void AddParametersForCount(CatalogueSearchOptions searchOptions, string searchLine, SqlCommand command)
+        private void AddParametersForCount(CatalogueSearchOptions searchOptions, string searchLine, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             if (searchOptions != CatalogueSearchOptions.None)
             {
                 command.Parameters.AddWithValue("@SearchLine", searchLine);
             }
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
 
         private LibraryAbstractElement GetElementByTypeDao(int id, TypeDaoEnum typeDao, RoleType role)

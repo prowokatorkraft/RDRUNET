@@ -50,7 +50,7 @@ namespace Epam.Library.Pl.Web.Controllers
                                                     ? CatalogueSearchOptions.None 
                                                     : CatalogueSearchOptions.Name, 
                                                 searchLine,
-                                                role
+                                                role: role
                     ) / (double)sizePage),
                     Action = nameof(GetAll),
                     Controller = "Catalogue",

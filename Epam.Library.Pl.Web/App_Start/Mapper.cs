@@ -274,7 +274,7 @@ namespace Epam.Library.Pl.Web
             return builder.ToString();
         }
 
-        public TResult Map<TResult, TModel>(TModel model, RoleType role/* = RoleType.None*/)
+        public TResult Map<TResult, TModel>(TModel model, RoleType role)
         {
             _role = role;
             return _mapper.Map<TModel, TResult>(model);

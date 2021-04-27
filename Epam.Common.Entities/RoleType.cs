@@ -5,6 +5,7 @@
         None,
         user,
         librarian,
-        admin
+        admin,
+        externalClient
     }
 }

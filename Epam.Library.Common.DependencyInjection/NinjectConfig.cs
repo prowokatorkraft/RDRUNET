@@ -143,10 +143,11 @@ namespace Epam.Library.Common.DependencyInjection
 
             account = identityDb.Accounts[RoleType.librarian.ToString()];
             identityConndectionStrings.Add(RoleType.librarian, string.Format(connectionString, account.UserID, account.Password));
+            identityConndectionStrings.Add(RoleType.externalClient, identityConndectionStrings[RoleType.librarian]);
 
             account = identityDb.Accounts[RoleType.user.ToString()];
             identityConndectionStrings.Add(RoleType.user, string.Format(connectionString, account.UserID, account.Password));
-
+            
             return identityConndectionStrings;
         }
     }

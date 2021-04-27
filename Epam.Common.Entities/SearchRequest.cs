@@ -7,11 +7,9 @@ namespace Epam.Library.Common.Entities
         where Search: Enum
     {
         public Sort SortOptions { get; set; }
-
         public Search SearchOptions { get; set; }
-
         public string SearchLine { get; set; }
-
+        public NumberOfPageFilter NumberOfPageFilter { get; set; }
         public PagingInfo PagingInfo { get; set; }
 
         public SearchRequest()
