@@ -234,6 +234,36 @@ namespace Epam.Library.Dal.Database
             }
         }
 
+        public int GetCount(BookSearchOptions searchOptions = BookSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
+        {
+            try
+            {
+                int count;
+
+                string storedProcedure = GetProcedureForCount(searchOptions);
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    AddParametersForCount(searchOptions, searchLine, numberOfPageFilter, command);
+
+                    connection.Open();
+
+                    var reader = command.ExecuteReader();
+                    reader.Read();
+                    count = (int)reader["Count"];
+                }
+
+                return count;
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Dal", nameof(BookDao), nameof(GetCount), "Error getting data.", ex);
+            }
+        }
+
         public void Update(AbstractBook book)
         {
             try
@@ -286,7 +316,7 @@ namespace Epam.Library.Dal.Database
         {
             command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
             command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
             command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
@@ -294,7 +324,7 @@ namespace Epam.Library.Dal.Database
         {
             command.Parameters.AddWithValue("@SortDescending", false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
             command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
             command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
@@ -314,7 +344,7 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@SortDescending", searchRequest?.SortOptions.HasFlag(SortOptions.Descending) ?? false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
         }
         private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
@@ -331,7 +361,16 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@SortDescending", false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
+        }
+        private void AddParametersForCount(BookSearchOptions searchOptions, string searchLine, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
+        {
+            if (searchOptions != BookSearchOptions.None)
+            {
+                command.Parameters.AddWithValue("@SearchLine", searchLine);
+            }
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
 
         private DataTable WrapInTable(int[] AuthorIDs)
@@ -428,6 +467,25 @@ namespace Epam.Library.Dal.Database
                     break;
                 default:
                     storedProcedure = "dbo.Books_GetAll";
+                    break;
+            }
+
+            return storedProcedure;
+        }
+        private string GetProcedureForCount(BookSearchOptions searchOptions)
+        {
+            string storedProcedure;
+
+            switch (searchOptions)
+            {
+                case BookSearchOptions.Name:
+                    storedProcedure = "dbo.Books_CountByName";
+                    break;
+                case BookSearchOptions.Publisher:
+                    storedProcedure = "dbo.Books_CountByPublisher";
+                    break;
+                default:
+                    storedProcedure = "dbo.Books_Count";
                     break;
             }
 

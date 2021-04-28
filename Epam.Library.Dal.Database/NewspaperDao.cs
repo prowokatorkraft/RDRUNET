@@ -176,7 +176,7 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@SortDescending", searchRequest?.SortOptions.HasFlag(SortOptions.Descending) ?? false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
         }
 
         private Newspaper GetNewspaperByReader(SqlDataReader reader)

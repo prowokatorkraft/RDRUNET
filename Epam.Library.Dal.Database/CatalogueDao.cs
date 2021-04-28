@@ -187,7 +187,7 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
             command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
             command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
@@ -207,7 +207,7 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@SortDescending", searchRequest?.SortOptions.HasFlag(SortOptions.Descending) ?? false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
         }
         private void AddParametersForCount(CatalogueSearchOptions searchOptions, string searchLine, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {

@@ -176,5 +176,10 @@ namespace Epam.Library.Dal.Memory
         {
             throw new NotImplementedException();
         }
+
+        public int GetCount(BookSearchOptions searchOptions = BookSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

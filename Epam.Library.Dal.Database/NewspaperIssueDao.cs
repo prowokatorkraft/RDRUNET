@@ -71,7 +71,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, PagingInfo paging = null, SortOptions sort = SortOptions.None, RoleType role = RoleType.None)
+        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, PagingInfo paging = null, SortOptions sort = SortOptions.None, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForGetAllByNewspaper(newspaperId, paging, sort, command);
+                    AddParametersForGetAllByNewspaper(newspaperId, paging, sort, numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -102,7 +102,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public int GetCountByNewspaper(int newspaperId, RoleType role = RoleType.None)
+        public int GetCountByNewspaper(int newspaperId, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    command.Parameters.AddWithValue("@Id", newspaperId);
+                    AddParametersForGetCountByNewspaper(newspaperId, numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -131,7 +131,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Dictionary<int, List<NewspaperIssue>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
+        public Dictionary<int, List<NewspaperIssue>> GetAllGroupsByPublishYear(PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForSearchByPublishingYear(null, page, command);
+                    AddParametersForSearchByPublishingYear(null, page, numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -223,6 +223,36 @@ namespace Epam.Library.Dal.Database
             }
         }
 
+        public int GetCount(NewspaperIssueSearchOptions searchOptions = NewspaperIssueSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
+        {
+            try
+            {
+                int count;
+
+                string storedProcedure = GetProcedureForCount(searchOptions);
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    AddParametersForCount(searchOptions, searchLine, numberOfPageFilter, command);
+
+                    connection.Open();
+
+                    var reader = command.ExecuteReader();
+                    reader.Read();
+                    count = (int)reader["Count"];
+                }
+
+                return count;
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(GetCount), "Error getting data.", ex);
+            }
+        }
+
         public void Update(NewspaperIssue issue)
         {
             try
@@ -245,7 +275,7 @@ namespace Epam.Library.Dal.Database
                 throw new LayerException("Dal", nameof(NewspaperIssueDao), nameof(Update), "Error updating data.", ex);
             }
         }
-        
+
         private NewspaperIssue GetIssueByReader(SqlDataReader reader)
         {
             NewspaperIssue issue;
@@ -267,7 +297,7 @@ namespace Epam.Library.Dal.Database
 
             return issue;
         }
-        
+
         private string GetProcedureForSearch(SearchRequest<SortOptions, NewspaperIssueSearchOptions> searchRequest)
         {
             string storedProcedure;
@@ -279,6 +309,22 @@ namespace Epam.Library.Dal.Database
                     break;
                 default:
                     storedProcedure = "dbo.NewspaperIssues_GetAll";
+                    break;
+            }
+
+            return storedProcedure;
+        }
+        private string GetProcedureForCount(NewspaperIssueSearchOptions searchOptions)
+        {
+            string storedProcedure;
+
+            switch (searchOptions)
+            {
+                case NewspaperIssueSearchOptions.Name:
+                    storedProcedure = "dbo.NewspaperIssues_CountByName";
+                    break;
+                default:
+                    storedProcedure = "dbo.NewspaperIssues_Count";
                     break;
             }
 
@@ -305,7 +351,7 @@ namespace Epam.Library.Dal.Database
             command.Parameters.AddWithValue("@Date", issue.Date);
             command.Parameters.AddWithValue("@NewspaperId", issue.NewspaperId);
         }
-        private void AddParametersForGetAllByNewspaper(int id, PagingInfo paging, SortOptions sort, SqlCommand command)
+        private void AddParametersForGetAllByNewspaper(int id, PagingInfo paging, SortOptions sort, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             command.Parameters.AddWithValue("@Id", id);
 
@@ -313,27 +359,42 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@SortDescending", sort.HasFlag(SortOptions.Descending) ? false : true);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
+        }
+        private void AddParametersForGetCountByNewspaper(int id, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
+        {
+            command.Parameters.AddWithValue("@Id", id);
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
         private void AddParametersForSearch(SearchRequest<SortOptions, NewspaperIssueSearchOptions> searchRequest, SqlCommand command)
         {
-            if (searchRequest != null && searchRequest.SearchOptions != NewspaperIssueSearchOptions.None)
+            if (searchRequest != null)
             {
-                command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                if (searchRequest.SearchOptions != NewspaperIssueSearchOptions.None)
+                {
+                    command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                }
+                command.Parameters.AddWithValue("@MinNumberOfPages", searchRequest.NumberOfPageFilter?.MinNumberOfPages);
+                command.Parameters.AddWithValue("@MaxNumberOfPages", searchRequest.NumberOfPageFilter?.MaxNumberOfPages);
             }
 
             PagingInfo page = searchRequest?.PagingInfo ?? new PagingInfo();
 
             command.Parameters.AddWithValue("@SortDescending", searchRequest?.SortOptions.HasFlag(SortOptions.Descending) ?? false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
         }
-        private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, SqlCommand command)
+        private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             if (publishingYear != null)
             {
                 command.Parameters.AddWithValue("@SearchLine", publishingYear);
             }
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
 
             PagingInfo page = paging is null
                         ? new PagingInfo()
@@ -341,9 +402,18 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@SortDescending", false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
         }
-
+        private void AddParametersForCount(NewspaperIssueSearchOptions searchOptions, string searchLine, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
+        {
+            if (searchOptions != NewspaperIssueSearchOptions.None)
+            {
+                command.Parameters.AddWithValue("@SearchLine", searchLine);
+            }
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
+        }
+        
         private void GroupByPublishingYear(Dictionary<int, List<NewspaperIssue>> group, List<NewspaperIssue> issueList)
         {
             foreach (var keyItem in issueList.GroupBy(e => e.PublishingYear))
@@ -358,7 +428,5 @@ namespace Epam.Library.Dal.Database
                 }
             }
         }
-
-        
     }
 }

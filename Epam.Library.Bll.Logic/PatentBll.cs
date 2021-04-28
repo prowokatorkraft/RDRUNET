@@ -97,11 +97,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id, RoleType role = RoleType.None)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetByAuthorId(id, role: role);
+                return _dao.GetByAuthorId(id, numberOfPageFilter: numberOfPageFilter, role: role);
             }
             catch (Exception ex)
             {
@@ -133,15 +133,27 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(RoleType role = RoleType.None)
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublishYear(role: role);
+                return _dao.GetAllGroupsByPublishYear(page: page, numberOfPageFilter: numberOfPageFilter, role: role);
             }
             catch (Exception ex)
             {
                 throw new LayerException("Bll", nameof(PatentBll), nameof(GetAllGroupsByPublishYear), "Error getting item.", ex);
+            }
+        }
+
+        public int GetCount(PatentSearchOptions searchOptions = PatentSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.GetCount(searchOptions, searchLine, numberOfPageFilter, role);
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Bll", nameof(NewspaperIssueBll), nameof(GetCount), "Error getting item.", ex);
             }
         }
     }

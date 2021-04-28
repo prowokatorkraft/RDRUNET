@@ -103,7 +103,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 PageInfo = new PageInfoVM()
                 {
                     CurrentPage = pageNumber,
-                    CountPage = (int)Math.Ceiling(a: _newspaperIssueBll.GetCountByNewspaper(NewspaperIssue.Newspaper.Id.Value, role) / (double)sizePage),
+                    CountPage = (int)Math.Ceiling(a: _newspaperIssueBll.GetCountByNewspaper(NewspaperIssue.Newspaper.Id.Value, role: role) / (double)sizePage),
                     Action = nameof(Display),
                     Controller = "NewspaperIssue",
                     Values = values
@@ -111,7 +111,7 @@ namespace Epam.Library.Pl.Web.Controllers
                 Elements = elements
             };
 
-            foreach (var item in _newspaperIssueBll.GetAllByNewspaper(NewspaperIssue.Newspaper.Id.Value, new PagingInfo(sizePage, pageNumber), SortOptions.Descending, role))
+            foreach (var item in _newspaperIssueBll.GetAllByNewspaper(NewspaperIssue.Newspaper.Id.Value, new PagingInfo(sizePage, pageNumber), SortOptions.Descending, role: role))
             {
                 elements.Add(_mapper.Map<ElementVM, NewspaperIssue>(item, role));
             }

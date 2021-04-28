@@ -62,11 +62,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, PagingInfo paging = null, SortOptions sort = SortOptions.None, RoleType role = RoleType.None)
+        public IEnumerable<NewspaperIssue> GetAllByNewspaper(int newspaperId, PagingInfo paging = null, SortOptions sort = SortOptions.None, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllByNewspaper(newspaperId, paging, sort, role) ?? throw new ArgumentException("Incorrect id.");
+                return _dao.GetAllByNewspaper(newspaperId, paging, numberOfPageFilter: numberOfPageFilter, sort: sort, role: role) ?? throw new ArgumentException("Incorrect id.");
             }
             catch (Exception ex)
             {
@@ -74,11 +74,11 @@ namespace Epam.Library.Bll
             }
         }
 
-        public Dictionary<int, List<NewspaperIssue>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
+        public Dictionary<int, List<NewspaperIssue>> GetAllGroupsByPublishYear(PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetAllGroupsByPublishYear(role: role);
+                return _dao.GetAllGroupsByPublishYear(numberOfPageFilter: numberOfPageFilter, role: role);
             }
             catch (Exception ex)
             {
@@ -86,11 +86,23 @@ namespace Epam.Library.Bll
             }
         }
 
-        public int GetCountByNewspaper(int newspaperId, RoleType role = RoleType.None)
+        public int GetCount(NewspaperIssueSearchOptions searchOptions = NewspaperIssueSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
-                return _dao.GetCountByNewspaper(newspaperId, role);
+                return _dao.GetCount(searchOptions, searchLine, numberOfPageFilter, role);
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Bll", nameof(NewspaperIssueBll), nameof(GetCount), "Error getting item.", ex);
+            }
+        }
+
+        public int GetCountByNewspaper(int newspaperId, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.GetCountByNewspaper(newspaperId, numberOfPageFilter: numberOfPageFilter, role);
             }
             catch (Exception ex)
             {

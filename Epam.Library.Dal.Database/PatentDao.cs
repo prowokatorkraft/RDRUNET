@@ -73,7 +73,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForSearchByPublishingYear(null, page, command);
+                    AddParametersForSearchByPublishingYear(null, page, numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -107,7 +107,7 @@ namespace Epam.Library.Dal.Database
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Epam.Library.Dal.Database
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
-                    AddParametersForGet(id, page ?? new PagingInfo(), command);
+                    AddParametersForGet(id, page ?? new PagingInfo(), numberOfPageFilter, command);
 
                     connection.Open();
 
@@ -222,6 +222,36 @@ namespace Epam.Library.Dal.Database
             }
         }
 
+        public int GetCount(PatentSearchOptions searchOptions = PatentSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
+        {
+            try
+            {
+                int count;
+
+                string storedProcedure = GetProcedureForCount(searchOptions);
+                using (SqlConnection connection = new SqlConnection(_connectionStrings.GetByRole(role)))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    AddParametersForCount(searchOptions, searchLine, numberOfPageFilter, command);
+
+                    connection.Open();
+
+                    var reader = command.ExecuteReader();
+                    reader.Read();
+                    count = (int)reader["Count"];
+                }
+
+                return count;
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Dal", nameof(PatentDao), nameof(GetCount), "Error getting data.", ex);
+            }
+        }
+
         private void AddParametersForAdd(AbstractPatent patent, SqlCommand command)
         {
             DataTable authorTable = WrapInTable(patent.AuthorIDs);
@@ -249,23 +279,31 @@ namespace Epam.Library.Dal.Database
         }
         private void AddParametersForSearch(SearchRequest<SortOptions, PatentSearchOptions> searchRequest, SqlCommand command)
         {
-            if (searchRequest != null && searchRequest.SearchOptions != PatentSearchOptions.None)
+            if (searchRequest != null)
             {
-                command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                if (searchRequest.SearchOptions != PatentSearchOptions.None)
+                {
+                    command.Parameters.AddWithValue("@SearchLine", searchRequest.SearchLine);
+                }
+                command.Parameters.AddWithValue("@MinNumberOfPages", searchRequest?.NumberOfPageFilter.MinNumberOfPages);
+                command.Parameters.AddWithValue("@MaxNumberOfPages", searchRequest?.NumberOfPageFilter.MaxNumberOfPages);
             }
 
             PagingInfo page = searchRequest?.PagingInfo ?? new PagingInfo();
 
             command.Parameters.AddWithValue("@SortDescending", searchRequest?.SortOptions.HasFlag(SortOptions.Descending) ?? false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
         }
-        private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, SqlCommand command)
+        private void AddParametersForSearchByPublishingYear(int? publishingYear, PagingInfo paging, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             if (publishingYear != null)
             {
                 command.Parameters.AddWithValue("@SearchLine", publishingYear);
             }
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
+
 
             PagingInfo page = paging is null
                         ? new PagingInfo()
@@ -273,13 +311,24 @@ namespace Epam.Library.Dal.Database
 
             command.Parameters.AddWithValue("@SortDescending", false);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
         }
-        private void AddParametersForGet(int id, PagingInfo page, SqlCommand command)
+        private void AddParametersForGet(int id, PagingInfo page, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
         {
             command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@SizePage", page.SizePage);
-            command.Parameters.AddWithValue("@Page", page.PageNumber);
+            command.Parameters.AddWithValue("@Page", page.CurrentPage);
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
+        }
+        private void AddParametersForCount(PatentSearchOptions searchOptions, string searchLine, NumberOfPageFilter numberOfPageFilter, SqlCommand command)
+        {
+            if (searchOptions != PatentSearchOptions.None)
+            {
+                command.Parameters.AddWithValue("@SearchLine", searchLine);
+            }
+            command.Parameters.AddWithValue("@MinNumberOfPages", numberOfPageFilter?.MinNumberOfPages);
+            command.Parameters.AddWithValue("@MaxNumberOfPages", numberOfPageFilter?.MaxNumberOfPages);
         }
 
         private DataTable WrapInTable(int[] AuthorIDs)
@@ -364,5 +413,22 @@ namespace Epam.Library.Dal.Database
 
             return storedProcedure;
         }
+        private string GetProcedureForCount(PatentSearchOptions searchOptions)
+        {
+            string storedProcedure;
+
+            switch (searchOptions)
+            {
+                case PatentSearchOptions.Name:
+                    storedProcedure = "dbo.Patents_CountByName";
+                    break;
+                default:
+                    storedProcedure = "dbo.Patents_Count";
+                    break;
+            }
+
+            return storedProcedure;
+        }
+
     }
 }

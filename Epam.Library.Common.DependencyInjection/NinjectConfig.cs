@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using Epam.Library.Bll.Contracts;
-using Epam.Library.Common.DependencyInjection;
 using Epam.Library.Common.DependencyInjection.Configuration;
 using Epam.Library.Common.Entities;
 using Epam.Library.Common.Entities.AuthorElement;
@@ -127,6 +126,25 @@ namespace Epam.Library.Common.DependencyInjection
             kernel
                 .Bind<IRoleBll>()
                 .To<Epam.Library.Bll.RoleBll>()
+                .InSingletonScope();
+            #endregion
+
+            #region ApiHandlers
+            kernel
+                .Bind<IHandlerBll<LibraryAbstractElement>>()
+                .To<Epam.Library.Bll.Handlers.CatalogueHandler>()
+                .InSingletonScope();
+            kernel
+                .Bind<IHandlerBll<AbstractBook>>()
+                .To<Epam.Library.Bll.Handlers.BookHandler>()
+                .InSingletonScope();
+            kernel
+                .Bind<IHandlerBll<AbstractPatent>>()
+                .To<Epam.Library.Bll.Handlers.PatentHandler>()
+                .InSingletonScope();
+            kernel
+                .Bind<IHandlerBll<NewspaperIssue>>()
+                .To<Epam.Library.Bll.Handlers.NewspaperIssueHandler>()
                 .InSingletonScope();
             #endregion
         }

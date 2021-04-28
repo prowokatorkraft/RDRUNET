@@ -156,5 +156,17 @@ namespace Epam.Library.Bll
                 throw new LayerException("Bll", nameof(BookBll), nameof(GetByAuthorId), "Error getting item.", ex);
             }
         }
+
+        public int GetCount(BookSearchOptions searchOptions = BookSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
+        {
+            try
+            {
+                return _dao.GetCount(searchOptions, searchLine, numberOfPageFilter, role);
+            }
+            catch (Exception ex)
+            {
+                throw new LayerException("Bll", nameof(BookBll), nameof(GetCount), "Error getting item.", ex);
+            }
+        }
     }
 }

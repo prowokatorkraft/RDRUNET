@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="ApiQuery\Request.cs" />
     <Compile Include="ErrorValidation.cs" />
     <Compile Include="LayerException.cs" />
     <Compile Include="LibraryAbstractElement.cs" />

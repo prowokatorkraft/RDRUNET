@@ -42,7 +42,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null, RoleType role = RoleType.None)
+        public IEnumerable<AbstractPatent> GetByAuthorId(int id, PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Epam.Library.Dal.Memory
             }
         }
 
-        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, RoleType role = RoleType.None)
+        public Dictionary<int, List<AbstractPatent>> GetAllGroupsByPublishYear(PagingInfo page = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             try
             {
@@ -146,6 +146,11 @@ namespace Epam.Library.Dal.Memory
         }
 
         public void Update(AbstractPatent patent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetCount(PatentSearchOptions searchOptions = PatentSearchOptions.None, string searchLine = null, NumberOfPageFilter numberOfPageFilter = null, RoleType role = RoleType.None)
         {
             throw new NotImplementedException();
         }
