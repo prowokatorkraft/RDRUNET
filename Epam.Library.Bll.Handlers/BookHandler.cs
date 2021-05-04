@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Bll.Handlers
 {
-    public class BookHandler : IHandlerBll<AbstractBook>
+    public class BookHandler : IPageHandlerBll<AbstractBook, PageRequest>
     {
         private IBookBll _bookBll;
         public BookHandler(IBookBll bookBll)
@@ -15,7 +15,7 @@ namespace Epam.Library.Bll.Handlers
             _bookBll = bookBll;
         }
 
-        public int GetPageCount(Request request)
+        public int GetPageCount(PageRequest request)
         {
             NumberOfPageFilter filter = new NumberOfPageFilter()
             {
@@ -26,7 +26,7 @@ namespace Epam.Library.Bll.Handlers
 
             return (int)Math.Ceiling(a: count / (double)request.SizePage);
         }
-        public IEnumerable<AbstractBook> Search(Request request)
+        public IEnumerable<AbstractBook> Search(PageRequest request)
         {
             var searchRequest = GetSearchRequest(request);
 
@@ -45,7 +45,7 @@ namespace Epam.Library.Bll.Handlers
                     return BookSearchOptions.None;
             }
         }
-        private SearchRequest<SortOptions, BookSearchOptions> GetSearchRequest(Request request)
+        private SearchRequest<SortOptions, BookSearchOptions> GetSearchRequest(PageRequest request)
         {
             return new SearchRequest<SortOptions, BookSearchOptions>()
             {

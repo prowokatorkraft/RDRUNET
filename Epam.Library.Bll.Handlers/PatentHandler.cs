@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Bll.Handlers
 {
-    public class PatentHandler : IHandlerBll<AbstractPatent>
+    public class PatentHandler : IPageHandlerBll<AbstractPatent, PageRequest>
     {
         private IPatentBll _patentBll;
         public PatentHandler(IPatentBll patentBll)
@@ -15,7 +15,7 @@ namespace Epam.Library.Bll.Handlers
             _patentBll = patentBll;
         }
 
-        public int GetPageCount(Request request)
+        public int GetPageCount(PageRequest request)
         {
             NumberOfPageFilter filter = new NumberOfPageFilter()
             {
@@ -27,7 +27,7 @@ namespace Epam.Library.Bll.Handlers
             return (int)Math.Ceiling(a: count / (double)request.SizePage);
         }
 
-        public IEnumerable<AbstractPatent> Search(Request request)
+        public IEnumerable<AbstractPatent> Search(PageRequest request)
         {
             var searchRequest = GetSearchRequest(request);
 
@@ -44,7 +44,7 @@ namespace Epam.Library.Bll.Handlers
                     return PatentSearchOptions.None;
             }
         }
-        private SearchRequest<SortOptions, PatentSearchOptions> GetSearchRequest(Request request)
+        private SearchRequest<SortOptions, PatentSearchOptions> GetSearchRequest(PageRequest request)
         {
             return new SearchRequest<SortOptions, PatentSearchOptions>()
             {

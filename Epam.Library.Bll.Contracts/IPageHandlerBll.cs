@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Bll.Contracts
 {
-    public interface IHandlerBll<TElement, TRequest>
+    public interface IPageHandlerBll<TElement, TRequest> : IHandlerBll<TElement, TRequest>
     {
-        IEnumerable<TElement> Search(TRequest request);
+        int GetPageCount(TRequest request);
     }
 }

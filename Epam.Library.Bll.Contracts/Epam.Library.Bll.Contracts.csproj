@@ -46,6 +46,7 @@
     <Compile Include="IBookBll.cs" />
     <Compile Include="ICatalogueBll.cs" />
     <Compile Include="IHandlerBll.cs" />
+    <Compile Include="IPageHandlerBll.cs" />
     <Compile Include="INewspaperBll.cs" />
     <Compile Include="INewspaperIssueBll.cs" />
     <Compile Include="IPatentBll.cs" />

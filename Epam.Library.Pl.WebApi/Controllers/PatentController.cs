@@ -14,16 +14,17 @@ namespace Epam.Library.Pl.WebApi.Controllers
 {
     public class PatentController : ApiController
     {
-        private IHandlerBll<AbstractPatent> _hendlerBll;
+        private IPatentBll _bll;
+        private IPageHandlerBll<AbstractPatent, PageRequest> _hendlerBll;
         private Mapper _mapper;
-        public PatentController(IHandlerBll<AbstractPatent> hendlerBll, Mapper mapper)
+        public PatentController(IPatentBll bll, IPageHandlerBll<AbstractPatent, PageRequest> hendlerBll, Mapper mapper)
         {
+            _bll = bll;
             _hendlerBll = hendlerBll;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IHttpActionResult GetAll([FromUri] Request request)
+        public IHttpActionResult GetAll([FromUri] PageRequest request)
         {
             int countPage = _hendlerBll.GetPageCount(request);
             if (request.CurrentPage < 1 || request.CurrentPage > countPage)
@@ -43,6 +44,13 @@ namespace Epam.Library.Pl.WebApi.Controllers
                 },
                 Elements = _mapper.Map<CatalogueElementVM, LibraryAbstractElement>(elements).ToList()
             });
+        }
+
+        public IHttpActionResult Get(int id)
+        {
+            var element = _mapper.Map<DisplayPatentVM, AbstractPatent>(_bll.Get(id, role: RoleType.externalClient));
+
+            return Ok(element);
         }
     }
 }

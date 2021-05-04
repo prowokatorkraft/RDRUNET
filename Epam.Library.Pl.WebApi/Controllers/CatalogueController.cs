@@ -13,16 +13,15 @@ namespace Epam.Library.Pl.WebApi.Controllers
 {
     public class CatalogueController : ApiController
     {
-        private IHandlerBll<LibraryAbstractElement> _hendlerBll;
+        private IPageHandlerBll<LibraryAbstractElement, PageRequest> _hendlerBll;
         private Mapper _mapper;
-        public CatalogueController(IHandlerBll<LibraryAbstractElement> hendlerBll, Mapper mapper)
+        public CatalogueController(IPageHandlerBll<LibraryAbstractElement, PageRequest> hendlerBll, Mapper mapper)
         {
             _hendlerBll = hendlerBll;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IHttpActionResult GetAll([FromUri]Request request)
+        public IHttpActionResult GetAll([FromUri]PageRequest request)
         {
             int countPage = _hendlerBll.GetPageCount(request);
             if (request.CurrentPage < 1 || request.CurrentPage > countPage)

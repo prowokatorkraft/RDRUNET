@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorHandler.cs" />
     <Compile Include="BookHandler.cs" />
     <Compile Include="CatalogueHandler.cs" />
+    <Compile Include="NewspaperHandler.cs" />
     <Compile Include="NewspaperIssueHandler.cs" />
     <Compile Include="PatentHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

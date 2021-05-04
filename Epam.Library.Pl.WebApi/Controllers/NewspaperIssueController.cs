@@ -14,17 +14,17 @@ namespace Epam.Library.Pl.WebApi.Controllers
 {
     public class NewspaperIssueController : ApiController
     {
-        private IHandlerBll<NewspaperIssue> _hendlerBll;
+        private INewspaperIssueBll _bll;
+        private IPageHandlerBll<NewspaperIssue, PageRequest> _hendlerBll;
         private Mapper _mapper;
-
-        public NewspaperIssueController(IHandlerBll<NewspaperIssue> hendlerBll, Mapper mapper)
+        public NewspaperIssueController(INewspaperIssueBll bll, IPageHandlerBll<NewspaperIssue, PageRequest> hendlerBll, Mapper mapper)
         {
+            _bll = bll;
             _hendlerBll = hendlerBll;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IHttpActionResult GetAll([FromUri] Request request)
+        public IHttpActionResult GetAll([FromUri] PageRequest request)
         {
             int countPage = _hendlerBll.GetPageCount(request);
             if (request.CurrentPage < 1 || request.CurrentPage > countPage)
@@ -44,6 +44,13 @@ namespace Epam.Library.Pl.WebApi.Controllers
                 },
                 Elements = _mapper.Map<CatalogueElementVM, LibraryAbstractElement>(elements).ToList()
             });
+        }
+
+        public IHttpActionResult Get(int id)
+        {
+            var element = _mapper.Map<DisplayNewspaperIssueVM, NewspaperIssue>(_bll.Get(id, role: RoleType.externalClient));
+
+            return Ok(element);
         }
     }
 }

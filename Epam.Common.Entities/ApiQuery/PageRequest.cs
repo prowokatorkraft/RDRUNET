@@ -1,6 +1,6 @@
 ﻿namespace Epam.Library.Common.Entities.ApiQuery
 {
-    public class Request
+    public class PageRequest
     {
         public int CurrentPage { get; set; } = 1;
         public int SizePage { get; set; } = 20;

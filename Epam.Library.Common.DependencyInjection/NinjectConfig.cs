@@ -3,6 +3,7 @@ using System.Configuration;
 using Epam.Library.Bll.Contracts;
 using Epam.Library.Common.DependencyInjection.Configuration;
 using Epam.Library.Common.Entities;
+using Epam.Library.Common.Entities.ApiQuery;
 using Epam.Library.Common.Entities.AuthorElement;
 using Epam.Library.Common.Entities.AuthorElement.Book;
 using Epam.Library.Common.Entities.AuthorElement.Patent;
@@ -131,20 +132,28 @@ namespace Epam.Library.Common.DependencyInjection
 
             #region ApiHandlers
             kernel
-                .Bind<IHandlerBll<LibraryAbstractElement>>()
+                .Bind<IPageHandlerBll<LibraryAbstractElement, PageRequest>>()
                 .To<Epam.Library.Bll.Handlers.CatalogueHandler>()
                 .InSingletonScope();
             kernel
-                .Bind<IHandlerBll<AbstractBook>>()
+                .Bind<IPageHandlerBll<AbstractBook, PageRequest>>()
                 .To<Epam.Library.Bll.Handlers.BookHandler>()
                 .InSingletonScope();
             kernel
-                .Bind<IHandlerBll<AbstractPatent>>()
+                .Bind<IPageHandlerBll<AbstractPatent, PageRequest>>()
                 .To<Epam.Library.Bll.Handlers.PatentHandler>()
                 .InSingletonScope();
             kernel
-                .Bind<IHandlerBll<NewspaperIssue>>()
+                .Bind<IPageHandlerBll<NewspaperIssue, PageRequest>>()
                 .To<Epam.Library.Bll.Handlers.NewspaperIssueHandler>()
+                .InSingletonScope();
+            kernel
+                .Bind<IHandlerBll<Newspaper, GetRequest>>()
+                .To<Epam.Library.Bll.Handlers.NewspaperHandler>()
+                .InSingletonScope();
+            kernel
+                .Bind<IHandlerBll<Author, GetRequest>>()
+                .To<Epam.Library.Bll.Handlers.AuthorHandler>()
                 .InSingletonScope();
             #endregion
         }

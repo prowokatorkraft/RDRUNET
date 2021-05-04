@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Epam.Library.Bll.Handlers
 {
-    public class NewspaperIssueHandler : IHandlerBll<NewspaperIssue>
+    public class NewspaperIssueHandler : IPageHandlerBll<NewspaperIssue, PageRequest>
     {
         private INewspaperIssueBll _newspaperIssueBll;
         public NewspaperIssueHandler(INewspaperIssueBll newspaperIssueBll)
@@ -15,7 +15,7 @@ namespace Epam.Library.Bll.Handlers
             _newspaperIssueBll = newspaperIssueBll;
         }
 
-        public int GetPageCount(Request request)
+        public int GetPageCount(PageRequest request)
         {
             NumberOfPageFilter filter = new NumberOfPageFilter()
             {
@@ -26,7 +26,7 @@ namespace Epam.Library.Bll.Handlers
 
             return (int)Math.Ceiling(a: count / (double)request.SizePage);
         }
-        public IEnumerable<NewspaperIssue> Search(Request request)
+        public IEnumerable<NewspaperIssue> Search(PageRequest request)
         {
             var searchRequest = GetSearchRequest(request);
 
@@ -43,7 +43,7 @@ namespace Epam.Library.Bll.Handlers
                     return NewspaperIssueSearchOptions.None;
             }
         }
-        private SearchRequest<SortOptions, NewspaperIssueSearchOptions> GetSearchRequest(Request request)
+        private SearchRequest<SortOptions, NewspaperIssueSearchOptions> GetSearchRequest(PageRequest request)
         {
             return new SearchRequest<SortOptions, NewspaperIssueSearchOptions>()
             {

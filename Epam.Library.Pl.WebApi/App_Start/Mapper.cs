@@ -7,10 +7,7 @@ using Epam.Library.Common.Entities.AuthorElement.Patent;
 using Epam.Library.Common.Entities.Newspaper;
 using Epam.Library.Pl.WebApi.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Epam.Library.Pl.WebApi
 {
@@ -36,7 +33,7 @@ namespace Epam.Library.Pl.WebApi
         {
             _mapper = new MapperConfiguration(cfg =>
             {
-                #region CatalogueElementVM
+                #region ElementVM
                 cfg.CreateMap<Book, CatalogueElementVM>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
@@ -52,21 +49,57 @@ namespace Epam.Library.Pl.WebApi
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
                     .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
                     .ForMember(dest => dest.Type, opt => opt.MapFrom(c => TypeEnumVM.NewspaperIssue.ToString()));
+                cfg.CreateMap<Newspaper, ElementVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name));
+                cfg.CreateMap<Author, AuthorVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
+                    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName));
+                #endregion
+
+                #region AuthorVM
+                //cfg.CreateMap<CreateEditAuthorVM, Author>()
+                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                //    .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
+                //    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName))
+                //    .ForMember(dest => dest.Deleted, opt => opt.Ignore());
+
+                //cfg.CreateMap<Author, CreateEditAuthorVM>()
+                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                //    .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
+                //    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName));
+                #endregion
+
+                #region NewspaperVM
+                cfg.CreateMap<Newspaper, DisplayNewspaperVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.ISSN, opt => opt.MapFrom(c => c.Issn));
+                //cfg.CreateMap<CreateEditNewspaperVM, Newspaper>()
+                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                //    .ForMember(dest => dest.Issn, opt => opt.MapFrom(c => c.ISSN))
+                //    .ForMember(dest => dest.Deleted, opt => opt.Ignore());
+                //cfg.CreateMap<Newspaper, CreateEditNewspaperVM>()
+                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                //    .ForMember(dest => dest.ISSN, opt => opt.MapFrom(c => c.Issn));
                 #endregion
 
                 #region BookVM
-                //cfg.CreateMap<Book, DisplayBookVM>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
-                //    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
-                //    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
-                //    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs, (f, l) => $"{f} {l}")))
-                //    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
-                //    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
-                //    .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
-                //    .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
+                cfg.CreateMap<AbstractBook, DisplayBookVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs)))
+                    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
+                    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
+                    .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
+                    .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
 
-                //cfg.CreateMap<Book, CreateEditBookVM>()
+                //cfg.CreateMap<AbstractBook, CreateEditBookVM>()
                 //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                 //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
                 //    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
@@ -77,7 +110,7 @@ namespace Epam.Library.Pl.WebApi
                 //    .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
                 //    .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
 
-                //cfg.CreateMap<CreateEditBookVM, Book>()
+                //cfg.CreateMap<CreateEditBookVM, AbstractBook>()
                 //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                 //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
                 //    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
@@ -88,19 +121,19 @@ namespace Epam.Library.Pl.WebApi
                 //    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
                 //    .ForMember(dest => dest.PublishingYear, opt => opt.MapFrom(c => c.PublishingYear))
                 //    .ForMember(dest => dest.Isbn, opt => opt.MapFrom(c => c.Isbn));
-                //#endregion
+                #endregion
 
-                //#region PatentVM
-                //cfg.CreateMap<Patent, DisplayPatentVM>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
-                //    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
-                //    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
-                //    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs, (f, l) => $"{f} {l}")))
-                //    .ForMember(dest => dest.Country, opt => opt.MapFrom(c => c.Country))
-                //    .ForMember(dest => dest.RegistrationNumber, opt => opt.MapFrom(c => c.RegistrationNumber))
-                //    .ForMember(dest => dest.ApplicationDate, opt => opt.MapFrom(c => c.ApplicationDate))
-                //    .ForMember(dest => dest.DateOfPublication, opt => opt.MapFrom(c => c.DateOfPublication));
+                #region PatentVM
+                cfg.CreateMap<AbstractPatent, DisplayPatentVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Authors, opt => opt.MapFrom(c => GetAuthorsByIDs(c.AuthorIDs)))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(c => c.Country))
+                    .ForMember(dest => dest.RegistrationNumber, opt => opt.MapFrom(c => c.RegistrationNumber))
+                    .ForMember(dest => dest.ApplicationDate, opt => opt.MapFrom(c => c.ApplicationDate))
+                    .ForMember(dest => dest.DateOfPublication, opt => opt.MapFrom(c => c.DateOfPublication));
 
                 //cfg.CreateMap<Patent, CreateEditPatentVM>()
                 //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
@@ -124,23 +157,19 @@ namespace Epam.Library.Pl.WebApi
                 //    .ForMember(dest => dest.RegistrationNumber, opt => opt.MapFrom(c => c.RegistrationNumber))
                 //    .ForMember(dest => dest.ApplicationDate, opt => opt.MapFrom(c => c.ApplicationDate))
                 //    .ForMember(dest => dest.DateOfPublication, opt => opt.MapFrom(c => c.DateOfPublication));
-                //#endregion
+                #endregion
 
-                //#region NewspaperIssue
-                //cfg.CreateMap<NewspaperIssue, DisplayNewspaperIssueVM>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
-                //    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
-                //    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
-                //    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
-                //    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
-                //    .ForMember(dest => dest.Number, opt => opt.MapFrom(c => c.Number))
-                //    .ForMember(dest => dest.Date, opt => opt.MapFrom(c => c.Date))
-                //    .ForMember(dest => dest.Newspaper, opt => opt.MapFrom((c, m) =>
-                //    {
-                //        return Map<DisplayNewspaperVM, Newspaper>(_newspaperBll.Get(c.NewspaperId, _role), _role);
-                //    }))
-                //    .ForMember(dest => dest.PageData, opt => opt.Ignore());
+                #region NewspaperIssue
+                cfg.CreateMap<NewspaperIssue, DisplayNewspaperIssueVM>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.NumberOfPages, opt => opt.MapFrom(c => c.NumberOfPages))
+                    .ForMember(dest => dest.Annotation, opt => opt.MapFrom(c => c.Annotation))
+                    .ForMember(dest => dest.Publisher, opt => opt.MapFrom(c => c.Publisher))
+                    .ForMember(dest => dest.PublishingCity, opt => opt.MapFrom(c => c.PublishingCity))
+                    .ForMember(dest => dest.Number, opt => opt.MapFrom(c => c.Number))
+                    .ForMember(dest => dest.Date, opt => opt.MapFrom(c => c.Date))
+                    .ForMember(dest => dest.Newspaper, opt => opt.MapFrom(c => Map<DisplayNewspaperVM, Newspaper>(_newspaperBll.Get(c.NewspaperId, _role))));
                 //cfg.CreateMap<NewspaperIssue, CreateEditNewspaperIssueVM>()
                 //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                 //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
@@ -163,45 +192,10 @@ namespace Epam.Library.Pl.WebApi
                 //    .ForMember(dest => dest.Number, opt => opt.MapFrom(c => c.Number))
                 //    .ForMember(dest => dest.Date, opt => opt.MapFrom(c => c.Date))
                 //    .ForMember(dest => dest.NewspaperId, opt => opt.MapFrom(c => c.NewspaperId));
-                //#endregion
+                #endregion
 
-                //#region NewspaperVM
-                //cfg.CreateMap<Newspaper, DisplayNewspaperVM>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
-                //    .ForMember(dest => dest.ISSN, opt => opt.MapFrom(c => c.Issn))
-                //    .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(c => c.Deleted));
-                //cfg.CreateMap<CreateEditNewspaperVM, Newspaper>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
-                //    .ForMember(dest => dest.Issn, opt => opt.MapFrom(c => c.ISSN))
-                //    .ForMember(dest => dest.Deleted, opt => opt.Ignore());
-                //cfg.CreateMap<Newspaper, CreateEditNewspaperVM>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
-                //    .ForMember(dest => dest.ISSN, opt => opt.MapFrom(c => c.Issn));
-                //#endregion
-
-                //#region AuthorVM
-                //cfg.CreateMap<Author, DisplayAuthorVM>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
-                //    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName))
-                //    .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(c => c.Deleted));
-
-                //cfg.CreateMap<CreateEditAuthorVM, Author>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
-                //    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName))
-                //    .ForMember(dest => dest.Deleted, opt => opt.Ignore());
-
-                //cfg.CreateMap<Author, CreateEditAuthorVM>()
-                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
-                //    .ForMember(dest => dest.FirstName, opt => opt.MapFrom(c => c.FirstName))
-                //    .ForMember(dest => dest.LastName, opt => opt.MapFrom(c => c.LastName));
-                //#endregion
-
-                //#region AccountVM
+                ///
+                #region AccountVM
                 //cfg.CreateMap<Account, AccountVM>()
                 //    .ForMember(dest => dest.Id, opt => opt.MapFrom(c => c.Id))
                 //    .ForMember(dest => dest.Login, opt => opt.MapFrom(c => c.Login))
@@ -228,6 +222,19 @@ namespace Epam.Library.Pl.WebApi
             {
                 yield return _mapper.Map<TModel, TResult>(item);
             }
+        }
+
+        private IEnumerable<AuthorVM> GetAuthorsByIDs(int[] authorIDs)
+        {
+            if (authorIDs is null || authorIDs.Length == 0)
+            {
+                return null;
+            }
+
+            List<Author> authors = new List<Author>();
+            Array.ForEach(authorIDs, (i) => authors.Add(_authorBll.Get(i, _role)));
+
+            return Map<AuthorVM, Author>(authors);
         }
     }
 }
