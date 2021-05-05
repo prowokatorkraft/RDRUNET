@@ -52,5 +52,59 @@ namespace Epam.Library.Pl.WebApi.Controllers
 
             return Ok(element);
         }
+
+        public IHttpActionResult Post([FromBody] CreateEditNewspaperIssueVM request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var element = _mapper.Map<NewspaperIssue, CreateEditNewspaperIssueVM>(request);
+
+            var result = _bll.Add(element);
+            if (result.Any())
+            {
+                foreach (var item in result)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+                return BadRequest(ModelState);
+            }
+
+            return Created($"/api/newspaperissue/{element.Id}", request); ///
+        }
+
+        public IHttpActionResult Put([FromBody] CreateEditNewspaperIssueVM request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var element = _mapper.Map<NewspaperIssue, CreateEditNewspaperIssueVM>(request);
+
+            var result = _bll.Update(element);
+            if (result.Any())
+            {
+                foreach (var item in result)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+                return BadRequest(ModelState);
+            }
+
+            return Ok(request);
+        }
+
+        public IHttpActionResult Delete(int id)
+        {
+            if (!_bll.Remove(id, RoleType.externalClient))
+            {
+                return BadRequest($"Element {id} doesn't deleted.");
+            }
+
+            return Ok();
+        }
     }
 }

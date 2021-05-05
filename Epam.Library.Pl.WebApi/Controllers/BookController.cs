@@ -52,5 +52,59 @@ namespace Epam.Library.Pl.WebApi.Controllers
 
             return Ok(element);
         }
+
+        public IHttpActionResult Post([FromBody] CreateEditBookVM request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var element = _mapper.Map<Book, CreateEditBookVM>(request);
+
+            var result = _bll.Add(element, RoleType.externalClient);
+            if (result.Any())
+            {
+                foreach (var item in result)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+                return BadRequest(ModelState);
+            }
+
+            return Created($"/api/book/{element.Id}", request); ///
+        }
+
+        public IHttpActionResult Put([FromBody] CreateEditBookVM request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var element = _mapper.Map<Book, CreateEditBookVM>(request);
+
+            var result = _bll.Update(element, RoleType.externalClient);
+            if (result.Any())
+            {
+                foreach (var item in result)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+                return BadRequest(ModelState);
+            }
+
+            return Ok(request);
+        }
+
+        public IHttpActionResult Delete(int id)
+        {
+            if (!_bll.Remove(id, RoleType.externalClient))
+            {
+                return BadRequest($"Element {id} doesn't deleted.");
+            }
+
+            return Ok();
+        }
     }
 }

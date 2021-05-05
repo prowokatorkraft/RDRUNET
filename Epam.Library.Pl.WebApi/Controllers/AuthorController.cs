@@ -14,19 +14,72 @@ namespace Epam.Library.Pl.WebApi.Controllers
 {
     public class AuthorController : ApiController
     {
+        private IAuthorBll _bll;
         private IHandlerBll<Author, GetRequest> _handlerBll;
         private Mapper _mapper;
-        public AuthorController(IHandlerBll<Author, GetRequest> hendlerBll, Mapper mapper)
+        public AuthorController(IAuthorBll bll, IHandlerBll<Author, GetRequest> handlerBll, Mapper mapper)
         {
-            _handlerBll = hendlerBll;
+            _bll = bll;
+            _handlerBll = handlerBll;
             _mapper = mapper;
         }
 
-        public IHttpActionResult GetAll([FromUri]GetRequest request)
+        public IHttpActionResult GetAll([FromUri] GetRequest request)
         {
             var elements = _mapper.Map<AuthorVM, Author>(_handlerBll.Search(request));
 
             return Ok(elements);
+        }
+
+        public IHttpActionResult Get(int id)
+        {
+            var element = _mapper.Map<AuthorVM, Author>(_bll.Get(id, role: RoleType.externalClient));
+
+            return Ok(element);
+        }
+
+        public IHttpActionResult Post([FromBody] CreateEditAuthorVM request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var author = _mapper.Map<Author, CreateEditAuthorVM>(request);
+
+            var result = _bll.Add(author);
+            if (result.Any())
+            {
+                foreach (var item in result)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+                return BadRequest(ModelState);
+            }
+
+            return Created($"/api/author/{author.Id}", request); ///
+        }
+
+        public IHttpActionResult Put([FromBody] CreateEditAuthorVM request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var author = _mapper.Map<Author, CreateEditAuthorVM>(request);
+
+            var result = _bll.Update(author);
+            if (result.Any())
+            {
+                foreach (var item in result)
+                {
+                    ModelState.AddModelError(item.Field, $"{item.Description} {item.Recommendation}");
+                }
+                return BadRequest(ModelState);
+            }
+
+            return Ok(request);
         }
     }
 }
